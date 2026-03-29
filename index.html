@@ -412,7 +412,7 @@
     </div>
 
     <div class="info-box" id="info-box">
-      <strong>How it works:</strong> Type or paste your English text, choose a voice and speed, then click <strong>Generate Audio</strong>. The MP3 file is ready to preview and download instantly. Requires an internet connection.
+      <strong>How it works:</strong> Type or paste your English text, choose a voice and speed, then click <strong>Generate Audio</strong>. The first time you use a voice it downloads the model (~40 MB) and caches it — subsequent uses are instant. No API keys, no servers.
     </div>
 
     <div class="btn-row">
@@ -505,18 +505,20 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.3.1</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.4.0</p>
 </footer>
 
-<script>
-  let audioBlob = null, audioURL = null;
+<script type="module">
+  import { PiperTTSClient } from 'https://esm.sh/@diffusionstudio/vits-web';
 
-  // Google Translate TTS voices (language codes → accent)
+  let audioBlob = null, audioURL = null, ttsClient = null;
+
+  // Piper TTS voices (neural, runs 100% in-browser via WASM — no API needed)
   const VOICES = [
-    { id: 'en',    label: 'US English' },
-    { id: 'en-GB', label: 'UK English' },
-    { id: 'en-AU', label: 'AU English' },
-    { id: 'en-IN', label: 'Indian English' },
+    { id: 'en_US-amy-medium',    label: 'Amy — US English (Female)' },
+    { id: 'en_US-lessac-medium', label: 'Lessac — US English (Male)' },
+    { id: 'en_US-ryan-medium',   label: 'Ryan — US English (Male)' },
+    { id: 'en_GB-alan-medium',   label: 'Alan — UK English (Male)' },
   ];
 
   (function initVoices() {
@@ -536,50 +538,6 @@
     document.getElementById('status-text').textContent = msg;
   }
 
-  // Split text into ≤190-char chunks (Google TTS limit) at sentence/word boundaries
-  function splitChunks(text, max = 190) {
-    const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
-    const chunks = [];
-    let cur = '';
-    for (const s of sentences) {
-      if (s.length > max) {
-        if (cur) { chunks.push(cur.trim()); cur = ''; }
-        // split long sentence by words
-        for (const w of s.trim().split(/\s+/)) {
-          if ((cur + ' ' + w).trim().length > max) {
-            if (cur) chunks.push(cur.trim());
-            cur = w;
-          } else {
-            cur = (cur + ' ' + w).trim();
-          }
-        }
-      } else if ((cur + s).length > max) {
-        chunks.push(cur.trim()); cur = s;
-      } else {
-        cur += s;
-      }
-    }
-    if (cur.trim()) chunks.push(cur.trim());
-    return chunks.filter(c => c.length > 0);
-  }
-
-  async function fetchTTS(lang, text) {
-    const params = new URLSearchParams({ ie: 'UTF-8', q: text, tl: lang, client: 'tw-ob', ttsspeed: '1' });
-    const ttsUrl = `https://translate.google.com/translate_tts?${params}`;
-    // Try multiple CORS proxies in sequence
-    const proxies = [
-      `https://corsproxy.io/?${encodeURIComponent(ttsUrl)}`,
-      `https://api.allorigins.win/raw?url=${encodeURIComponent(ttsUrl)}`,
-    ];
-    for (const proxy of proxies) {
-      try {
-        const res = await fetch(proxy);
-        if (res.ok) return res.arrayBuffer();
-      } catch (_) { /* try next */ }
-    }
-    throw new Error('All TTS proxies failed. Check your internet connection.');
-  }
-
   function pcmToMp3(float32, sampleRate) {
     const enc = new lamejs.Mp3Encoder(1, sampleRate, 128);
     const out = [];
@@ -597,26 +555,6 @@
     return new Blob(out, { type: 'audio/mpeg' });
   }
 
-  async function decodeArrayBuffer(ab) {
-    const ctx = new AudioContext();
-    const buffer = await ctx.decodeAudioData(ab);
-    await ctx.close();
-    return buffer;
-  }
-
-  async function applySpeed(audioBuffer, rate) {
-    const sr = audioBuffer.sampleRate;
-    const outLen = Math.ceil(audioBuffer.length / rate);
-    const offCtx = new OfflineAudioContext(1, outLen, sr);
-    const src = offCtx.createBufferSource();
-    src.buffer = audioBuffer;
-    src.playbackRate.value = rate;
-    src.connect(offCtx.destination);
-    src.start(0);
-    const rendered = await offCtx.startRendering();
-    return rendered.getChannelData(0);
-  }
-
   async function generateAudio() {
     const text = document.getElementById('text').value.trim();
     if (!text) { setStatus('error', 'Please enter some text first.'); return; }
@@ -625,55 +563,34 @@
     btn.disabled = true;
     btn.classList.add('recording');
 
-    const voice = document.getElementById('voice-select').value;
-    const rate  = parseFloat(document.getElementById('rate').value);
-    const chunks = splitChunks(text);
+    const voiceId = document.getElementById('voice-select').value;
+    const rate    = parseFloat(document.getElementById('rate').value);
+    // Piper length_scale: higher = slower. length_scale = 1/rate
+    const length_scale = parseFloat((1 / rate).toFixed(3));
 
     try {
-      setStatus('recording', `Generating audio${chunks.length > 1 ? ` (${chunks.length} parts)` : ''}…`);
+      if (!ttsClient) ttsClient = new PiperTTSClient();
 
-      // Fetch each chunk sequentially to avoid rate limiting
-      const arrayBuffers = [];
-      for (let i = 0; i < chunks.length; i++) {
-        if (chunks.length > 1) setStatus('recording', `Fetching part ${i + 1} of ${chunks.length}…`);
-        arrayBuffers.push(await fetchTTS(voice, chunks[i])); // voice = lang code
-      }
+      setStatus('recording', 'Generating audio… (first use downloads voice model ~40 MB, cached after)');
 
-      // Decode all chunks to AudioBuffers
-      const audioBuffers = [];
-      for (const ab of arrayBuffers) audioBuffers.push(await decodeArrayBuffer(ab));
-
-      // Concatenate PCM (mono mix-down)
-      const sampleRate = audioBuffers[0].sampleRate;
-      const totalLen = audioBuffers.reduce((s, b) => s + b.length, 0);
-      const combined = new Float32Array(totalLen);
-      let offset = 0;
-      for (const buf of audioBuffers) {
-        const numCh = buf.numberOfChannels;
-        for (let i = 0; i < buf.length; i++) {
-          let s = 0;
-          for (let ch = 0; ch < numCh; ch++) s += buf.getChannelData(ch)[i] / numCh;
-          combined[offset + i] = s;
-        }
-        offset += buf.length;
-      }
-
-      // Apply speed if needed
-      let finalPcm = combined;
-      let finalSr = sampleRate;
-      if (Math.abs(rate - 1.0) > 0.02) {
-        setStatus('recording', 'Adjusting speed…');
-        // Build a temporary AudioBuffer for OfflineAudioContext
-        const tmpCtx = new AudioContext();
-        const tmpBuf = tmpCtx.createBuffer(1, combined.length, sampleRate);
-        tmpBuf.getChannelData(0).set(combined);
-        await tmpCtx.close();
-        finalPcm = await applySpeed(tmpBuf, rate);
-        finalSr = sampleRate;
-      }
+      // PiperTTSClient.predict() returns a WAV Blob — no chunking needed, no external API
+      const wavBlob = await ttsClient.predict(text, { voice: voiceId, length_scale });
 
       setStatus('recording', 'Encoding to MP3…');
-      audioBlob = pcmToMp3(finalPcm, finalSr);
+      const ab = await wavBlob.arrayBuffer();
+      const ctx = new AudioContext();
+      const audioBuffer = await ctx.decodeAudioData(ab);
+      await ctx.close();
+
+      // Mix to mono
+      const numCh = audioBuffer.numberOfChannels;
+      const mono  = new Float32Array(audioBuffer.length);
+      for (let ch = 0; ch < numCh; ch++) {
+        const data = audioBuffer.getChannelData(ch);
+        for (let i = 0; i < data.length; i++) mono[i] += data[i] / numCh;
+      }
+
+      audioBlob = pcmToMp3(mono, audioBuffer.sampleRate);
       if (audioURL) URL.revokeObjectURL(audioURL);
       audioURL = URL.createObjectURL(audioBlob);
 
@@ -686,7 +603,7 @@
       setStatus('done', 'MP3 ready ✓ — preview or download');
     } catch (err) {
       console.error(err);
-      setStatus('error', 'Failed to generate audio. Check your internet connection.');
+      setStatus('error', 'Failed to generate audio: ' + err.message);
     }
 
     btn.disabled = false;
