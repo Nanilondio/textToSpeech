@@ -412,7 +412,7 @@
     </div>
 
     <div class="info-box" id="info-box">
-      <strong>How it works:</strong> Type or paste your English text, choose a voice and speed, then click <strong>Generate Audio</strong>. The first time you use a voice it downloads the model (~40 MB) and caches it — subsequent uses are instant. No API keys, no servers.
+      <strong>How it works:</strong> Type or paste your English text, choose a voice and speed, then click <strong>Generate Audio</strong>. Audio is generated via a free neural TTS model — no account or API key needed. Requires an internet connection.
     </div>
 
     <div class="btn-row">
@@ -505,19 +505,17 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.4.1</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.5.0</p>
 </footer>
 
-<script type="module">
-  import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+<script>
+  let audioBlob = null, audioURL = null;
 
-  // Use CDN-hosted WASM/models — no local files needed
-  env.allowLocalModels = false;
-
-  let audioBlob = null, audioURL = null, synthesizer = null, loadedModel = null;
-
+  // Hugging Face Inference API — free, no key needed, CORS enabled
   const VOICES = [
-    { id: 'Xenova/mms-tts-eng', label: 'English (Neural — US)' },
+    { id: 'espnet/kan-bayashi_ljspeech_vits',        label: 'LJ (US Female — Natural)' },
+    { id: 'espnet/kan-bayashi_libritts_r_vits',      label: 'LibriTTS (US Female — Clear)' },
+    { id: 'facebook/mms-tts-eng',                    label: 'MMS (US — Compact)' },
   ];
 
   (function initVoices() {
@@ -535,6 +533,52 @@
   function setStatus(state, msg) {
     document.getElementById('dot').className = 'dot ' + state;
     document.getElementById('status-text').textContent = msg;
+  }
+
+  // Split at sentence boundaries, max ~200 chars per chunk
+  function splitChunks(text, max = 200) {
+    const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
+    const chunks = [];
+    let cur = '';
+    for (const s of sentences) {
+      if (s.length > max) {
+        if (cur) { chunks.push(cur.trim()); cur = ''; }
+        for (let i = 0; i < s.length; i += max) chunks.push(s.slice(i, i + max).trim());
+      } else if ((cur + s).length > max) {
+        chunks.push(cur.trim()); cur = s;
+      } else { cur += s; }
+    }
+    if (cur.trim()) chunks.push(cur.trim());
+    return chunks.filter(c => c.length > 0);
+  }
+
+  // Call HF Inference API — retries if model is loading (503)
+  async function fetchHF(modelId, text) {
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const res = await fetch(`https://api-inference.huggingface.co/models/${modelId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ inputs: text }),
+      });
+      if (res.ok) return res.arrayBuffer();
+      let err = {};
+      try { err = await res.json(); } catch (_) {}
+      if (res.status === 503 || String(err.error).includes('loading')) {
+        const wait = Math.min((err.estimated_time || 20) * 1000, 30000);
+        setStatus('recording', `Model warming up, retrying in ${Math.round(wait / 1000)}s…`);
+        await new Promise(r => setTimeout(r, wait));
+        continue;
+      }
+      throw new Error(err.error || `HTTP ${res.status}`);
+    }
+    throw new Error('Model unavailable. Please try again later.');
+  }
+
+  async function decodeAB(ab) {
+    const ctx = new AudioContext();
+    const buf = await ctx.decodeAudioData(ab);
+    await ctx.close();
+    return buf;
   }
 
   function pcmToMp3(float32, sampleRate) {
@@ -562,44 +606,48 @@
     btn.disabled = true;
     btn.classList.add('recording');
 
-    const voiceId = document.getElementById('voice-select').value;
+    const modelId = document.getElementById('voice-select').value;
     const rate    = parseFloat(document.getElementById('rate').value);
+    const chunks  = splitChunks(text);
 
     try {
-      setStatus('recording', 'Preparing…');
-
-        // Load model only if voice changed
-      if (!synthesizer || loadedModel !== voiceId) {
-        setStatus('recording', 'Loading voice model… (first use ~60 MB, cached after)');
-        synthesizer = await pipeline('text-to-speech', voiceId, {
-          progress_callback: p => {
-            if (p.status === 'progress' && p.progress != null)
-              setStatus('recording', `Downloading model: ${Math.round(p.progress)}%`);
-          }
-        });
-        loadedModel = voiceId;
+      const audioBuffers = [];
+      for (let i = 0; i < chunks.length; i++) {
+        setStatus('recording', chunks.length > 1
+          ? `Generating part ${i + 1} of ${chunks.length}…`
+          : 'Generating audio…');
+        const ab = await fetchHF(modelId, chunks[i]);
+        audioBuffers.push(await decodeAB(ab));
       }
 
-      setStatus('recording', 'Synthesising speech…');
-      const output = await synthesizer(text);
-      // output.audio = Float32Array, output.sampling_rate = number
+      // Concatenate all chunks as mono PCM
+      const sr = audioBuffers[0].sampleRate;
+      const totalLen = audioBuffers.reduce((s, b) => s + b.length, 0);
+      const mono = new Float32Array(totalLen);
+      let offset = 0;
+      for (const buf of audioBuffers) {
+        const numCh = buf.numberOfChannels;
+        for (let i = 0; i < buf.length; i++) {
+          let s = 0;
+          for (let ch = 0; ch < numCh; ch++) s += buf.getChannelData(ch)[i] / numCh;
+          mono[offset + i] = s;
+        }
+        offset += buf.length;
+      }
 
-      // Apply speed via OfflineAudioContext if needed
-      let finalPcm = output.audio;
-      const sr = output.sampling_rate;
+      // Apply speed adjustment if needed
+      let finalPcm = mono;
       if (Math.abs(rate - 1.0) > 0.02) {
         setStatus('recording', 'Adjusting speed…');
         const tmpCtx = new AudioContext();
-        const tmpBuf = tmpCtx.createBuffer(1, finalPcm.length, sr);
-        tmpBuf.getChannelData(0).set(finalPcm);
+        const tmpBuf = tmpCtx.createBuffer(1, mono.length, sr);
+        tmpBuf.getChannelData(0).set(mono);
         await tmpCtx.close();
-        const outLen = Math.ceil(finalPcm.length / rate);
-        const offCtx = new OfflineAudioContext(1, outLen, sr);
+        const offCtx = new OfflineAudioContext(1, Math.ceil(mono.length / rate), sr);
         const src = offCtx.createBufferSource();
         src.buffer = tmpBuf; src.playbackRate.value = rate;
         src.connect(offCtx.destination); src.start(0);
-        const rendered = await offCtx.startRendering();
-        finalPcm = rendered.getChannelData(0);
+        finalPcm = (await offCtx.startRendering()).getChannelData(0);
       }
 
       setStatus('recording', 'Encoding to MP3…');
@@ -616,7 +664,7 @@
       setStatus('done', 'MP3 ready ✓ — preview or download');
     } catch (err) {
       console.error(err);
-      setStatus('error', 'Failed to generate audio: ' + err.message);
+      setStatus('error', err.message);
     }
 
     btn.disabled = false;
