@@ -512,7 +512,7 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.2.0</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.2.1</p>
 </footer>
 
 <script>
@@ -545,13 +545,32 @@
     document.getElementById('status-text').textContent = msg;
   }
 
-  function encodeMp3(pcmData, sampleRate) {
+  async function webmToMp3(webmBlob) {
+    // Decode WebM/Opus → raw PCM via the browser's built-in decoder
+    const arrayBuffer = await webmBlob.arrayBuffer();
+    const audioCtx = new AudioContext();
+    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+    audioCtx.close();
+
+    // Mix down to mono
+    const numCh = audioBuffer.numberOfChannels;
+    const length = audioBuffer.length;
+    const sampleRate = audioBuffer.sampleRate;
+    const mono = new Float32Array(length);
+    for (let ch = 0; ch < numCh; ch++) {
+      const chData = audioBuffer.getChannelData(ch);
+      for (let i = 0; i < length; i++) mono[i] += chData[i] / numCh;
+    }
+
+    // Encode PCM → MP3 with lamejs (block size must be multiple of 1152)
     const mp3enc = new lamejs.Mp3Encoder(1, sampleRate, 128);
     const mp3Chunks = [];
-    for (const float32 of pcmData) {
-      const int16 = new Int16Array(float32.length);
-      for (let i = 0; i < float32.length; i++) {
-        int16[i] = Math.max(-32768, Math.min(32767, float32[i] * 32767));
+    const blockSize = 1152;
+    for (let i = 0; i < mono.length; i += blockSize) {
+      const slice = mono.subarray(i, i + blockSize);
+      const int16 = new Int16Array(slice.length);
+      for (let j = 0; j < slice.length; j++) {
+        int16[j] = Math.max(-32768, Math.min(32767, slice[j] * 32767));
       }
       const buf = mp3enc.encodeBuffer(int16);
       if (buf.length > 0) mp3Chunks.push(new Uint8Array(buf));
@@ -596,41 +615,33 @@
     btn.classList.add('recording');
     setStatus('recording', 'Recording… please wait until speech finishes');
 
-    const sampleRate = 44100;
-    const audioCtx = new AudioContext({ sampleRate });
-    const source = audioCtx.createMediaStreamSource(stream);
-    const processor = audioCtx.createScriptProcessor(4096, 1, 1);
-    const pcmData = [];
-
-    processor.onaudioprocess = e => {
-      pcmData.push(new Float32Array(e.inputBuffer.getChannelData(0)));
-    };
-    source.connect(processor);
-    processor.connect(audioCtx.destination);
-
-    function finishRecording() {
-      processor.disconnect();
-      source.disconnect();
-      audioCtx.close();
+    // MediaRecorder captures the tab stream (speech synthesis included)
+    const chunks = [];
+    const types = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', 'audio/ogg'];
+    const mimeType = types.find(t => MediaRecorder.isTypeSupported(t)) || '';
+    const mr = new MediaRecorder(stream, mimeType ? { mimeType } : {});
+    mr.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
+    mr.onstop = async () => {
       stream.getTracks().forEach(t => t.stop());
-
       setStatus('recording', 'Encoding to MP3…');
-      setTimeout(() => {
-        audioBlob = encodeMp3(pcmData, sampleRate);
+      try {
+        const webmBlob = new Blob(chunks, { type: mimeType || 'audio/webm' });
+        audioBlob = await webmToMp3(webmBlob);
         if (audioURL) URL.revokeObjectURL(audioURL);
         audioURL = URL.createObjectURL(audioBlob);
-
         const ap = document.getElementById('audio-player');
         ap.src = audioURL;
         ap.load();
-
         document.getElementById('btn-download').style.display = 'flex';
         document.getElementById('btn-preview').style.display = 'flex';
-        btn.disabled = false;
-        btn.classList.remove('recording');
         setStatus('done', 'MP3 ready ✓ — preview or download');
-      }, 0);
-    }
+      } catch(err) {
+        setStatus('error', 'Failed to encode MP3. Try again.');
+      }
+      btn.disabled = false;
+      btn.classList.remove('recording');
+    };
+    mr.start(100);
 
     const utter = new SpeechSynthesisUtterance(text);
     const vi = document.getElementById('voice-select').value;
@@ -638,11 +649,8 @@
     utter.rate = parseFloat(document.getElementById('rate').value);
     utter.pitch = parseFloat(document.getElementById('pitch').value);
     utter.lang = 'en-US';
-    utter.onend = () => setTimeout(finishRecording, 600);
-    utter.onerror = () => {
-      finishRecording();
-      setStatus('error', 'Speech error.');
-    };
+    utter.onend = () => setTimeout(() => mr.stop(), 600);
+    utter.onerror = () => { mr.stop(); };
     synth.cancel();
     synth.speak(utter);
   }
