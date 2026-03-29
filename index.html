@@ -46,6 +46,7 @@
        GOOGLE ADSENSE
   ════════════════════════════════════════════ -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -464,7 +465,7 @@
 <section class="content-section" id="how-it-works">
   <h2>How it works</h2>
   <p>English Audio Generator uses your browser's built-in speech synthesis engine — no servers, no uploads, no sign-up. Your text never leaves your device. Click record, share the tab audio when prompted, and download the resulting file directly to your computer.</p>
-  <p>The downloaded file (WebM or OGG format) is compatible with PowerPoint 2016 and later, Google Slides, and most video editing software. It's perfect for creating listening exercises, dictation tracks, pronunciation models, and narrated presentations.</p>
+  <p>The downloaded file (MP3 format) is compatible with PowerPoint, Google Slides, and any media player or video editing software. It's perfect for creating listening exercises, dictation tracks, pronunciation models, and narrated presentations.</p>
 
   <div class="faq" id="faq">
     <h2>Frequently Asked Questions</h2>
@@ -478,7 +479,7 @@
     </div>
     <div class="faq-item">
       <h3>Can I use the audio in PowerPoint?</h3>
-      <p>Yes. After downloading, go to Insert → Audio → Audio on my PC and select the file. PowerPoint 2016+ supports WebM audio natively.</p>
+      <p>Yes. After downloading, go to Insert → Audio → Audio on my PC and select the MP3 file. MP3 is supported in all versions of PowerPoint.</p>
     </div>
     <div class="faq-item">
       <h3>What accents are available?</h3>
@@ -543,6 +544,22 @@
     document.getElementById('status-text').textContent = msg;
   }
 
+  function encodeMp3(pcmData, sampleRate) {
+    const mp3enc = new lamejs.Mp3Encoder(1, sampleRate, 128);
+    const mp3Chunks = [];
+    for (const float32 of pcmData) {
+      const int16 = new Int16Array(float32.length);
+      for (let i = 0; i < float32.length; i++) {
+        int16[i] = Math.max(-32768, Math.min(32767, float32[i] * 32767));
+      }
+      const buf = mp3enc.encodeBuffer(int16);
+      if (buf.length > 0) mp3Chunks.push(new Uint8Array(buf));
+    }
+    const flush = mp3enc.flush();
+    if (flush.length > 0) mp3Chunks.push(new Uint8Array(flush));
+    return new Blob(mp3Chunks, { type: 'audio/mpeg' });
+  }
+
   async function recordAndGenerate() {
     const text = document.getElementById('text').value.trim();
     if (!text) { setStatus('error', 'Please enter some text first.'); return; }
@@ -578,27 +595,41 @@
     btn.classList.add('recording');
     setStatus('recording', 'Recording… please wait until speech finishes');
 
-    const chunks = [];
-    const types = ['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/ogg'];
-    let mimeType = types.find(t => MediaRecorder.isTypeSupported(t)) || '';
-    const mr = new MediaRecorder(stream, mimeType ? { mimeType } : {});
-    mr.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
-    mr.onstop = () => {
-      stream.getTracks().forEach(t => t.stop());
-      audioBlob = new Blob(chunks, { type: mimeType || 'audio/webm' });
-      if (audioURL) URL.revokeObjectURL(audioURL);
-      audioURL = URL.createObjectURL(audioBlob);
-      document.getElementById('audio-player').src = audioURL;
-      const ext = mimeType.includes('ogg') ? 'ogg' : 'webm';
-      const dlBtn = document.getElementById('btn-download');
-      dlBtn.textContent = `⬇ Download ${ext.toUpperCase()}`;
-      dlBtn.style.display = 'flex';
-      document.getElementById('btn-preview').style.display = 'flex';
-      btn.disabled = false;
-      btn.classList.remove('recording');
-      setStatus('done', 'Audio ready ✓ — preview or download');
+    const sampleRate = 44100;
+    const audioCtx = new AudioContext({ sampleRate });
+    const source = audioCtx.createMediaStreamSource(stream);
+    const processor = audioCtx.createScriptProcessor(4096, 1, 1);
+    const pcmData = [];
+
+    processor.onaudioprocess = e => {
+      pcmData.push(new Float32Array(e.inputBuffer.getChannelData(0)));
     };
-    mr.start(100);
+    source.connect(processor);
+    processor.connect(audioCtx.destination);
+
+    function finishRecording() {
+      processor.disconnect();
+      source.disconnect();
+      audioCtx.close();
+      stream.getTracks().forEach(t => t.stop());
+
+      setStatus('recording', 'Encoding to MP3…');
+      setTimeout(() => {
+        audioBlob = encodeMp3(pcmData, sampleRate);
+        if (audioURL) URL.revokeObjectURL(audioURL);
+        audioURL = URL.createObjectURL(audioBlob);
+
+        const ap = document.getElementById('audio-player');
+        ap.src = audioURL;
+        ap.load();
+
+        document.getElementById('btn-download').style.display = 'flex';
+        document.getElementById('btn-preview').style.display = 'flex';
+        btn.disabled = false;
+        btn.classList.remove('recording');
+        setStatus('done', 'MP3 ready ✓ — preview or download');
+      }, 0);
+    }
 
     const utter = new SpeechSynthesisUtterance(text);
     const vi = document.getElementById('voice-select').value;
@@ -606,8 +637,11 @@
     utter.rate = parseFloat(document.getElementById('rate').value);
     utter.pitch = parseFloat(document.getElementById('pitch').value);
     utter.lang = 'en-US';
-    utter.onend = () => setTimeout(() => mr.stop(), 600);
-    utter.onerror = () => { mr.stop(); setStatus('error', 'Speech error.'); };
+    utter.onend = () => setTimeout(finishRecording, 600);
+    utter.onerror = () => {
+      finishRecording();
+      setStatus('error', 'Speech error.');
+    };
     synth.cancel();
     synth.speak(utter);
   }
@@ -629,15 +663,20 @@
   const ap = document.getElementById('audio-player');
   const bp = document.getElementById('btn-preview');
   bp.addEventListener('click', () => {
-    if (ap.paused) { ap.play(); bp.textContent = '⏸ Pause'; }
-    else { ap.pause(); bp.textContent = '▶ Preview'; }
+    if (ap.paused) {
+      if (ap.ended) ap.currentTime = 0;
+      ap.play();
+      bp.textContent = '⏸ Pause';
+    } else {
+      ap.pause();
+      bp.textContent = '▶ Preview';
+    }
   });
   ap.addEventListener('ended', () => { bp.textContent = '▶ Preview'; });
 
   document.getElementById('btn-download').addEventListener('click', () => {
     if (!audioBlob) return;
-    const ext = audioBlob.type.includes('ogg') ? 'ogg' : 'webm';
-    const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.' + ext;
+    const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
     const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
   });
 </script>
