@@ -505,20 +505,19 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.4.0</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.4.1</p>
 </footer>
 
 <script type="module">
-  import { PiperTTSClient } from 'https://esm.sh/@diffusionstudio/vits-web';
+  import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
 
-  let audioBlob = null, audioURL = null, ttsClient = null;
+  // Use CDN-hosted WASM/models — no local files needed
+  env.allowLocalModels = false;
 
-  // Piper TTS voices (neural, runs 100% in-browser via WASM — no API needed)
+  let audioBlob = null, audioURL = null, synthesizer = null, loadedModel = null;
+
   const VOICES = [
-    { id: 'en_US-amy-medium',    label: 'Amy — US English (Female)' },
-    { id: 'en_US-lessac-medium', label: 'Lessac — US English (Male)' },
-    { id: 'en_US-ryan-medium',   label: 'Ryan — US English (Male)' },
-    { id: 'en_GB-alan-medium',   label: 'Alan — UK English (Male)' },
+    { id: 'Xenova/mms-tts-eng', label: 'English (Neural — US)' },
   ];
 
   (function initVoices() {
@@ -565,32 +564,46 @@
 
     const voiceId = document.getElementById('voice-select').value;
     const rate    = parseFloat(document.getElementById('rate').value);
-    // Piper length_scale: higher = slower. length_scale = 1/rate
-    const length_scale = parseFloat((1 / rate).toFixed(3));
 
     try {
-      if (!ttsClient) ttsClient = new PiperTTSClient();
+      setStatus('recording', 'Preparing…');
 
-      setStatus('recording', 'Generating audio… (first use downloads voice model ~40 MB, cached after)');
-
-      // PiperTTSClient.predict() returns a WAV Blob — no chunking needed, no external API
-      const wavBlob = await ttsClient.predict(text, { voice: voiceId, length_scale });
-
-      setStatus('recording', 'Encoding to MP3…');
-      const ab = await wavBlob.arrayBuffer();
-      const ctx = new AudioContext();
-      const audioBuffer = await ctx.decodeAudioData(ab);
-      await ctx.close();
-
-      // Mix to mono
-      const numCh = audioBuffer.numberOfChannels;
-      const mono  = new Float32Array(audioBuffer.length);
-      for (let ch = 0; ch < numCh; ch++) {
-        const data = audioBuffer.getChannelData(ch);
-        for (let i = 0; i < data.length; i++) mono[i] += data[i] / numCh;
+        // Load model only if voice changed
+      if (!synthesizer || loadedModel !== voiceId) {
+        setStatus('recording', 'Loading voice model… (first use ~60 MB, cached after)');
+        synthesizer = await pipeline('text-to-speech', voiceId, {
+          progress_callback: p => {
+            if (p.status === 'progress' && p.progress != null)
+              setStatus('recording', `Downloading model: ${Math.round(p.progress)}%`);
+          }
+        });
+        loadedModel = voiceId;
       }
 
-      audioBlob = pcmToMp3(mono, audioBuffer.sampleRate);
+      setStatus('recording', 'Synthesising speech…');
+      const output = await synthesizer(text);
+      // output.audio = Float32Array, output.sampling_rate = number
+
+      // Apply speed via OfflineAudioContext if needed
+      let finalPcm = output.audio;
+      const sr = output.sampling_rate;
+      if (Math.abs(rate - 1.0) > 0.02) {
+        setStatus('recording', 'Adjusting speed…');
+        const tmpCtx = new AudioContext();
+        const tmpBuf = tmpCtx.createBuffer(1, finalPcm.length, sr);
+        tmpBuf.getChannelData(0).set(finalPcm);
+        await tmpCtx.close();
+        const outLen = Math.ceil(finalPcm.length / rate);
+        const offCtx = new OfflineAudioContext(1, outLen, sr);
+        const src = offCtx.createBufferSource();
+        src.buffer = tmpBuf; src.playbackRate.value = rate;
+        src.connect(offCtx.destination); src.start(0);
+        const rendered = await offCtx.startRendering();
+        finalPcm = rendered.getChannelData(0);
+      }
+
+      setStatus('recording', 'Encoding to MP3…');
+      audioBlob = pcmToMp3(finalPcm, sr);
       if (audioURL) URL.revokeObjectURL(audioURL);
       audioURL = URL.createObjectURL(audioBlob);
 
