@@ -1,697 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- ═══════════════════════════════════════════
-       SEO ESSENTIALS
-  ════════════════════════════════════════════ -->
-  <meta charset="UTF-8">
-  <meta name="google-adsense-account" content="ca-pub-7086938365759492">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-7086938365759492">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Free English Text to Speech — Download MP3 for Teachers & Classrooms</title>
-  <meta name="description" content="Convert any English paragraph to downloadable audio instantly. Free text-to-speech tool for ESL teachers. Choose accent (US, UK, AU), control speed, and download audio for PowerPoint presentations.">
-  <meta name="keywords" content="english text to speech, TTS for teachers, ESL audio generator, free audio classroom, download english audio, text to speech MP3, listening exercise generator">
-  <meta name="author" content="English Audio Generator">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://nanilondio.github.io/textToSpeech/">
+<title>Free English Text to Speech</title>
 
-  <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Free English Text to Speech for Teachers">
-  <meta property="og:description" content="Generate downloadable English audio from any paragraph. Perfect for ESL classrooms, listening exercises, and PowerPoint presentations.">
-  <meta property="og:url" content="https://nanilondio.github.io/textToSpeech/">
-  <meta property="og:image" content="https://nanilondio.github.io/textToSpeech/og-image.png">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Free English Text to Speech for Teachers">
-  <meta name="twitter:description" content="Generate downloadable English audio from any paragraph. Free, no sign-up required.">
-
-  <!-- Structured Data (Google Rich Results) -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "English Audio Generator",
-    "description": "Free text-to-speech tool for ESL teachers. Convert English paragraphs to downloadable audio files.",
-    "url": "https://nanilondio.github.io/textToSpeech/",
-    "applicationCategory": "EducationApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "audience": { "@type": "Audience", "audienceType": "Teachers, ESL educators" }
-  }
-  </script>
-
-  <!-- ═══════════════════════════════════════════
-       GOOGLE ADSENSE
-  ════════════════════════════════════════════ -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #0d1117;
-      --surface: #161b22;
-      --surface2: #1c2128;
-      --border: #30363d;
-      --text: #e6edf3;
-      --muted: #7d8590;
-      --accent: #58a6ff;
-      --accent-warm: #f78166;
-      --accent-green: #3fb950;
-      --accent-yellow: #d29922;
-      --glow: rgba(88,166,255,0.15);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
-    /* ── HEADER ── */
-    header {
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      background: rgba(13,17,23,0.92);
-      backdrop-filter: blur(12px);
-      z-index: 100;
-    }
-    .logo {
-      font-family: 'Fraunces', serif;
-      font-size: 1.2rem;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-    .logo span { color: var(--accent-warm); }
-    nav a {
-      color: var(--muted); font-size: 0.85rem; text-decoration: none;
-      margin-left: 1.5rem; transition: color 0.2s;
-    }
-    nav a:hover { color: var(--text); }
-
-    /* ── AD BANNER TOP ── */
-    .ad-banner {
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 0.5rem 2rem;
-      text-align: center;
-      min-height: 100px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    /* Placeholder visible hasta que AdSense esté activo */
-    .ad-placeholder {
-      width: 100%;
-      max-width: 728px;
-      height: 90px;
-      border: 1px dashed var(--border);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-    /* Cuando AdSense esté activo, oculta el placeholder:
-       .ad-placeholder { display: none; } */
-
-    /* ── HERO ── */
-    .hero {
-      text-align: center;
-      padding: 4rem 2rem 2rem;
-      max-width: 760px;
-      margin: 0 auto;
-    }
-    .hero-eyebrow {
-      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--accent); margin-bottom: 1rem;
-      display: inline-flex; align-items: center; gap: 0.4rem;
-    }
-    .hero-eyebrow::before, .hero-eyebrow::after {
-      content: ''; width: 24px; height: 1px; background: var(--accent); opacity: 0.5;
-    }
-    h1 {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
-    }
-    h1 em { color: var(--accent-warm); font-style: normal; }
-    .hero p {
-      color: var(--muted); font-size: 1.05rem; max-width: 520px; margin: 0 auto 2rem;
-    }
-    .badges {
-      display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem;
-    }
-    .badge {
-      font-size: 0.75rem; padding: 4px 10px; border-radius: 20px;
-      border: 1px solid var(--border); color: var(--muted);
-    }
-    .badge.green { border-color: var(--accent-green); color: var(--accent-green); }
-    .badge.blue { border-color: var(--accent); color: var(--accent); }
-    .badge.warm { border-color: var(--accent-warm); color: var(--accent-warm); }
-
-    /* ── MAIN LAYOUT ── */
-    .layout {
-      display: grid;
-      grid-template-columns: 1fr 300px;
-      gap: 1.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1.5rem 4rem;
-    }
-    @media (max-width: 768px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { order: -1; }
-    }
-
-    /* ── TOOL CARD ── */
-    .tool-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 0 40px rgba(0,0,0,0.4);
-    }
-
-    .section-label {
-      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--muted); margin-bottom: 0.6rem; display: block;
-    }
-
-    textarea {
-      width: 100%; min-height: 140px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; padding: 0.9rem 1rem;
-      font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
-      color: var(--text); resize: vertical; outline: none; line-height: 1.7;
-      transition: border-color 0.2s;
-      margin-bottom: 1.2rem;
-    }
-    textarea:focus { border-color: var(--accent); }
-
-    .controls-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.2rem;
-    }
-    @media (max-width: 540px) { .controls-grid { grid-template-columns: 1fr 1fr; } }
-
-    .control-group { display: flex; flex-direction: column; gap: 0.4rem; }
-
-    select {
-      background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
-      padding: 0.5rem 0.7rem; font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
-      color: var(--text); outline: none; cursor: pointer; transition: border-color 0.2s;
-    }
-    select:focus { border-color: var(--accent); }
-
-    input[type=range] { width: 100%; accent-color: var(--accent); cursor: pointer; }
-    .range-row { display: flex; justify-content: space-between; align-items: center; }
-    .range-val { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
-
-    .filename-row { margin-bottom: 1.4rem; }
-    input[type=text] {
-      width: 100%; background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 6px; padding: 0.5rem 0.8rem;
-      font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
-      color: var(--text); outline: none; transition: border-color 0.2s;
-    }
-    input[type=text]:focus { border-color: var(--accent); }
-
-    /* info box */
-    .info-box {
-      background: rgba(88,166,255,0.07); border: 1px solid rgba(88,166,255,0.2);
-      border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 1.4rem;
-      font-size: 0.82rem; color: var(--muted); line-height: 1.7;
-    }
-    .info-box strong { color: var(--accent); }
-
-    /* Buttons */
-    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-    button {
-      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem;
-      padding: 0.6rem 1.2rem; border-radius: 6px; border: 1px solid transparent;
-      cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 0.5rem;
-    }
-    #btn-generate {
-      background: var(--accent); color: #0d1117; border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(88,166,255,0.3);
-    }
-    #btn-generate:hover:not(:disabled) { box-shadow: 0 0 30px rgba(88,166,255,0.5); transform: translateY(-1px); }
-    #btn-generate:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-    #btn-generate.recording { background: var(--accent-warm); border-color: var(--accent-warm); box-shadow: 0 0 20px rgba(247,129,102,0.4); }
-
-    #btn-download {
-      background: var(--accent-green); color: #0d1117; border-color: var(--accent-green);
-      display: none; box-shadow: 0 0 16px rgba(63,185,80,0.3);
-    }
-    #btn-download:hover { transform: translateY(-1px); box-shadow: 0 0 24px rgba(63,185,80,0.5); }
-
-    #btn-preview {
-      background: transparent; color: var(--muted); border-color: var(--border);
-      display: none;
-    }
-    #btn-preview:hover { color: var(--text); border-color: var(--muted); }
-
-    /* Status */
-    .status-row { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.2rem; font-size: 0.82rem; color: var(--muted); min-height: 1.5rem; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
-    .dot.recording { background: var(--accent-warm); animation: pulse 0.7s infinite; }
-    .dot.done { background: var(--accent-green); }
-    .dot.error { background: var(--accent-warm); }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
-
-    audio { display: none; }
-
-    /* ── SIDEBAR ── */
-    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
-
-    /* Ad sidebar */
-    .ad-sidebar {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-      padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
-    }
-    .ad-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
-    .ad-placeholder-sidebar {
-      width: 250px; height: 250px;
-      border: 1px dashed var(--border); border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
-    }
-
-    /* Tips card */
-    .tips-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem;
-    }
-    .tips-card h3 {
-      font-family: 'Fraunces', serif; font-size: 1rem; margin-bottom: 1rem; color: var(--text);
-    }
-    .tip-item {
-      display: flex; gap: 0.7rem; margin-bottom: 0.8rem; font-size: 0.83rem; color: var(--muted); line-height: 1.5;
-    }
-    .tip-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
-
-    /* ── SEO CONTENT SECTION ── */
-    .content-section {
-      max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 4rem;
-    }
-    .content-section h2 {
-      font-family: 'Fraunces', serif; font-size: 1.6rem;
-      color: var(--text); margin-bottom: 1rem; letter-spacing: -0.02em;
-    }
-    .content-section p {
-      color: var(--muted); font-size: 0.92rem; margin-bottom: 1rem; line-height: 1.8;
-    }
-    .faq { margin-top: 2rem; }
-    .faq-item { border-top: 1px solid var(--border); padding: 1.2rem 0; }
-    .faq-item h3 { font-size: 0.95rem; color: var(--text); margin-bottom: 0.5rem; }
-    .faq-item p { color: var(--muted); font-size: 0.88rem; line-height: 1.7; margin: 0; }
-
-    /* ── AD BOTTOM ── */
-    .ad-bottom {
-      max-width: 1100px; margin: 0 auto 4rem; padding: 0 1.5rem;
-      display: flex; justify-content: center;
-    }
-    .ad-placeholder-bottom {
-      width: 100%; max-width: 970px; height: 90px;
-      border: 1px dashed var(--border); border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border); padding: 2rem;
-      text-align: center; font-size: 0.8rem; color: var(--muted);
-    }
-    footer a { color: var(--muted); text-decoration: none; margin: 0 0.5rem; }
-    footer a:hover { color: var(--text); }
-  </style>
+<style>
+body { margin:0; font-family: Arial; background:#0d1117; color:white; }
+.ad-banner, .ad-bottom { text-align:center; padding:10px; }
+.layout { display:grid; grid-template-columns: 1fr 300px; gap:20px; padding:20px; }
+@media(max-width:768px){ .layout{grid-template-columns:1fr;} }
+.ad-sidebar { text-align:center; }
+</style>
 </head>
+
 <body>
 
-<!-- ── HEADER ── -->
-<header>
-  <a href="/" class="logo">English<span>Audio</span></a>
-  <nav>
-    <a href="#how-it-works">How it works</a>
-    <a href="#faq">FAQ</a>
-  </nav>
+<header style="padding:20px;border-bottom:1px solid #333;">
+  <h2>English Audio Generator</h2>
 </header>
 
-<!-- ── AD BANNER TOP (728×90 Leaderboard) ── -->
+<!-- TOP AD -->
 <div class="ad-banner">
-  <!-- AdSense top banner -->
-  <ins class="adsbygoogle"
-       style="display:inline-block;width:728px;height:90px"
-       data-ad-client="ca-pub-7086938365759492"
-       data-ad-slot="auto"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  <!--<div class="ad-placeholder">Advertisement · 728×90</div>-->
-</div>
-
-<!-- ── HERO ── -->
-<section class="hero">
-  <span class="hero-eyebrow">Free · No sign-up · Instant download</span>
-  <h1>Turn any English text into<br><em>downloadable audio</em></h1>
-  <p>The easiest way for ESL teachers to create listening exercises, dictation audio, and PowerPoint narrations — for free.</p>
-  <div class="badges">
-    <span class="badge green">✓ Free forever</span>
-    <span class="badge blue">✓ US / UK / AU accents</span>
-    <span class="badge warm">✓ Downloadable audio file</span>
-    <span class="badge">✓ Works offline after load</span>
-  </div>
-</section>
-
-<!-- ── MAIN LAYOUT ── -->
-<main class="layout">
-
-  <!-- TOOL -->
-  <article class="tool-card" id="tool">
-    <span class="section-label">Your text</span>
-    <textarea id="text" placeholder="Paste or type any English paragraph here...">The water cycle is the continuous movement of water through the environment. Water evaporates from oceans and lakes, rises into the atmosphere, forms clouds, and eventually falls back to Earth as precipitation.</textarea>
-
-    <div class="controls-grid">
-      <div class="control-group">
-        <span class="section-label">Voice</span>
-        <select id="voice-select"></select>
-      </div>
-      <div class="control-group">
-        <div class="range-row">
-          <span class="section-label">Speed</span>
-          <span class="range-val" id="rate-val">0.85×</span>
-        </div>
-        <input type="range" id="rate" min="0.5" max="1.5" step="0.05" value="0.85">
-      </div>
-    </div>
-
-    <div class="filename-row">
-      <span class="section-label">File name (no extension)</span>
-      <input type="text" id="filename" value="audio_english" placeholder="e.g. lesson1_watercycle">
-    </div>
-
-    <div class="info-box" id="info-box">
-      <strong>How it works:</strong> Type or paste your English text, choose a voice and speed, then click <strong>Generate Audio</strong>. Audio is generated via a free neural TTS model — no account or API key needed. Requires an internet connection.
-    </div>
-
-    <div class="btn-row">
-      <button id="btn-generate">🎙 Generate Audio</button>
-      <button id="btn-preview">▶ Preview</button>
-      <button id="btn-download">⬇ Download MP3</button>
-    </div>
-
-    <div class="status-row">
-      <div class="dot" id="dot"></div>
-      <span id="status-text">Ready — enter your text and click Generate</span>
-    </div>
-    <audio id="audio-player"></audio>
-  </article>
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-
-    <!-- AD SIDEBAR (250×250) -->
-    <div class="ad-sidebar">
-      <span class="ad-label">Advertisement</span>
-      <!-- AdSense sidebar -->
-      <ins class="adsbygoogle"
-           style="display:inline-block;width:250px;height:250px"
-           data-ad-client="ca-pub-7086938365759492"
-           data-ad-slot="auto"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <!-- TIPS -->
-    <div class="tips-card">
-      <h3>🎓 Teaching Tips</h3>
-      <div class="tip-item"><span class="tip-icon">🐢</span><span><strong>0.7×</strong> — Listening comprehension for beginners</span></div>
-      <div class="tip-item"><span class="tip-icon">🚶</span><span><strong>0.85×</strong> — Standard listening exercise</span></div>
-      <div class="tip-item"><span class="tip-icon">🏃</span><span><strong>1.0×</strong> — Dictation at native speed</span></div>
-      <div class="tip-item"><span class="tip-icon">💡</span><span>Use UK accent for Cambridge exam prep</span></div>
-      <div class="tip-item"><span class="tip-icon">📊</span><span>In PowerPoint: Insert → Audio → Audio on my PC</span></div>
-    </div>
-  </aside>
-</main>
-
-<!-- ── SEO CONTENT ── -->
-<section class="content-section" id="how-it-works">
-  <h2>How it works</h2>
-  <p>English Audio Generator uses your browser's built-in speech synthesis engine — no servers, no uploads, no sign-up. Your text never leaves your device. Click record, share the tab audio when prompted, and download the resulting file directly to your computer.</p>
-  <p>The downloaded file (MP3 format) is compatible with PowerPoint, Google Slides, and any media player or video editing software. It's perfect for creating listening exercises, dictation tracks, pronunciation models, and narrated presentations.</p>
-
-  <div class="faq" id="faq">
-    <h2>Frequently Asked Questions</h2>
-    <div class="faq-item">
-      <h3>Is this tool completely free?</h3>
-      <p>Yes. It uses your browser's built-in text-to-speech engine, which is free and requires no API keys or subscriptions. There are no hidden costs.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Which browsers are supported?</h3>
-      <p>Google Chrome and Microsoft Edge work best for recording and downloading. The text-to-speech preview works in all modern browsers, but audio download requires Chrome or Edge due to the tab audio capture feature.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Can I use the audio in PowerPoint?</h3>
-      <p>Yes. After downloading, go to Insert → Audio → Audio on my PC and select the MP3 file. MP3 is supported in all versions of PowerPoint.</p>
-    </div>
-    <div class="faq-item">
-      <h3>What accents are available?</h3>
-      <p>Available voices depend on your operating system. Chrome on Windows typically includes US English, UK English, and others. You can select from all installed English voices in the Voice dropdown.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Is my text stored or sent anywhere?</h3>
-      <p>No. Everything happens locally in your browser. Your text is never sent to any server.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ── AD BOTTOM (970×90) ── -->
-<div class="ad-bottom">
-  <!-- AdSense bottom -->
   <ins class="adsbygoogle"
        style="display:block"
        data-ad-client="ca-pub-7086938365759492"
-       data-ad-slot="auto"
+       data-ad-slot="1111111111"
        data-ad-format="auto"
        data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-<!-- ── FOOTER ── -->
-<footer>
-  <p>© 2026 English Audio Generator · Free text-to-speech for educators</p>
-  <p style="margin-top:0.5rem">
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms of Use</a>
-    <a href="#">Contact</a>
-  </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.5.0</p>
+<main class="layout">
+
+  <div>
+    <h1>Text to Speech</h1>
+    <textarea style="width:100%;height:150px;">Hello world example text</textarea>
+  </div>
+
+  <!-- SIDEBAR AD -->
+  <div class="ad-sidebar">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-7086938365759492"
+         data-ad-slot="2222222222"
+         data-ad-format="rectangle"></ins>
+  </div>
+
+</main>
+
+<!-- BOTTOM AD -->
+<div class="ad-bottom">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7086938365759492"
+       data-ad-slot="3333333333"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+</div>
+
+<footer style="text-align:center;padding:20px;border-top:1px solid #333;">
+  © 2026
 </footer>
 
+<!-- ADSENSE INIT (FIX CLAVE) -->
 <script>
-  let audioBlob = null, audioURL = null;
-
-  // Hugging Face Inference API — free, no key needed, CORS enabled
-  const VOICES = [
-    { id: 'espnet/kan-bayashi_ljspeech_vits',        label: 'LJ (US Female — Natural)' },
-    { id: 'espnet/kan-bayashi_libritts_r_vits',      label: 'LibriTTS (US Female — Clear)' },
-    { id: 'facebook/mms-tts-eng',                    label: 'MMS (US — Compact)' },
-  ];
-
-  (function initVoices() {
-    const sel = document.getElementById('voice-select');
-    VOICES.forEach(v => {
-      const o = document.createElement('option');
-      o.value = v.id; o.textContent = v.label;
-      sel.appendChild(o);
-    });
-  })();
-
-  document.getElementById('rate').addEventListener('input', e =>
-    document.getElementById('rate-val').textContent = parseFloat(e.target.value).toFixed(2) + '×');
-
-  function setStatus(state, msg) {
-    document.getElementById('dot').className = 'dot ' + state;
-    document.getElementById('status-text').textContent = msg;
-  }
-
-  // Split at sentence boundaries, max ~200 chars per chunk
-  function splitChunks(text, max = 200) {
-    const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
-    const chunks = [];
-    let cur = '';
-    for (const s of sentences) {
-      if (s.length > max) {
-        if (cur) { chunks.push(cur.trim()); cur = ''; }
-        for (let i = 0; i < s.length; i += max) chunks.push(s.slice(i, i + max).trim());
-      } else if ((cur + s).length > max) {
-        chunks.push(cur.trim()); cur = s;
-      } else { cur += s; }
-    }
-    if (cur.trim()) chunks.push(cur.trim());
-    return chunks.filter(c => c.length > 0);
-  }
-
-  // Call HF Inference API — retries if model is loading (503)
-  async function fetchHF(modelId, text) {
-    for (let attempt = 0; attempt < 5; attempt++) {
-      const res = await fetch(`https://api-inference.huggingface.co/models/${modelId}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ inputs: text }),
-      });
-      if (res.ok) return res.arrayBuffer();
-      let err = {};
-      try { err = await res.json(); } catch (_) {}
-      if (res.status === 503 || String(err.error).includes('loading')) {
-        const wait = Math.min((err.estimated_time || 20) * 1000, 30000);
-        setStatus('recording', `Model warming up, retrying in ${Math.round(wait / 1000)}s…`);
-        await new Promise(r => setTimeout(r, wait));
-        continue;
+window.addEventListener("load", () => {
+  document.querySelectorAll(".adsbygoogle").forEach(ad => {
+    if (ad.offsetWidth > 0) {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.error("Adsense error:", e);
       }
-      throw new Error(err.error || `HTTP ${res.status}`);
-    }
-    throw new Error('Model unavailable. Please try again later.');
-  }
-
-  async function decodeAB(ab) {
-    const ctx = new AudioContext();
-    const buf = await ctx.decodeAudioData(ab);
-    await ctx.close();
-    return buf;
-  }
-
-  function pcmToMp3(float32, sampleRate) {
-    const enc = new lamejs.Mp3Encoder(1, sampleRate, 128);
-    const out = [];
-    const block = 1152;
-    for (let i = 0; i < float32.length; i += block) {
-      const slice = float32.subarray(i, i + block);
-      const int16 = new Int16Array(slice.length);
-      for (let j = 0; j < slice.length; j++)
-        int16[j] = Math.max(-32768, Math.min(32767, slice[j] * 32767));
-      const buf = enc.encodeBuffer(int16);
-      if (buf.length > 0) out.push(new Uint8Array(buf));
-    }
-    const flush = enc.flush();
-    if (flush.length > 0) out.push(new Uint8Array(flush));
-    return new Blob(out, { type: 'audio/mpeg' });
-  }
-
-  async function generateAudio() {
-    const text = document.getElementById('text').value.trim();
-    if (!text) { setStatus('error', 'Please enter some text first.'); return; }
-
-    const btn = document.getElementById('btn-generate');
-    btn.disabled = true;
-    btn.classList.add('recording');
-
-    const modelId = document.getElementById('voice-select').value;
-    const rate    = parseFloat(document.getElementById('rate').value);
-    const chunks  = splitChunks(text);
-
-    try {
-      const audioBuffers = [];
-      for (let i = 0; i < chunks.length; i++) {
-        setStatus('recording', chunks.length > 1
-          ? `Generating part ${i + 1} of ${chunks.length}…`
-          : 'Generating audio…');
-        const ab = await fetchHF(modelId, chunks[i]);
-        audioBuffers.push(await decodeAB(ab));
-      }
-
-      // Concatenate all chunks as mono PCM
-      const sr = audioBuffers[0].sampleRate;
-      const totalLen = audioBuffers.reduce((s, b) => s + b.length, 0);
-      const mono = new Float32Array(totalLen);
-      let offset = 0;
-      for (const buf of audioBuffers) {
-        const numCh = buf.numberOfChannels;
-        for (let i = 0; i < buf.length; i++) {
-          let s = 0;
-          for (let ch = 0; ch < numCh; ch++) s += buf.getChannelData(ch)[i] / numCh;
-          mono[offset + i] = s;
-        }
-        offset += buf.length;
-      }
-
-      // Apply speed adjustment if needed
-      let finalPcm = mono;
-      if (Math.abs(rate - 1.0) > 0.02) {
-        setStatus('recording', 'Adjusting speed…');
-        const tmpCtx = new AudioContext();
-        const tmpBuf = tmpCtx.createBuffer(1, mono.length, sr);
-        tmpBuf.getChannelData(0).set(mono);
-        await tmpCtx.close();
-        const offCtx = new OfflineAudioContext(1, Math.ceil(mono.length / rate), sr);
-        const src = offCtx.createBufferSource();
-        src.buffer = tmpBuf; src.playbackRate.value = rate;
-        src.connect(offCtx.destination); src.start(0);
-        finalPcm = (await offCtx.startRendering()).getChannelData(0);
-      }
-
-      setStatus('recording', 'Encoding to MP3…');
-      audioBlob = pcmToMp3(finalPcm, sr);
-      if (audioURL) URL.revokeObjectURL(audioURL);
-      audioURL = URL.createObjectURL(audioBlob);
-
-      const ap = document.getElementById('audio-player');
-      ap.src = audioURL;
-      ap.load();
-
-      document.getElementById('btn-download').style.display = 'flex';
-      document.getElementById('btn-preview').style.display = 'flex';
-      setStatus('done', 'MP3 ready ✓ — preview or download');
-    } catch (err) {
-      console.error(err);
-      setStatus('error', err.message);
-    }
-
-    btn.disabled = false;
-    btn.classList.remove('recording');
-  }
-
-  document.getElementById('btn-generate').addEventListener('click', generateAudio);
-
-  const ap = document.getElementById('audio-player');
-  const bp = document.getElementById('btn-preview');
-  bp.addEventListener('click', () => {
-    if (ap.paused) {
-      if (ap.ended) ap.currentTime = 0;
-      ap.play();
-      bp.textContent = '⏸ Pause';
-    } else {
-      ap.pause();
-      bp.textContent = '▶ Preview';
     }
   });
-  ap.addEventListener('ended', () => { bp.textContent = '▶ Preview'; });
-
-  document.getElementById('btn-download').addEventListener('click', () => {
-    if (!audioBlob) return;
-    const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
-    const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
-  });
+});
 </script>
+
 </body>
 </html>
