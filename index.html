@@ -254,13 +254,13 @@
       padding: 0.6rem 1.2rem; border-radius: 6px; border: 1px solid transparent;
       cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 0.5rem;
     }
-    #btn-record {
+    #btn-generate {
       background: var(--accent); color: #0d1117; border-color: var(--accent);
       box-shadow: 0 0 20px rgba(88,166,255,0.3);
     }
-    #btn-record:hover:not(:disabled) { box-shadow: 0 0 30px rgba(88,166,255,0.5); transform: translateY(-1px); }
-    #btn-record:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-    #btn-record.recording { background: var(--accent-warm); border-color: var(--accent-warm); box-shadow: 0 0 20px rgba(247,129,102,0.4); }
+    #btn-generate:hover:not(:disabled) { box-shadow: 0 0 30px rgba(88,166,255,0.5); transform: translateY(-1px); }
+    #btn-generate:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    #btn-generate.recording { background: var(--accent-warm); border-color: var(--accent-warm); box-shadow: 0 0 20px rgba(247,129,102,0.4); }
 
     #btn-download {
       background: var(--accent-green); color: #0d1117; border-color: var(--accent-green);
@@ -395,7 +395,7 @@
     <div class="controls-grid">
       <div class="control-group">
         <span class="section-label">Voice</span>
-        <select id="voice-select"><option>Loading voices…</option></select>
+        <select id="voice-select"></select>
       </div>
       <div class="control-group">
         <div class="range-row">
@@ -403,13 +403,6 @@
           <span class="range-val" id="rate-val">0.85×</span>
         </div>
         <input type="range" id="rate" min="0.5" max="1.5" step="0.05" value="0.85">
-      </div>
-      <div class="control-group">
-        <div class="range-row">
-          <span class="section-label">Pitch</span>
-          <span class="range-val" id="pitch-val">1.0</span>
-        </div>
-        <input type="range" id="pitch" min="0.5" max="2" step="0.1" value="1">
       </div>
     </div>
 
@@ -419,18 +412,18 @@
     </div>
 
     <div class="info-box" id="info-box">
-      <strong>How to record:</strong> Click "Record & Generate" → Chrome will ask to share your tab → select <strong>this tab</strong> and check ✅ <strong>"Share tab audio"</strong> → click Share. Recording starts automatically.
+      <strong>How it works:</strong> Type or paste your English text, choose a voice and speed, then click <strong>Generate Audio</strong>. The MP3 file is ready to preview and download instantly. Requires an internet connection.
     </div>
 
     <div class="btn-row">
-      <button id="btn-record">🎙 Record &amp; Generate</button>
+      <button id="btn-generate">🎙 Generate Audio</button>
       <button id="btn-preview">▶ Preview</button>
-      <button id="btn-download">⬇ Download Audio</button>
+      <button id="btn-download">⬇ Download MP3</button>
     </div>
 
     <div class="status-row">
       <div class="dot" id="dot"></div>
-      <span id="status-text">Ready — enter your text and click Record</span>
+      <span id="status-text">Ready — enter your text and click Generate</span>
     </div>
     <audio id="audio-player"></audio>
   </article>
@@ -512,162 +505,185 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.2.1</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.3.0</p>
 </footer>
 
 <script>
-  const synth = window.speechSynthesis;
-  let voices = [], audioBlob = null, audioURL = null;
+  let audioBlob = null, audioURL = null;
 
-  function loadVoices() {
-    voices = synth.getVoices().filter(v => v.lang.startsWith('en'));
+  // StreamElements TTS voices (Amazon Polly quality, no API key needed)
+  const VOICES = [
+    { id: 'Joanna',   label: 'Joanna — US Female' },
+    { id: 'Salli',    label: 'Salli — US Female' },
+    { id: 'Kendra',   label: 'Kendra — US Female' },
+    { id: 'Kimberly', label: 'Kimberly — US Female' },
+    { id: 'Joey',     label: 'Joey — US Male' },
+    { id: 'Justin',   label: 'Justin — US Male' },
+    { id: 'Matthew',  label: 'Matthew — US Male' },
+    { id: 'Amy',      label: 'Amy — UK Female' },
+    { id: 'Emma',     label: 'Emma — UK Female' },
+    { id: 'Brian',    label: 'Brian — UK Male' },
+    { id: 'Nicole',   label: 'Nicole — AU Female' },
+    { id: 'Russell',  label: 'Russell — AU Male' },
+  ];
+
+  (function initVoices() {
     const sel = document.getElementById('voice-select');
-    sel.innerHTML = '';
-    if (!voices.length) { sel.innerHTML = '<option>No English voices found</option>'; return; }
-    voices.forEach((v, i) => {
+    VOICES.forEach(v => {
       const o = document.createElement('option');
-      o.value = i; o.textContent = `${v.name} (${v.lang})`;
+      o.value = v.id; o.textContent = v.label;
       sel.appendChild(o);
     });
-    const us = voices.findIndex(v => v.lang === 'en-US');
-    if (us >= 0) sel.value = us;
-  }
-  loadVoices();
-  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+  })();
 
   document.getElementById('rate').addEventListener('input', e =>
     document.getElementById('rate-val').textContent = parseFloat(e.target.value).toFixed(2) + '×');
-  document.getElementById('pitch').addEventListener('input', e =>
-    document.getElementById('pitch-val').textContent = parseFloat(e.target.value).toFixed(1));
 
   function setStatus(state, msg) {
     document.getElementById('dot').className = 'dot ' + state;
     document.getElementById('status-text').textContent = msg;
   }
 
-  async function webmToMp3(webmBlob) {
-    // Decode WebM/Opus → raw PCM via the browser's built-in decoder
-    const arrayBuffer = await webmBlob.arrayBuffer();
-    const audioCtx = new AudioContext();
-    const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-    audioCtx.close();
-
-    // Mix down to mono
-    const numCh = audioBuffer.numberOfChannels;
-    const length = audioBuffer.length;
-    const sampleRate = audioBuffer.sampleRate;
-    const mono = new Float32Array(length);
-    for (let ch = 0; ch < numCh; ch++) {
-      const chData = audioBuffer.getChannelData(ch);
-      for (let i = 0; i < length; i++) mono[i] += chData[i] / numCh;
-    }
-
-    // Encode PCM → MP3 with lamejs (block size must be multiple of 1152)
-    const mp3enc = new lamejs.Mp3Encoder(1, sampleRate, 128);
-    const mp3Chunks = [];
-    const blockSize = 1152;
-    for (let i = 0; i < mono.length; i += blockSize) {
-      const slice = mono.subarray(i, i + blockSize);
-      const int16 = new Int16Array(slice.length);
-      for (let j = 0; j < slice.length; j++) {
-        int16[j] = Math.max(-32768, Math.min(32767, slice[j] * 32767));
+  // Split long text into ≤280-char chunks at sentence boundaries
+  function splitChunks(text, max = 280) {
+    const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
+    const chunks = [];
+    let cur = '';
+    for (const s of sentences) {
+      if (s.length > max) {
+        if (cur) { chunks.push(cur.trim()); cur = ''; }
+        for (let i = 0; i < s.length; i += max) chunks.push(s.slice(i, i + max).trim());
+      } else if ((cur + s).length > max) {
+        chunks.push(cur.trim()); cur = s;
+      } else {
+        cur += s;
       }
-      const buf = mp3enc.encodeBuffer(int16);
-      if (buf.length > 0) mp3Chunks.push(new Uint8Array(buf));
     }
-    const flush = mp3enc.flush();
-    if (flush.length > 0) mp3Chunks.push(new Uint8Array(flush));
-    return new Blob(mp3Chunks, { type: 'audio/mpeg' });
+    if (cur.trim()) chunks.push(cur.trim());
+    return chunks.filter(c => c.length > 0);
   }
 
-  async function recordAndGenerate() {
+  async function fetchTTS(voice, text) {
+    const url = `https://api.streamelements.com/kappa/v2/speech?voice=${voice}&text=${encodeURIComponent(text)}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('TTS API error ' + res.status);
+    return res.arrayBuffer();
+  }
+
+  function pcmToMp3(float32, sampleRate) {
+    const enc = new lamejs.Mp3Encoder(1, sampleRate, 128);
+    const out = [];
+    const block = 1152;
+    for (let i = 0; i < float32.length; i += block) {
+      const slice = float32.subarray(i, i + block);
+      const int16 = new Int16Array(slice.length);
+      for (let j = 0; j < slice.length; j++)
+        int16[j] = Math.max(-32768, Math.min(32767, slice[j] * 32767));
+      const buf = enc.encodeBuffer(int16);
+      if (buf.length > 0) out.push(new Uint8Array(buf));
+    }
+    const flush = enc.flush();
+    if (flush.length > 0) out.push(new Uint8Array(flush));
+    return new Blob(out, { type: 'audio/mpeg' });
+  }
+
+  async function decodeArrayBuffer(ab) {
+    const ctx = new AudioContext();
+    const buffer = await ctx.decodeAudioData(ab);
+    await ctx.close();
+    return buffer;
+  }
+
+  async function applySpeed(audioBuffer, rate) {
+    const sr = audioBuffer.sampleRate;
+    const outLen = Math.ceil(audioBuffer.length / rate);
+    const offCtx = new OfflineAudioContext(1, outLen, sr);
+    const src = offCtx.createBufferSource();
+    src.buffer = audioBuffer;
+    src.playbackRate.value = rate;
+    src.connect(offCtx.destination);
+    src.start(0);
+    const rendered = await offCtx.startRendering();
+    return rendered.getChannelData(0);
+  }
+
+  async function generateAudio() {
     const text = document.getElementById('text').value.trim();
     if (!text) { setStatus('error', 'Please enter some text first.'); return; }
-    const btn = document.getElementById('btn-record');
+
+    const btn = document.getElementById('btn-generate');
     btn.disabled = true;
-    setStatus('', 'Requesting tab audio permission…');
-
-    let stream;
-    try {
-      stream = await navigator.mediaDevices.getDisplayMedia({
-        video: { width: 1, height: 1 },
-        audio: { echoCancellation: false, noiseSuppression: false, suppressLocalAudioPlayback: false },
-        preferCurrentTab: true,
-        selfBrowserSurface: 'include',
-        systemAudio: 'include'
-      });
-    } catch(e) {
-      btn.disabled = false;
-      setStatus('error', 'Permission denied or cancelled. Try again and select this tab.');
-      showTabInstructions();
-      return;
-    }
-
-    if (!stream.getAudioTracks().length) {
-      stream.getTracks().forEach(t => t.stop());
-      btn.disabled = false;
-      setStatus('error', 'No audio captured — did you check "Share tab audio"?');
-      showTabInstructions();
-      return;
-    }
-
-    stream.getVideoTracks().forEach(t => t.stop());
     btn.classList.add('recording');
-    setStatus('recording', 'Recording… please wait until speech finishes');
 
-    // MediaRecorder captures the tab stream (speech synthesis included)
-    const chunks = [];
-    const types = ['audio/webm;codecs=opus', 'audio/webm', 'audio/ogg;codecs=opus', 'audio/ogg'];
-    const mimeType = types.find(t => MediaRecorder.isTypeSupported(t)) || '';
-    const mr = new MediaRecorder(stream, mimeType ? { mimeType } : {});
-    mr.ondataavailable = e => { if (e.data.size > 0) chunks.push(e.data); };
-    mr.onstop = async () => {
-      stream.getTracks().forEach(t => t.stop());
-      setStatus('recording', 'Encoding to MP3…');
-      try {
-        const webmBlob = new Blob(chunks, { type: mimeType || 'audio/webm' });
-        audioBlob = await webmToMp3(webmBlob);
-        if (audioURL) URL.revokeObjectURL(audioURL);
-        audioURL = URL.createObjectURL(audioBlob);
-        const ap = document.getElementById('audio-player');
-        ap.src = audioURL;
-        ap.load();
-        document.getElementById('btn-download').style.display = 'flex';
-        document.getElementById('btn-preview').style.display = 'flex';
-        setStatus('done', 'MP3 ready ✓ — preview or download');
-      } catch(err) {
-        setStatus('error', 'Failed to encode MP3. Try again.');
+    const voice = document.getElementById('voice-select').value;
+    const rate  = parseFloat(document.getElementById('rate').value);
+    const chunks = splitChunks(text);
+
+    try {
+      setStatus('recording', `Generating audio${chunks.length > 1 ? ` (${chunks.length} parts)` : ''}…`);
+
+      // Fetch each chunk sequentially to avoid rate limiting
+      const arrayBuffers = [];
+      for (let i = 0; i < chunks.length; i++) {
+        if (chunks.length > 1) setStatus('recording', `Fetching part ${i + 1} of ${chunks.length}…`);
+        arrayBuffers.push(await fetchTTS(voice, chunks[i]));
       }
-      btn.disabled = false;
-      btn.classList.remove('recording');
-    };
-    mr.start(100);
 
-    const utter = new SpeechSynthesisUtterance(text);
-    const vi = document.getElementById('voice-select').value;
-    if (voices[vi]) utter.voice = voices[vi];
-    utter.rate = parseFloat(document.getElementById('rate').value);
-    utter.pitch = parseFloat(document.getElementById('pitch').value);
-    utter.lang = 'en-US';
-    utter.onend = () => setTimeout(() => mr.stop(), 600);
-    utter.onerror = () => { mr.stop(); };
-    synth.cancel();
-    synth.speak(utter);
+      // Decode all chunks to AudioBuffers
+      const audioBuffers = [];
+      for (const ab of arrayBuffers) audioBuffers.push(await decodeArrayBuffer(ab));
+
+      // Concatenate PCM (mono mix-down)
+      const sampleRate = audioBuffers[0].sampleRate;
+      const totalLen = audioBuffers.reduce((s, b) => s + b.length, 0);
+      const combined = new Float32Array(totalLen);
+      let offset = 0;
+      for (const buf of audioBuffers) {
+        const numCh = buf.numberOfChannels;
+        for (let i = 0; i < buf.length; i++) {
+          let s = 0;
+          for (let ch = 0; ch < numCh; ch++) s += buf.getChannelData(ch)[i] / numCh;
+          combined[offset + i] = s;
+        }
+        offset += buf.length;
+      }
+
+      // Apply speed if needed
+      let finalPcm = combined;
+      let finalSr = sampleRate;
+      if (Math.abs(rate - 1.0) > 0.02) {
+        setStatus('recording', 'Adjusting speed…');
+        // Build a temporary AudioBuffer for OfflineAudioContext
+        const tmpCtx = new AudioContext();
+        const tmpBuf = tmpCtx.createBuffer(1, combined.length, sampleRate);
+        tmpBuf.getChannelData(0).set(combined);
+        await tmpCtx.close();
+        finalPcm = await applySpeed(tmpBuf, rate);
+        finalSr = sampleRate;
+      }
+
+      setStatus('recording', 'Encoding to MP3…');
+      audioBlob = pcmToMp3(finalPcm, finalSr);
+      if (audioURL) URL.revokeObjectURL(audioURL);
+      audioURL = URL.createObjectURL(audioBlob);
+
+      const ap = document.getElementById('audio-player');
+      ap.src = audioURL;
+      ap.load();
+
+      document.getElementById('btn-download').style.display = 'flex';
+      document.getElementById('btn-preview').style.display = 'flex';
+      setStatus('done', 'MP3 ready ✓ — preview or download');
+    } catch (err) {
+      console.error(err);
+      setStatus('error', 'Failed to generate audio. Check your internet connection.');
+    }
+
+    btn.disabled = false;
+    btn.classList.remove('recording');
   }
 
-  function showTabInstructions() {
-    const box = document.getElementById('info-box');
-    box.style.borderColor = 'rgba(247,129,102,0.4)';
-    box.style.background = 'rgba(247,129,102,0.07)';
-    box.innerHTML = `<strong style="color:var(--accent-warm)">Steps to share tab audio:</strong><br>
-    1. Click "Record &amp; Generate"<br>
-    2. In Chrome's popup, click the <strong>tab</strong> option (not "Entire Screen")<br>
-    3. Select <strong>this tab</strong><br>
-    4. Check ✅ <strong>"Share tab audio"</strong> at the bottom of the popup<br>
-    5. Click <strong>Share</strong>`;
-  }
-
-  document.getElementById('btn-record').addEventListener('click', recordAndGenerate);
+  document.getElementById('btn-generate').addEventListener('click', generateAudio);
 
   const ap = document.getElementById('audio-player');
   const bp = document.getElementById('btn-preview');
