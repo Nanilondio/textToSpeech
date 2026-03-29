@@ -505,26 +505,18 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.3.0</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.3.1</p>
 </footer>
 
 <script>
   let audioBlob = null, audioURL = null;
 
-  // StreamElements TTS voices (Amazon Polly quality, no API key needed)
+  // Google Translate TTS voices (language codes → accent)
   const VOICES = [
-    { id: 'Joanna',   label: 'Joanna — US Female' },
-    { id: 'Salli',    label: 'Salli — US Female' },
-    { id: 'Kendra',   label: 'Kendra — US Female' },
-    { id: 'Kimberly', label: 'Kimberly — US Female' },
-    { id: 'Joey',     label: 'Joey — US Male' },
-    { id: 'Justin',   label: 'Justin — US Male' },
-    { id: 'Matthew',  label: 'Matthew — US Male' },
-    { id: 'Amy',      label: 'Amy — UK Female' },
-    { id: 'Emma',     label: 'Emma — UK Female' },
-    { id: 'Brian',    label: 'Brian — UK Male' },
-    { id: 'Nicole',   label: 'Nicole — AU Female' },
-    { id: 'Russell',  label: 'Russell — AU Male' },
+    { id: 'en',    label: 'US English' },
+    { id: 'en-GB', label: 'UK English' },
+    { id: 'en-AU', label: 'AU English' },
+    { id: 'en-IN', label: 'Indian English' },
   ];
 
   (function initVoices() {
@@ -544,15 +536,23 @@
     document.getElementById('status-text').textContent = msg;
   }
 
-  // Split long text into ≤280-char chunks at sentence boundaries
-  function splitChunks(text, max = 280) {
+  // Split text into ≤190-char chunks (Google TTS limit) at sentence/word boundaries
+  function splitChunks(text, max = 190) {
     const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
     const chunks = [];
     let cur = '';
     for (const s of sentences) {
       if (s.length > max) {
         if (cur) { chunks.push(cur.trim()); cur = ''; }
-        for (let i = 0; i < s.length; i += max) chunks.push(s.slice(i, i + max).trim());
+        // split long sentence by words
+        for (const w of s.trim().split(/\s+/)) {
+          if ((cur + ' ' + w).trim().length > max) {
+            if (cur) chunks.push(cur.trim());
+            cur = w;
+          } else {
+            cur = (cur + ' ' + w).trim();
+          }
+        }
       } else if ((cur + s).length > max) {
         chunks.push(cur.trim()); cur = s;
       } else {
@@ -563,11 +563,21 @@
     return chunks.filter(c => c.length > 0);
   }
 
-  async function fetchTTS(voice, text) {
-    const url = `https://api.streamelements.com/kappa/v2/speech?voice=${voice}&text=${encodeURIComponent(text)}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('TTS API error ' + res.status);
-    return res.arrayBuffer();
+  async function fetchTTS(lang, text) {
+    const params = new URLSearchParams({ ie: 'UTF-8', q: text, tl: lang, client: 'tw-ob', ttsspeed: '1' });
+    const ttsUrl = `https://translate.google.com/translate_tts?${params}`;
+    // Try multiple CORS proxies in sequence
+    const proxies = [
+      `https://corsproxy.io/?${encodeURIComponent(ttsUrl)}`,
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(ttsUrl)}`,
+    ];
+    for (const proxy of proxies) {
+      try {
+        const res = await fetch(proxy);
+        if (res.ok) return res.arrayBuffer();
+      } catch (_) { /* try next */ }
+    }
+    throw new Error('All TTS proxies failed. Check your internet connection.');
   }
 
   function pcmToMp3(float32, sampleRate) {
@@ -626,7 +636,7 @@
       const arrayBuffers = [];
       for (let i = 0; i < chunks.length; i++) {
         if (chunks.length > 1) setStatus('recording', `Fetching part ${i + 1} of ${chunks.length}…`);
-        arrayBuffers.push(await fetchTTS(voice, chunks[i]));
+        arrayBuffers.push(await fetchTTS(voice, chunks[i])); // voice = lang code
       }
 
       // Decode all chunks to AudioBuffers
