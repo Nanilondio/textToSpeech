@@ -7,20 +7,52 @@
 
 <title>Free English Text to Speech</title>
 
+<!-- Adsense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>
 
 <style>
-body { margin:0; font-family: Arial; background:#0d1117; color:white; }
-.ad-banner, .ad-bottom { text-align:center; padding:10px; }
-.layout { display:grid; grid-template-columns: 1fr 300px; gap:20px; padding:20px; }
-@media(max-width:768px){ .layout{grid-template-columns:1fr;} }
-.ad-sidebar { text-align:center; }
+body {
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0d1117;
+  color:white;
+}
+
+header {
+  padding:20px;
+  border-bottom:1px solid #333;
+}
+
+.ad-banner, .ad-bottom {
+  text-align:center;
+  padding:10px;
+}
+
+.layout {
+  display:grid;
+  grid-template-columns: 1fr 300px;
+  gap:20px;
+  padding:20px;
+}
+
+@media(max-width:768px){
+  .layout{grid-template-columns:1fr;}
+}
+
+.ad-sidebar {
+  text-align:center;
+}
+
+/* Evita colapso de ancho */
+.adsbygoogle {
+  min-height: 90px;
+}
 </style>
 </head>
 
 <body>
 
-<header style="padding:20px;border-bottom:1px solid #333;">
+<header>
   <h2>English Audio Generator</h2>
 </header>
 
@@ -38,7 +70,9 @@ body { margin:0; font-family: Arial; background:#0d1117; color:white; }
 
   <div>
     <h1>Text to Speech</h1>
-    <textarea style="width:100%;height:150px;">Hello world example text</textarea>
+    <textarea style="width:100%;height:150px;">
+Hello world example text
+    </textarea>
   </div>
 
   <!-- SIDEBAR AD -->
@@ -66,17 +100,25 @@ body { margin:0; font-family: Arial; background:#0d1117; color:white; }
   © 2026
 </footer>
 
-<!-- ADSENSE INIT (FIX CLAVE) -->
+<!-- ADSENSE INIT CORRECTO -->
 <script>
 window.addEventListener("load", () => {
-  document.querySelectorAll(".adsbygoogle").forEach(ad => {
-    if (ad.offsetWidth > 0) {
-      try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (e) {
-        console.error("Adsense error:", e);
+  const ads = document.querySelectorAll(".adsbygoogle");
+
+  ads.forEach((ad, index) => {
+    setTimeout(() => {
+      const width = ad.offsetWidth;
+
+      if (width > 0) {
+        try {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+          console.error("Adsense error:", e);
+        }
+      } else {
+        console.warn("Ad skipped (width 0):", index);
       }
-    }
+    }, index * 400); // evita conflictos
   });
 });
 </script>
