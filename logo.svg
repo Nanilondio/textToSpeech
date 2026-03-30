@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 72" width="300" height="72">
+
+  <!-- ── Icon badge ── -->
+  <rect x="0" y="4" width="64" height="64" rx="13" fill="#161b22"/>
+
+  <!-- Headphone band arc -->
+  <path d="M16 43 C16 27 48 27 48 43"
+        stroke="#58a6ff" stroke-width="3.5"
+        fill="none" stroke-linecap="round"/>
+
+  <!-- Left ear cup (blue) -->
+  <rect x="11" y="41" width="10" height="14" rx="5" fill="#58a6ff"/>
+
+  <!-- Right ear cup (warm) -->
+  <rect x="43" y="41" width="10" height="14" rx="5" fill="#f78166"/>
+
+  <!-- Small sound-wave dots inside icon -->
+  <circle cx="32" cy="35" r="1.5" fill="#58a6ff" opacity="0.5"/>
+
+  <!-- ── Logotype ── -->
+
+  <!-- "Listening" — brand blue -->
+  <text x="80" y="33"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-weight="700"
+        font-size="25"
+        letter-spacing="-0.5"
+        fill="#58a6ff">Listening</text>
+
+  <!-- "Classroom" — warm accent -->
+  <text x="80" y="61"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-weight="700"
+        font-size="25"
+        letter-spacing="-0.5"
+        fill="#f78166">Classroom</text>
+
+  <!-- ".com" — muted -->
+  <text x="226" y="65"
+        font-family="Arial, Helvetica, sans-serif"
+        font-size="13"
+        font-weight="400"
+        letter-spacing="0"
+        fill="#7d8590">.com</text>
+
+</svg>

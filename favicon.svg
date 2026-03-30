@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Background rounded square -->
+  <rect width="32" height="32" rx="7" fill="#0d1117"/>
+
+  <!-- Headphone band arc -->
+  <path d="M7.5 19 C7.5 8 24.5 8 24.5 19"
+        stroke="#58a6ff" stroke-width="2.5"
+        fill="none" stroke-linecap="round"/>
+
+  <!-- Left ear cup (blue) -->
+  <rect x="4" y="17" width="7" height="10" rx="3.5" fill="#58a6ff"/>
+
+  <!-- Right ear cup (warm accent) -->
+  <rect x="21" y="17" width="7" height="10" rx="3.5" fill="#f78166"/>
+</svg>
