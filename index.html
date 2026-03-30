@@ -507,7 +507,7 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.8.0</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.8.1</p>
 </footer>
 
 <script type="module">
@@ -578,7 +578,7 @@
       setStatus('recording', 'Synthesising speech…');
       const result = await ttsModel.generate(text, { voice: voiceId, speed });
 
-      const pcm = result.data;          // Float32Array — 24 kHz mono
+      const pcm = result.audio;         // Float32Array — 24 kHz mono
       const sr  = result.sampling_rate; // 24000
 
       setStatus('recording', 'Encoding to MP3…');
