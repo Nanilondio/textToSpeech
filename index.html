@@ -407,19 +407,13 @@
       </div>
     </div>
 
-    <div class="controls-grid" style="grid-template-columns:1fr 1fr; margin-bottom:1.2rem;">
-      <div class="control-group">
-        <span class="section-label">File name (no extension)</span>
-        <input type="text" id="filename" value="audio_english" placeholder="e.g. lesson1_watercycle">
-      </div>
-      <div class="control-group">
-        <span class="section-label">HuggingFace token <a href="https://huggingface.co/settings/tokens" target="_blank" style="color:var(--accent);font-size:0.7rem;">get free token ↗</a></span>
-        <input type="password" id="hf-token" placeholder="hf_xxxxxxxxxxxxxxxx" autocomplete="off">
-      </div>
+    <div class="filename-row">
+      <span class="section-label">File name (no extension)</span>
+      <input type="text" id="filename" value="audio_english" placeholder="e.g. lesson1_watercycle">
     </div>
 
     <div class="info-box" id="info-box">
-      <strong>Setup (one time):</strong> Paste your free <a href="https://huggingface.co/settings/tokens" target="_blank" style="color:var(--accent)">HuggingFace token</a> above — it's saved only in your browser. Then click <strong>Generate Audio</strong>. The first request may take ~20s while the model warms up.
+      <strong>How it works:</strong> The voice model runs entirely in your browser — no servers, no API keys. The <strong>first use downloads the model (~50 MB)</strong> and caches it; after that it's instant. Requires internet only on first load.
     </div>
 
     <div class="btn-row">
@@ -517,20 +511,22 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.6.0</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.7.0</p>
 </footer>
 
-<script>
-  let audioBlob = null, audioURL = null;
+<script type="module">
+  import { pipeline } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
 
+  let audioBlob = null, audioURL = null;
+  let synth = null, synthVoiceId = null;
+
+  const SPEAKER_EMB = 'https://huggingface.co/datasets/Xenova/transformers.js-docs/resolve/main/speaker_embeddings.bin';
   const VOICES = [
-    { id: 'espnet/kan-bayashi_ljspeech_vits',   label: 'LJ Speech (US Female — Natural)' },
-    { id: 'espnet/kan-bayashi_libritts_r_vits', label: 'LibriTTS (US Female — Clear)' },
-    { id: 'facebook/mms-tts-eng',               label: 'MMS (US — Compact)' },
+    { id: 'Xenova/speecht5_tts', label: 'SpeechT5 — Natural (US Female)', emb: SPEAKER_EMB },
+    { id: 'Xenova/mms-tts-eng',  label: 'MMS — Compact (US)',             emb: null },
   ];
 
-  // ── Init voices dropdown ──
-  (function() {
+  (function initVoices() {
     const sel = document.getElementById('voice-select');
     VOICES.forEach(v => {
       const o = document.createElement('option');
@@ -539,67 +535,12 @@
     });
   })();
 
-  // ── Persist HF token in localStorage ──
-  const tokenInput = document.getElementById('hf-token');
-  tokenInput.value = localStorage.getItem('hf_token') || '';
-  tokenInput.addEventListener('input', () =>
-    localStorage.setItem('hf_token', tokenInput.value.trim()));
-
   document.getElementById('rate').addEventListener('input', e =>
     document.getElementById('rate-val').textContent = parseFloat(e.target.value).toFixed(2) + '×');
 
   function setStatus(state, msg) {
     document.getElementById('dot').className = 'dot ' + state;
     document.getElementById('status-text').textContent = msg;
-  }
-
-  function splitChunks(text, max = 200) {
-    const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
-    const chunks = [];
-    let cur = '';
-    for (const s of sentences) {
-      if (s.length > max) {
-        if (cur) { chunks.push(cur.trim()); cur = ''; }
-        for (let i = 0; i < s.length; i += max) chunks.push(s.slice(i, i + max).trim());
-      } else if ((cur + s).length > max) {
-        chunks.push(cur.trim()); cur = s;
-      } else { cur += s; }
-    }
-    if (cur.trim()) chunks.push(cur.trim());
-    return chunks.filter(c => c.length > 0);
-  }
-
-  // HF Inference API with Bearer token — fixes CORS preflight
-  async function fetchHF(modelId, text, token) {
-    for (let attempt = 0; attempt < 5; attempt++) {
-      const res = await fetch(`https://api-inference.huggingface.co/models/${modelId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify({ inputs: text }),
-      });
-      if (res.ok) return res.arrayBuffer();
-      let err = {};
-      try { err = await res.json(); } catch (_) {}
-      if (res.status === 503 || String(err.error).toLowerCase().includes('loading')) {
-        const wait = Math.min((err.estimated_time || 20) * 1000, 30000);
-        setStatus('recording', `Model warming up, retrying in ${Math.round(wait / 1000)}s…`);
-        await new Promise(r => setTimeout(r, wait));
-        continue;
-      }
-      if (res.status === 401) throw new Error('Invalid token — check your HuggingFace token and try again.');
-      throw new Error(err.error || `HTTP ${res.status}`);
-    }
-    throw new Error('Model unavailable after retries. Try again later.');
-  }
-
-  async function decodeAB(ab) {
-    const ctx = new AudioContext();
-    const buf = await ctx.decodeAudioData(ab);
-    await ctx.close();
-    return buf;
   }
 
   function pcmToMp3(float32, sampleRate) {
@@ -620,57 +561,51 @@
   }
 
   async function generateAudio() {
-    const text  = document.getElementById('text').value.trim();
-    const token = document.getElementById('hf-token').value.trim();
-    if (!text)  { setStatus('error', 'Please enter some text first.'); return; }
-    if (!token) { setStatus('error', 'Paste your HuggingFace token first (see link above).'); return; }
+    const text = document.getElementById('text').value.trim();
+    if (!text) { setStatus('error', 'Please enter some text first.'); return; }
 
     const btn = document.getElementById('btn-generate');
     btn.disabled = true; btn.classList.add('recording');
 
-    const modelId = document.getElementById('voice-select').value;
+    const voiceId = document.getElementById('voice-select').value;
+    const voice   = VOICES.find(v => v.id === voiceId);
     const rate    = parseFloat(document.getElementById('rate').value);
-    const chunks  = splitChunks(text);
 
     try {
-      const audioBuffers = [];
-      for (let i = 0; i < chunks.length; i++) {
-        setStatus('recording', chunks.length > 1
-          ? `Generating part ${i + 1} of ${chunks.length}…`
-          : 'Generating audio…');
-        audioBuffers.push(await decodeAB(await fetchHF(modelId, chunks[i], token)));
+      // Load pipeline once per voice — reuse on every subsequent call (fixes second-use bug)
+      if (synthVoiceId !== voiceId) { synth = null; synthVoiceId = null; }
+      if (!synth) {
+        setStatus('recording', 'Loading voice model (first use only, ~50 MB cached after)…');
+        synth = await pipeline('text-to-speech', voiceId, {
+          progress_callback: p => {
+            if (p.status === 'progress' && p.progress != null)
+              setStatus('recording', `Downloading model: ${Math.round(p.progress)}%`);
+          }
+        });
+        synthVoiceId = voiceId;
       }
 
-      // Concatenate chunks as mono PCM
-      const sr = audioBuffers[0].sampleRate;
-      const totalLen = audioBuffers.reduce((s, b) => s + b.length, 0);
-      const mono = new Float32Array(totalLen);
-      let offset = 0;
-      for (const buf of audioBuffers) {
-        const numCh = buf.numberOfChannels;
-        for (let i = 0; i < buf.length; i++) {
-          let s = 0;
-          for (let ch = 0; ch < numCh; ch++) s += buf.getChannelData(ch)[i] / numCh;
-          mono[offset + i] = s;
-        }
-        offset += buf.length;
-      }
+      setStatus('recording', 'Synthesising speech…');
+      const inferOpts = voice.emb ? { speaker_embeddings: voice.emb } : {};
+      const out = await synth(text, inferOpts);
 
-      // Speed adjustment via OfflineAudioContext
-      let finalPcm = mono;
+      let pcm = out.audio;          // Float32Array
+      const sr  = out.sampling_rate;
+
+      // Speed via OfflineAudioContext only — avoids creating extra AudioContexts (Chrome limit = 6)
       if (Math.abs(rate - 1.0) > 0.02) {
         setStatus('recording', 'Adjusting speed…');
-        const offCtx = new OfflineAudioContext(1, Math.ceil(mono.length / rate), sr);
-        const buf = offCtx.createBuffer(1, mono.length, sr);
-        buf.getChannelData(0).set(mono);
+        const offCtx = new OfflineAudioContext(1, Math.ceil(pcm.length / rate), sr);
+        const buf = offCtx.createBuffer(1, pcm.length, sr);
+        buf.getChannelData(0).set(pcm);
         const src = offCtx.createBufferSource();
         src.buffer = buf; src.playbackRate.value = rate;
         src.connect(offCtx.destination); src.start(0);
-        finalPcm = (await offCtx.startRendering()).getChannelData(0);
+        pcm = (await offCtx.startRendering()).getChannelData(0);
       }
 
       setStatus('recording', 'Encoding to MP3…');
-      audioBlob = pcmToMp3(finalPcm, sr);
+      audioBlob = pcmToMp3(pcm, sr);
       if (audioURL) URL.revokeObjectURL(audioURL);
       audioURL = URL.createObjectURL(audioBlob);
       const ap = document.getElementById('audio-player');
