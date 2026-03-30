@@ -407,13 +407,19 @@
       </div>
     </div>
 
-    <div class="filename-row">
-      <span class="section-label">File name (no extension)</span>
-      <input type="text" id="filename" value="audio_english" placeholder="e.g. lesson1_watercycle">
+    <div class="controls-grid" style="grid-template-columns:1fr 1fr; margin-bottom:1.2rem;">
+      <div class="control-group">
+        <span class="section-label">File name (no extension)</span>
+        <input type="text" id="filename" value="audio_english" placeholder="e.g. lesson1_watercycle">
+      </div>
+      <div class="control-group">
+        <span class="section-label">HuggingFace token <a href="https://huggingface.co/settings/tokens" target="_blank" style="color:var(--accent);font-size:0.7rem;">get free token ↗</a></span>
+        <input type="password" id="hf-token" placeholder="hf_xxxxxxxxxxxxxxxx" autocomplete="off">
+      </div>
     </div>
 
     <div class="info-box" id="info-box">
-      <strong>How it works:</strong> Type or paste your English text, choose a voice and speed, then click <strong>Generate Audio</strong>. Audio is generated via a free neural TTS model — no account or API key needed. Requires an internet connection.
+      <strong>Setup (one time):</strong> Paste your free <a href="https://huggingface.co/settings/tokens" target="_blank" style="color:var(--accent)">HuggingFace token</a> above — it's saved only in your browser. Then click <strong>Generate Audio</strong>. The first request may take ~20s while the model warms up.
     </div>
 
     <div class="btn-row">
@@ -443,10 +449,10 @@
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
      
     </div> -->
-<div class="ad-sidebar">
-  <span class="ad-label">Advertisement</span>
-  <div class="ad-placeholder-sidebar">250×250</div>
-</div>
+    <div class="ad-sidebar">
+      <span class="ad-label">Advertisement</span>
+      <div class="ad-placeholder-sidebar">250×250</div>
+    </div>
     <!-- TIPS -->
     <div class="tips-card">
       <h3>🎓 Teaching Tips</h3>
@@ -511,20 +517,20 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.5.0</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.6.0</p>
 </footer>
 
 <script>
   let audioBlob = null, audioURL = null;
 
-  // Hugging Face Inference API — free, no key needed, CORS enabled
   const VOICES = [
-    { id: 'espnet/kan-bayashi_ljspeech_vits',        label: 'LJ (US Female — Natural)' },
-    { id: 'espnet/kan-bayashi_libritts_r_vits',      label: 'LibriTTS (US Female — Clear)' },
-    { id: 'facebook/mms-tts-eng',                    label: 'MMS (US — Compact)' },
+    { id: 'espnet/kan-bayashi_ljspeech_vits',   label: 'LJ Speech (US Female — Natural)' },
+    { id: 'espnet/kan-bayashi_libritts_r_vits', label: 'LibriTTS (US Female — Clear)' },
+    { id: 'facebook/mms-tts-eng',               label: 'MMS (US — Compact)' },
   ];
 
-  (function initVoices() {
+  // ── Init voices dropdown ──
+  (function() {
     const sel = document.getElementById('voice-select');
     VOICES.forEach(v => {
       const o = document.createElement('option');
@@ -532,6 +538,12 @@
       sel.appendChild(o);
     });
   })();
+
+  // ── Persist HF token in localStorage ──
+  const tokenInput = document.getElementById('hf-token');
+  tokenInput.value = localStorage.getItem('hf_token') || '';
+  tokenInput.addEventListener('input', () =>
+    localStorage.setItem('hf_token', tokenInput.value.trim()));
 
   document.getElementById('rate').addEventListener('input', e =>
     document.getElementById('rate-val').textContent = parseFloat(e.target.value).toFixed(2) + '×');
@@ -541,7 +553,6 @@
     document.getElementById('status-text').textContent = msg;
   }
 
-  // Split at sentence boundaries, max ~200 chars per chunk
   function splitChunks(text, max = 200) {
     const sentences = text.match(/[^.!?\n]+[.!?\n]*/g) || [text];
     const chunks = [];
@@ -558,26 +569,30 @@
     return chunks.filter(c => c.length > 0);
   }
 
-  // Call HF Inference API — retries if model is loading (503)
-  async function fetchHF(modelId, text) {
+  // HF Inference API with Bearer token — fixes CORS preflight
+  async function fetchHF(modelId, text, token) {
     for (let attempt = 0; attempt < 5; attempt++) {
       const res = await fetch(`https://api-inference.huggingface.co/models/${modelId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
         body: JSON.stringify({ inputs: text }),
       });
       if (res.ok) return res.arrayBuffer();
       let err = {};
       try { err = await res.json(); } catch (_) {}
-      if (res.status === 503 || String(err.error).includes('loading')) {
+      if (res.status === 503 || String(err.error).toLowerCase().includes('loading')) {
         const wait = Math.min((err.estimated_time || 20) * 1000, 30000);
         setStatus('recording', `Model warming up, retrying in ${Math.round(wait / 1000)}s…`);
         await new Promise(r => setTimeout(r, wait));
         continue;
       }
+      if (res.status === 401) throw new Error('Invalid token — check your HuggingFace token and try again.');
       throw new Error(err.error || `HTTP ${res.status}`);
     }
-    throw new Error('Model unavailable. Please try again later.');
+    throw new Error('Model unavailable after retries. Try again later.');
   }
 
   async function decodeAB(ab) {
@@ -605,12 +620,13 @@
   }
 
   async function generateAudio() {
-    const text = document.getElementById('text').value.trim();
-    if (!text) { setStatus('error', 'Please enter some text first.'); return; }
+    const text  = document.getElementById('text').value.trim();
+    const token = document.getElementById('hf-token').value.trim();
+    if (!text)  { setStatus('error', 'Please enter some text first.'); return; }
+    if (!token) { setStatus('error', 'Paste your HuggingFace token first (see link above).'); return; }
 
     const btn = document.getElementById('btn-generate');
-    btn.disabled = true;
-    btn.classList.add('recording');
+    btn.disabled = true; btn.classList.add('recording');
 
     const modelId = document.getElementById('voice-select').value;
     const rate    = parseFloat(document.getElementById('rate').value);
@@ -622,11 +638,10 @@
         setStatus('recording', chunks.length > 1
           ? `Generating part ${i + 1} of ${chunks.length}…`
           : 'Generating audio…');
-        const ab = await fetchHF(modelId, chunks[i]);
-        audioBuffers.push(await decodeAB(ab));
+        audioBuffers.push(await decodeAB(await fetchHF(modelId, chunks[i], token)));
       }
 
-      // Concatenate all chunks as mono PCM
+      // Concatenate chunks as mono PCM
       const sr = audioBuffers[0].sampleRate;
       const totalLen = audioBuffers.reduce((s, b) => s + b.length, 0);
       const mono = new Float32Array(totalLen);
@@ -641,17 +656,15 @@
         offset += buf.length;
       }
 
-      // Apply speed adjustment if needed
+      // Speed adjustment via OfflineAudioContext
       let finalPcm = mono;
       if (Math.abs(rate - 1.0) > 0.02) {
         setStatus('recording', 'Adjusting speed…');
-        const tmpCtx = new AudioContext();
-        const tmpBuf = tmpCtx.createBuffer(1, mono.length, sr);
-        tmpBuf.getChannelData(0).set(mono);
-        await tmpCtx.close();
         const offCtx = new OfflineAudioContext(1, Math.ceil(mono.length / rate), sr);
+        const buf = offCtx.createBuffer(1, mono.length, sr);
+        buf.getChannelData(0).set(mono);
         const src = offCtx.createBufferSource();
-        src.buffer = tmpBuf; src.playbackRate.value = rate;
+        src.buffer = buf; src.playbackRate.value = rate;
         src.connect(offCtx.destination); src.start(0);
         finalPcm = (await offCtx.startRendering()).getChannelData(0);
       }
@@ -660,10 +673,8 @@
       audioBlob = pcmToMp3(finalPcm, sr);
       if (audioURL) URL.revokeObjectURL(audioURL);
       audioURL = URL.createObjectURL(audioBlob);
-
       const ap = document.getElementById('audio-player');
-      ap.src = audioURL;
-      ap.load();
+      ap.src = audioURL; ap.load();
 
       document.getElementById('btn-download').style.display = 'flex';
       document.getElementById('btn-preview').style.display = 'flex';
@@ -672,9 +683,7 @@
       console.error(err);
       setStatus('error', err.message);
     }
-
-    btn.disabled = false;
-    btn.classList.remove('recording');
+    btn.disabled = false; btn.classList.remove('recording');
   }
 
   document.getElementById('btn-generate').addEventListener('click', generateAudio);
@@ -682,14 +691,8 @@
   const ap = document.getElementById('audio-player');
   const bp = document.getElementById('btn-preview');
   bp.addEventListener('click', () => {
-    if (ap.paused) {
-      if (ap.ended) ap.currentTime = 0;
-      ap.play();
-      bp.textContent = '⏸ Pause';
-    } else {
-      ap.pause();
-      bp.textContent = '▶ Preview';
-    }
+    if (ap.paused) { if (ap.ended) ap.currentTime = 0; ap.play(); bp.textContent = '⏸ Pause'; }
+    else { ap.pause(); bp.textContent = '▶ Preview'; }
   });
   ap.addEventListener('ended', () => { bp.textContent = '▶ Preview'; });
 
