@@ -624,7 +624,7 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.9.1</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.9.2</p>
 </footer>
 
 <script type="module">
@@ -749,15 +749,9 @@
   ══════════════════════════════════════════════════ */
   function loadSpeechVoices() {
     const voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+    if (voices.length === 0) return; // still loading — wait for onvoiceschanged
     const sel = document.getElementById('speech-voice');
     sel.innerHTML = '';
-    if (voices.length === 0) {
-      const o = document.createElement('option');
-      o.textContent = I18N[currentLang].noVoices;
-      o.disabled = true;
-      sel.appendChild(o);
-      return;
-    }
     voices.forEach(v => {
       const o = document.createElement('option');
       o.value = v.name;
@@ -766,8 +760,12 @@
     });
   }
 
-  speechSynthesis.addEventListener('voiceschanged', loadSpeechVoices);
+  // onvoiceschanged (property assignment) is more reliable than addEventListener across browsers
+  speechSynthesis.onvoiceschanged = loadSpeechVoices;
+  // Also try immediately — works when voices are already cached (repeat visits, Firefox)
   loadSpeechVoices();
+  // Fallback: if voiceschanged already fired before we attached, retry after a short delay
+  setTimeout(loadSpeechVoices, 200);
 
   document.getElementById('speech-rate').addEventListener('input', e =>
     document.getElementById('speech-rate-val').textContent =
@@ -785,6 +783,12 @@
     const text = document.getElementById('text').value.trim();
     if (!text) return;
     const t = I18N[currentLang];
+
+    // If voices still not loaded, show error in status
+    if (document.getElementById('speech-voice').options.length === 0) {
+      setListenStatus('error', t.noVoices);
+      return;
+    }
 
     // Pause/Resume
     if (speechSynthesis.speaking && !speechSynthesis.paused) {
