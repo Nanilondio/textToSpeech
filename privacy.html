@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-adsense-account" content="ca-pub-7086938365759492">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Privacy Policy — ListeningClassroom.com</title>
+  <meta name="description" content="Privacy policy for ListeningClassroom.com. Learn how we handle your data and protect your privacy.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://nanilondio.github.io/textToSpeech/privacy.html">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="shortcut icon" href="favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #7d8590;
+      --accent: #58a6ff;
+      --accent-warm: #f78166;
+      --accent-green: #3fb950;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--accent-warm); }
+    .header-right { display: flex; align-items: center; gap: 1.5rem; }
+
+    /* ── LANGUAGE SWITCHER ── */
+    .lang-switcher {
+      display: flex;
+      gap: 2px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+    }
+    .lang-btn {
+      padding: 0.22rem 0.65rem;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.04em;
+    }
+    .lang-btn.active { background: var(--accent); color: #0d1117; }
+    .lang-btn:hover:not(.active) { color: var(--text); }
+
+    /* ── CONTENT ── */
+    .page-wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .page-eyebrow {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    h1 em { color: var(--accent-warm); font-style: normal; }
+
+    .last-updated {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .policy-section {
+      margin-bottom: 2.2rem;
+    }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    h2 .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      font-size: 0.7rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      margin-bottom: 0.75rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0.75rem 0;
+    }
+    ul li {
+      color: var(--muted);
+      font-size: 0.93rem;
+      padding: 0.35rem 0 0.35rem 1.2rem;
+      position: relative;
+    }
+    ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.75rem;
+      top: 0.45rem;
+    }
+    ul li strong { color: var(--text); }
+
+    .highlight-box {
+      background: rgba(88,166,255,0.07);
+      border: 1px solid rgba(88,166,255,0.2);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.75rem 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .contact-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .contact-card p {
+      margin: 0;
+      font-size: 0.88rem;
+    }
+    .contact-card a {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <a href="index.html" class="logo">Listening<span>Classroom</span></a>
+  <div class="header-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+    </div>
+  </div>
+</header>
+
+<!-- ── ENGLISH VERSION ── -->
+<div class="lang-content lang-en">
+<div class="page-wrapper">
+
+  <p class="page-eyebrow">Legal</p>
+  <h1>Privacy <em>Policy</em></h1>
+  <p class="last-updated">Last updated: March 2026</p>
+
+  <div class="policy-section">
+    <h2><span class="section-num">1</span> General Information</h2>
+    <p>At <strong>ListeningClassroom.com</strong>, we take the privacy of our users seriously, especially in an educational context. This policy explains what information we collect and how we use it.</p>
+    <p>Our site is free to access and does not require the creation of a user account (login).</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">2</span> Data We Collect</h2>
+    <p>Since we do not require registration, we do not store names, email addresses, or any direct personal data. However, we may collect:</p>
+    <ul>
+      <li><strong>Text input (Speech):</strong> Text you enter to generate audio is processed temporarily for voice conversion. It is not stored on any server — processing happens locally in your browser.</li>
+      <li><strong>Technical data:</strong> IP address, browser type, and time on site, collected anonymously for statistical purposes.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">3</span> Cookies and Advertising (Google Ads)</h2>
+    <p>We use third-party services such as Google Ads to keep this site free.</p>
+    <ul>
+      <li>Google uses cookies to display ads based on users' prior visits to this site or other websites.</li>
+      <li>Users can opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google's Ad Settings</a>.</li>
+      <li>We use cookies to analyse traffic and improve the audio generation experience.</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>Note:</strong> You can manage or disable cookies at any time through your browser settings without affecting your ability to use the tool.
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">4</span> Minors</h2>
+    <p>Although the tool is designed to generate material for children, the site is intended to be used by educators and parents. We do not knowingly collect or solicit personally identifiable information from children under the age of 13.</p>
+    <p>If you are a parent or guardian and believe your child has provided us with personal information, please contact us so we can delete it.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">5</span> File Downloads</h2>
+    <p>The site allows you to download audio files for use in presentations (PowerPoint) or virtual classrooms. These files:</p>
+    <ul>
+      <li>Do not contain tracking software or malware.</li>
+      <li>Are standard MP3 audio files for educational use.</li>
+      <li>Are generated entirely in your browser — no audio is uploaded to or stored on our servers.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">6</span> Third-Party Links</h2>
+    <p>Our site may contain links to other websites of interest. Once you leave our page, we have no control over the site you are redirected to and are not responsible for the privacy of your data on those sites. We encourage you to read the privacy policy of any website you visit.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">7</span> Contact</h2>
+    <p>If you have any questions about this privacy policy, please contact us:</p>
+    <div class="contact-card">
+      <span class="contact-icon">✉️</span>
+      <div>
+        <p>We'll do our best to respond within 48 hours.</p>
+        <a href="mailto:contactlisteningclassroom@gmail.com">contactlisteningclassroom@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ── SPANISH VERSION ── -->
+<div class="lang-content lang-es" hidden>
+<div class="page-wrapper">
+
+  <p class="page-eyebrow">Legal</p>
+  <h1>Política de <em>Privacidad</em></h1>
+  <p class="last-updated">Última actualización: marzo de 2026</p>
+
+  <div class="policy-section">
+    <h2><span class="section-num">1</span> Información General</h2>
+    <p>En <strong>ListeningClassroom.com</strong>, nos tomamos en serio la privacidad de nuestros usuarios, especialmente al tratarse de un entorno educativo. Esta política explica qué información recolectamos y cómo la utilizamos.</p>
+    <p>Nuestro sitio es de acceso gratuito y no requiere la creación de una cuenta de usuario (login).</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">2</span> Datos que Recolectamos</h2>
+    <p>Al no solicitar registro, no almacenamos nombres, correos electrónicos ni datos personales directos. Sin embargo, recolectamos:</p>
+    <ul>
+      <li><strong>Textos ingresados (Speech):</strong> Los textos que introduces para generar audios se procesan de forma temporal para la conversión a voz. No se almacenan en ningún servidor — el procesamiento ocurre localmente en tu navegador.</li>
+      <li><strong>Datos técnicos:</strong> Dirección IP, tipo de navegador y tiempo de permanencia, recolectados de forma anónima para fines estadísticos.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">3</span> Uso de Cookies y Publicidad (Google Ads)</h2>
+    <p>Utilizamos servicios de terceros como Google Ads para mantener el sitio gratuito.</p>
+    <ul>
+      <li>Google utiliza cookies para mostrar anuncios basados en las visitas previas de los usuarios a este sitio o a otros sitios web.</li>
+      <li>Los usuarios pueden inhabilitar la publicidad personalizada visitando la <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Configuración de anuncios de Google</a>.</li>
+      <li>Utilizamos cookies para analizar el tráfico y mejorar la experiencia de generación de audios.</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>Nota:</strong> Puedes gestionar o deshabilitar las cookies en cualquier momento desde la configuración de tu navegador, sin que esto afecte el uso de la herramienta.
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">4</span> Menores de Edad</h2>
+    <p>Aunque la herramienta está diseñada para generar material para niños, el sitio está destinado a ser utilizado por educadores y padres de familia. No solicitamos ni recolectamos intencionalmente información de identificación personal de menores de 13 años.</p>
+    <p>Si eres padre, madre o tutor y crees que tu hijo/a nos ha proporcionado información personal, contáctanos para eliminarla.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">5</span> Descarga de Archivos</h2>
+    <p>El sitio permite la descarga de archivos de audio para su uso en presentaciones (PowerPoint) o salones virtuales. Estos archivos:</p>
+    <ul>
+      <li>No contienen software de seguimiento ni malware.</li>
+      <li>Son archivos de audio MP3 estándar para uso pedagógico.</li>
+      <li>Se generan completamente en tu navegador — no se sube ni almacena ningún audio en nuestros servidores.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">6</span> Enlaces a Terceros</h2>
+    <p>Nuestro sitio puede contener enlaces a otros sitios de interés. Una vez que dejes nuestra página, no tenemos control sobre el sitio al que eres redirigido y no somos responsables de la privacidad de tus datos en esos sitios. Te recomendamos leer la política de privacidad de cualquier sitio web que visites.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">7</span> Contacto</h2>
+    <p>Si tienes preguntas sobre esta política de privacidad, puedes contactarnos:</p>
+    <div class="contact-card">
+      <span class="contact-icon">✉️</span>
+      <div>
+        <p>Haremos nuestro mejor esfuerzo por responder en menos de 48 horas.</p>
+        <a href="mailto:contactlisteningclassroom@gmail.com">contactlisteningclassroom@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>© 2026 ListeningClassroom.com · Free text-to-speech for educators</p>
+  <p style="margin-top:0.5rem">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="#">Terms of Use</a>
+    <a href="mailto:contactlisteningclassroom@gmail.com">Contact</a>
+  </p>
+</footer>
+
+<script>
+  // ── Language switcher ──
+  const saved = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    localStorage.setItem('lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.lang === lang));
+    document.querySelectorAll('.lang-content').forEach(el =>
+      el.hidden = !el.classList.contains('lang-' + lang));
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
+  applyLang(saved);
+</script>
+</body>
+</html>
