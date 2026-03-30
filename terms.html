@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-adsense-account" content="ca-pub-7086938365759492">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Terms of Use — ListeningClassroom.com</title>
+  <meta name="description" content="Terms of use for ListeningClassroom.com. Read the conditions for using our free English text-to-speech tool.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://nanilondio.github.io/textToSpeech/terms.html">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="shortcut icon" href="favicon.svg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #7d8590;
+      --accent: #58a6ff;
+      --accent-warm: #f78166;
+      --accent-green: #3fb950;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--accent-warm); }
+    .header-right { display: flex; align-items: center; gap: 1.5rem; }
+
+    /* ── LANGUAGE SWITCHER ── */
+    .lang-switcher {
+      display: flex;
+      gap: 2px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+    }
+    .lang-btn {
+      padding: 0.22rem 0.65rem;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.04em;
+    }
+    .lang-btn.active { background: var(--accent); color: #0d1117; }
+    .lang-btn:hover:not(.active) { color: var(--text); }
+
+    /* ── CONTENT ── */
+    .page-wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .page-eyebrow {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    h1 em { color: var(--accent-warm); font-style: normal; }
+
+    .last-updated {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .policy-section { margin-bottom: 2.2rem; }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    h2 .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      font-size: 0.7rem;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      color: var(--accent-warm);
+      flex-shrink: 0;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      margin-bottom: 0.75rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0.75rem 0;
+    }
+    ul li {
+      color: var(--muted);
+      font-size: 0.93rem;
+      padding: 0.35rem 0 0.35rem 1.2rem;
+      position: relative;
+    }
+    ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent-warm);
+      font-size: 0.75rem;
+      top: 0.45rem;
+    }
+    ul li strong { color: var(--text); }
+
+    .highlight-box {
+      background: rgba(247,129,102,0.07);
+      border: 1px solid rgba(247,129,102,0.2);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.75rem 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .highlight-box strong { color: var(--accent-warm); }
+
+    .info-box {
+      background: rgba(88,166,255,0.07);
+      border: 1px solid rgba(88,166,255,0.2);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.75rem 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .info-box strong { color: var(--accent); }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .contact-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .contact-card p { margin: 0; font-size: 0.88rem; }
+    .contact-card a { font-weight: 600; font-size: 0.95rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <a href="index.html" class="logo">Listening<span>Classroom</span></a>
+  <div class="header-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+    </div>
+  </div>
+</header>
+
+<!-- ════════════════════════════════════
+     ENGLISH VERSION
+════════════════════════════════════ -->
+<div class="lang-content lang-en">
+<div class="page-wrapper">
+
+  <p class="page-eyebrow">Legal</p>
+  <h1>Terms of <em>Use</em></h1>
+  <p class="last-updated">Last updated: March 2026</p>
+
+  <div class="policy-section">
+    <h2><span class="section-num">1</span> Acceptance of Terms</h2>
+    <p>By accessing and using <strong>ListeningClassroom.com</strong>, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use our service.</p>
+    <p>We reserve the right to update these terms at any time. Continued use of the site after any changes constitutes your acceptance of the new terms.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">2</span> Description of the Service</h2>
+    <p>ListeningClassroom.com provides a free, browser-based English text-to-speech (TTS) tool designed for educators, ESL teachers, and content creators. The service allows users to:</p>
+    <ul>
+      <li>Convert English text into spoken audio using neural voice models.</li>
+      <li>Preview audio directly in the browser (Quick Listen mode).</li>
+      <li>Download generated audio as MP3 files for use in educational materials.</li>
+    </ul>
+    <div class="info-box">
+      <strong>Important:</strong> All audio generation happens locally in your browser. No text or audio is uploaded to or stored on our servers.
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">3</span> Permitted Use</h2>
+    <p>You may use this service for lawful, personal, and educational purposes, including:</p>
+    <ul>
+      <li>Creating listening exercises and dictation materials for classrooms.</li>
+      <li>Generating audio for PowerPoint presentations, Google Slides, or e-learning platforms.</li>
+      <li>Producing pronunciation models for language learners.</li>
+      <li>Creating accessible audio content for educational institutions.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">4</span> Prohibited Use</h2>
+    <p>You agree not to use this service to:</p>
+    <ul>
+      <li><strong>Generate deceptive content:</strong> Create audio intended to impersonate individuals, spread misinformation, or engage in fraud.</li>
+      <li><strong>Reproduce copyrighted material:</strong> Convert copyrighted texts to audio for commercial redistribution without the rights holder's permission.</li>
+      <li><strong>Harass or harm others:</strong> Generate audio content that is defamatory, threatening, hateful, or discriminatory.</li>
+      <li><strong>Violate laws:</strong> Use the service for any purpose that violates applicable local, national, or international laws.</li>
+      <li><strong>Overload the service:</strong> Attempt to disrupt, abuse, or exploit the tool's infrastructure through automated scripts or bots.</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>Note:</strong> We reserve the right to restrict access to users who violate these terms.
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">5</span> Intellectual Property</h2>
+    <p>The audio files you generate using this tool are yours to use for personal and educational purposes. However:</p>
+    <ul>
+      <li>The underlying voice models are subject to their own licences (Kokoro TTS / <a href="https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX" target="_blank" rel="noopener">onnx-community</a>).</li>
+      <li>The site design, logo, branding, and source code of ListeningClassroom.com are the intellectual property of the site owner.</li>
+      <li>You may not reproduce, sell, or commercially redistribute the generated audio as a standalone product or service.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">6</span> Disclaimers and Limitation of Liability</h2>
+    <p>The service is provided <strong>"as is"</strong> without warranties of any kind, either express or implied. We do not guarantee that:</p>
+    <ul>
+      <li>The service will be available at all times or free from errors.</li>
+      <li>The generated audio will meet your specific quality or accuracy requirements.</li>
+      <li>The service will be compatible with all browsers, devices, or operating systems.</li>
+    </ul>
+    <p>To the fullest extent permitted by law, ListeningClassroom.com shall not be liable for any direct, indirect, incidental, or consequential damages arising from the use or inability to use this service.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">7</span> Availability of the Service</h2>
+    <p>We strive to keep ListeningClassroom.com available at all times, but we do not guarantee uninterrupted access. The service may be temporarily unavailable due to maintenance, updates, or circumstances beyond our control.</p>
+    <p>We reserve the right to modify, suspend, or discontinue any part of the service at any time without prior notice.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">8</span> Third-Party Services</h2>
+    <p>This site uses third-party services that have their own terms and privacy policies:</p>
+    <ul>
+      <li><strong>Google AdSense:</strong> Used to display advertisements that help keep the service free. <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Google Advertising Policies →</a></li>
+      <li><strong>Kokoro TTS (ONNX):</strong> Neural voice model running locally in your browser. <a href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank" rel="noopener">Model details →</a></li>
+      <li><strong>Web Speech API:</strong> Browser's built-in speech synthesis (Quick Listen mode). Governed by your browser's terms.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">9</span> Changes to These Terms</h2>
+    <p>We may revise these Terms of Use at any time. The date of the latest revision will always be shown at the top of this page. We encourage you to review these terms periodically. Your continued use of the service following any changes means you accept the revised terms.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">10</span> Contact</h2>
+    <p>If you have any questions about these Terms of Use, please contact us:</p>
+    <div class="contact-card">
+      <span class="contact-icon">✉️</span>
+      <div>
+        <p>We'll do our best to respond within 48 hours.</p>
+        <a href="mailto:contactlisteningclassroom@gmail.com">contactlisteningclassroom@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════
+     SPANISH VERSION
+════════════════════════════════════ -->
+<div class="lang-content lang-es" hidden>
+<div class="page-wrapper">
+
+  <p class="page-eyebrow">Legal</p>
+  <h1>Términos de <em>Uso</em></h1>
+  <p class="last-updated">Última actualización: marzo de 2026</p>
+
+  <div class="policy-section">
+    <h2><span class="section-num">1</span> Aceptación de los Términos</h2>
+    <p>Al acceder y utilizar <strong>ListeningClassroom.com</strong>, aceptas quedar sujeto a estos Términos de Uso. Si no estás de acuerdo con estos términos, por favor no utilices nuestro servicio.</p>
+    <p>Nos reservamos el derecho de actualizar estos términos en cualquier momento. El uso continuado del sitio tras cualquier modificación implica la aceptación de los nuevos términos.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">2</span> Descripción del Servicio</h2>
+    <p>ListeningClassroom.com ofrece una herramienta gratuita de texto a voz en inglés (TTS), basada en el navegador y diseñada para educadores, profesores de inglés y creadores de contenido. El servicio permite:</p>
+    <ul>
+      <li>Convertir textos en inglés a audio hablado mediante modelos de voz neurales.</li>
+      <li>Previsualizar el audio directamente en el navegador (modo Escuchar).</li>
+      <li>Descargar el audio generado como archivos MP3 para materiales educativos.</li>
+    </ul>
+    <div class="info-box">
+      <strong>Importante:</strong> Toda la generación de audio ocurre localmente en tu navegador. Ningún texto ni audio se sube ni almacena en nuestros servidores.
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">3</span> Uso Permitido</h2>
+    <p>Puedes usar este servicio con fines lícitos, personales y educativos, incluyendo:</p>
+    <ul>
+      <li>Crear ejercicios de escucha y materiales de dictado para clases.</li>
+      <li>Generar audio para presentaciones de PowerPoint, Google Slides o plataformas de e-learning.</li>
+      <li>Producir modelos de pronunciación para estudiantes de idiomas.</li>
+      <li>Crear contenido de audio accesible para instituciones educativas.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">4</span> Uso Prohibido</h2>
+    <p>Aceptas no utilizar este servicio para:</p>
+    <ul>
+      <li><strong>Generar contenido engañoso:</strong> Crear audio para hacerse pasar por personas, difundir desinformación o cometer fraude.</li>
+      <li><strong>Reproducir material con derechos de autor:</strong> Convertir textos protegidos por derechos de autor para redistribución comercial sin permiso del titular.</li>
+      <li><strong>Acosar o dañar a terceros:</strong> Generar contenido difamatorio, amenazante, de odio o discriminatorio.</li>
+      <li><strong>Violar leyes:</strong> Usar el servicio para cualquier propósito que infrinja leyes locales, nacionales o internacionales aplicables.</li>
+      <li><strong>Sobrecargar el servicio:</strong> Intentar interrumpir, abusar o explotar la infraestructura de la herramienta mediante scripts automatizados o bots.</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>Nota:</strong> Nos reservamos el derecho de restringir el acceso a usuarios que infrinjan estos términos.
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">5</span> Propiedad Intelectual</h2>
+    <p>Los archivos de audio que generes con esta herramienta son de tu uso personal y educativo. No obstante:</p>
+    <ul>
+      <li>Los modelos de voz subyacentes están sujetos a sus propias licencias (Kokoro TTS / <a href="https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX" target="_blank" rel="noopener">onnx-community</a>).</li>
+      <li>El diseño del sitio, el logo, la marca y el código fuente de ListeningClassroom.com son propiedad intelectual del propietario del sitio.</li>
+      <li>No puedes reproducir, vender ni redistribuir comercialmente el audio generado como producto o servicio independiente.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">6</span> Exención de Responsabilidad y Limitación de Daños</h2>
+    <p>El servicio se proporciona <strong>"tal como está"</strong>, sin garantías de ningún tipo, expresas o implícitas. No garantizamos que:</p>
+    <ul>
+      <li>El servicio esté disponible en todo momento o libre de errores.</li>
+      <li>El audio generado cumpla con tus requisitos específicos de calidad o precisión.</li>
+      <li>El servicio sea compatible con todos los navegadores, dispositivos o sistemas operativos.</li>
+    </ul>
+    <p>En la medida máxima permitida por la ley, ListeningClassroom.com no será responsable de daños directos, indirectos, incidentales o consecuentes derivados del uso o la imposibilidad de uso de este servicio.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">7</span> Disponibilidad del Servicio</h2>
+    <p>Nos esforzamos por mantener ListeningClassroom.com disponible en todo momento, pero no garantizamos un acceso ininterrumpido. El servicio puede estar temporalmente no disponible por mantenimiento, actualizaciones o circunstancias fuera de nuestro control.</p>
+    <p>Nos reservamos el derecho de modificar, suspender o discontinuar cualquier parte del servicio en cualquier momento y sin previo aviso.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">8</span> Servicios de Terceros</h2>
+    <p>Este sitio utiliza servicios de terceros con sus propios términos y políticas de privacidad:</p>
+    <ul>
+      <li><strong>Google AdSense:</strong> Muestra publicidad para mantener el servicio gratuito. <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener">Políticas de publicidad de Google →</a></li>
+      <li><strong>Kokoro TTS (ONNX):</strong> Modelo de voz neuronal que corre localmente en tu navegador. <a href="https://huggingface.co/hexgrad/Kokoro-82M" target="_blank" rel="noopener">Detalles del modelo →</a></li>
+      <li><strong>Web Speech API:</strong> Síntesis de voz nativa del navegador (modo Escuchar). Regida por los términos de tu navegador.</li>
+    </ul>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">9</span> Cambios en estos Términos</h2>
+    <p>Podemos revisar estos Términos de Uso en cualquier momento. La fecha de la última revisión siempre aparecerá en la parte superior de esta página. Te recomendamos revisar estos términos periódicamente. El uso continuado del servicio tras cualquier cambio implica la aceptación de los términos revisados.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-num">10</span> Contacto</h2>
+    <p>Si tienes preguntas sobre estos Términos de Uso, puedes contactarnos:</p>
+    <div class="contact-card">
+      <span class="contact-icon">✉️</span>
+      <div>
+        <p>Haremos nuestro mejor esfuerzo por responder en menos de 48 horas.</p>
+        <a href="mailto:contactlisteningclassroom@gmail.com">contactlisteningclassroom@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>© 2026 ListeningClassroom.com · Free text-to-speech for educators</p>
+  <p style="margin-top:0.5rem">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+    <a href="mailto:contactlisteningclassroom@gmail.com">Contact</a>
+  </p>
+</footer>
+
+<script>
+  // ── Language switcher ──
+  const saved = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    localStorage.setItem('lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.lang === lang));
+    document.querySelectorAll('.lang-content').forEach(el =>
+      el.hidden = !el.classList.contains('lang-' + lang));
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
+  applyLang(saved);
+</script>
+</body>
+</html>
