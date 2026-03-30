@@ -15,7 +15,7 @@
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://nanilondio.github.io/textToSpeech/">
 
-  <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+  <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Free English Text to Speech for Teachers">
   <meta property="og:description" content="Generate downloadable English audio from any paragraph. Perfect for ESL classrooms, listening exercises, and PowerPoint presentations.">
@@ -27,7 +27,7 @@
   <meta name="twitter:title" content="Free English Text to Speech for Teachers">
   <meta name="twitter:description" content="Generate downloadable English audio from any paragraph. Free, no sign-up required.">
 
-  <!-- Structured Data (Google Rich Results) -->
+  <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -97,11 +97,40 @@
       letter-spacing: -0.02em;
     }
     .logo span { color: var(--accent-warm); }
+    .header-right { display: flex; align-items: center; gap: 1.5rem; }
     nav a {
       color: var(--muted); font-size: 0.85rem; text-decoration: none;
       margin-left: 1.5rem; transition: color 0.2s;
     }
     nav a:hover { color: var(--text); }
+
+    /* ── LANGUAGE SWITCHER ── */
+    .lang-switcher {
+      display: flex;
+      gap: 2px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+    }
+    .lang-btn {
+      padding: 0.22rem 0.65rem;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.04em;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #0d1117;
+    }
+    .lang-btn:hover:not(.active) { color: var(--text); }
 
     /* ── AD BANNER TOP ── */
     .ad-banner {
@@ -114,23 +143,13 @@
       align-items: center;
       justify-content: center;
     }
-    /* Placeholder visible hasta que AdSense esté activo */
     .ad-placeholder {
-      width: 100%;
-      max-width: 728px;
-      height: 90px;
-      border: 1px dashed var(--border);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--muted);
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
+      width: 100%; max-width: 728px; height: 90px;
+      border: 1px dashed var(--border); border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: 0.75rem;
+      letter-spacing: 0.05em; text-transform: uppercase;
     }
-    /* Cuando AdSense esté activo, oculta el placeholder:
-       .ad-placeholder { display: none; } */
 
     /* ── HERO ── */
     .hero {
@@ -167,8 +186,8 @@
       border: 1px solid var(--border); color: var(--muted);
     }
     .badge.green { border-color: var(--accent-green); color: var(--accent-green); }
-    .badge.blue { border-color: var(--accent); color: var(--accent); }
-    .badge.warm { border-color: var(--accent-warm); color: var(--accent-warm); }
+    .badge.blue  { border-color: var(--accent); color: var(--accent); }
+    .badge.warm  { border-color: var(--accent-warm); color: var(--accent-warm); }
 
     /* ── MAIN LAYOUT ── */
     .layout {
@@ -205,17 +224,44 @@
       font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
       color: var(--text); resize: vertical; outline: none; line-height: 1.7;
       transition: border-color 0.2s;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1.4rem;
     }
     textarea:focus { border-color: var(--accent); }
 
+    /* ── TABS ── */
+    .tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.4rem;
+    }
+    .tab-btn {
+      padding: 0.55rem 1.1rem;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: -1px;
+      transition: all 0.15s;
+      border-radius: 0;
+    }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-btn:hover:not(.active) { color: var(--text); }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── CONTROLS ── */
     .controls-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 1rem;
       margin-bottom: 1.2rem;
     }
-    @media (max-width: 540px) { .controls-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 540px) { .controls-grid { grid-template-columns: 1fr; } }
 
     .control-group { display: flex; flex-direction: column; gap: 0.4rem; }
 
@@ -239,7 +285,7 @@
     }
     input[type=text]:focus { border-color: var(--accent); }
 
-    /* info box */
+    /* ── INFO BOX ── */
     .info-box {
       background: rgba(88,166,255,0.07); border: 1px solid rgba(88,166,255,0.2);
       border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 1.4rem;
@@ -247,13 +293,29 @@
     }
     .info-box strong { color: var(--accent); }
 
-    /* Buttons */
+    /* ── BUTTONS ── */
     .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
     button {
       font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem;
       padding: 0.6rem 1.2rem; border-radius: 6px; border: 1px solid transparent;
       cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 0.5rem;
     }
+
+    /* Listen tab buttons */
+    #btn-speak {
+      background: var(--accent); color: #0d1117; border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(88,166,255,0.3);
+    }
+    #btn-speak:hover:not(:disabled) { box-shadow: 0 0 30px rgba(88,166,255,0.5); transform: translateY(-1px); }
+    #btn-speak:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    #btn-stop {
+      background: transparent; color: var(--muted); border-color: var(--border);
+      display: none;
+    }
+    #btn-stop:hover { color: var(--accent-warm); border-color: var(--accent-warm); }
+
+    /* Download tab buttons */
     #btn-generate {
       background: var(--accent); color: #0d1117; border-color: var(--accent);
       box-shadow: 0 0 20px rgba(88,166,255,0.3);
@@ -274,11 +336,14 @@
     }
     #btn-preview:hover { color: var(--text); border-color: var(--muted); }
 
-    /* Status */
-    .status-row { display: flex; align-items: center; gap: 0.6rem; margin-top: 1.2rem; font-size: 0.82rem; color: var(--muted); min-height: 1.5rem; }
+    /* ── STATUS ── */
+    .status-row {
+      display: flex; align-items: center; gap: 0.6rem;
+      margin-top: 1.2rem; font-size: 0.82rem; color: var(--muted); min-height: 1.5rem;
+    }
     .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
     .dot.recording { background: var(--accent-warm); animation: pulse 0.7s infinite; }
-    .dot.done { background: var(--accent-green); }
+    .dot.done  { background: var(--accent-green); }
     .dot.error { background: var(--accent-warm); }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
 
@@ -287,7 +352,6 @@
     /* ── SIDEBAR ── */
     .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
 
-    /* Ad sidebar */
     .ad-sidebar {
       background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
       padding: 1rem; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
@@ -300,7 +364,6 @@
       color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em;
     }
 
-    /* Tips card */
     .tips-card {
       background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem;
     }
@@ -308,11 +371,12 @@
       font-family: 'Fraunces', serif; font-size: 1rem; margin-bottom: 1rem; color: var(--text);
     }
     .tip-item {
-      display: flex; gap: 0.7rem; margin-bottom: 0.8rem; font-size: 0.83rem; color: var(--muted); line-height: 1.5;
+      display: flex; gap: 0.7rem; margin-bottom: 0.8rem;
+      font-size: 0.83rem; color: var(--muted); line-height: 1.5;
     }
     .tip-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
 
-    /* ── SEO CONTENT SECTION ── */
+    /* ── SEO CONTENT ── */
     .content-section {
       max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 4rem;
     }
@@ -354,34 +418,33 @@
 <!-- ── HEADER ── -->
 <header>
   <a href="/" class="logo">English<span>Audio</span></a>
-  <nav>
-    <a href="#how-it-works">How it works</a>
-    <a href="#faq">FAQ</a>
-  </nav>
+  <div class="header-right">
+    <nav>
+      <a href="#how-it-works" data-i18n="navHow">How it works</a>
+      <a href="#faq" data-i18n="navFaq">FAQ</a>
+    </nav>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+    </div>
+  </div>
 </header>
 
-<!-- ── AD BANNER TOP (728×90 Leaderboard) ── -->
-<!--div class="ad-banner">
-  <ins class="adsbygoogle"
-       style="display:inline-block;width:728px;height:90px"
-       data-ad-client="ca-pub-7086938365759492"
-       data-ad-slot="auto"></ins>    
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-       <!--<div class="ad-placeholder">Advertisement · 728×90</div>
-</div>-->
+<!-- ── AD BANNER TOP ── -->
 <div class="ad-banner">
   <div class="ad-placeholder">Advertisement · 728×90</div>
 </div>
+
 <!-- ── HERO ── -->
 <section class="hero">
-  <span class="hero-eyebrow">Free · No sign-up · Instant download</span>
-  <h1>Turn any English text into<br><em>downloadable audio</em></h1>
-  <p>The easiest way for ESL teachers to create listening exercises, dictation audio, and PowerPoint narrations — for free.</p>
+  <span class="hero-eyebrow" data-i18n="eyebrow">Free · No sign-up · Instant download</span>
+  <h1 data-i18n-html="h1">Turn any English text into<br><em>downloadable audio</em></h1>
+  <p data-i18n="heroParagraph">The easiest way for ESL teachers to create listening exercises, dictation audio, and PowerPoint narrations — for free.</p>
   <div class="badges">
-    <span class="badge green">✓ Free forever</span>
-    <span class="badge blue">✓ Multiple voices</span>
-    <span class="badge warm">✓ Downloadable audio file</span>
-    <span class="badge">✓ Works offline after load</span>
+    <span class="badge green" data-i18n="badgeFree">✓ Free forever</span>
+    <span class="badge blue"  data-i18n="badgeVoices">✓ Multiple voices</span>
+    <span class="badge warm"  data-i18n="badgeDownload">✓ Downloadable audio file</span>
+    <span class="badge"       data-i18n="badgeOffline">✓ Works offline after load</span>
   </div>
 </section>
 
@@ -390,115 +453,169 @@
 
   <!-- TOOL -->
   <article class="tool-card" id="tool">
-    <span class="section-label">Your text</span>
-    <textarea id="text" placeholder="Paste or type any English paragraph here...">The water cycle is the continuous movement of water through the environment. Water evaporates from oceans and lakes, rises into the atmosphere, forms clouds, and eventually falls back to Earth as precipitation.</textarea>
 
-    <div class="controls-grid">
-      <div class="control-group">
-        <span class="section-label">Voice</span>
-        <select id="voice-select"></select>
-      </div>
-      <div class="control-group">
-        <div class="range-row">
-          <span class="section-label">Speed</span>
-          <span class="range-val" id="rate-val">0.85×</span>
+    <!-- ── Shared textarea ── -->
+    <span class="section-label" data-i18n="labelText">Your text</span>
+    <textarea id="text" data-i18n-placeholder="placeholderText">The water cycle is the continuous movement of water through the environment. Water evaporates from oceans and lakes, rises into the atmosphere, forms clouds, and eventually falls back to Earth as precipitation.</textarea>
+
+    <!-- ── Tabs ── -->
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="listen" data-i18n="tabListen">🎧 Quick Listen</button>
+      <button class="tab-btn" data-tab="download" data-i18n="tabDownload">⬇ Download MP3</button>
+    </div>
+
+    <!-- ══════════════════════════════════
+         TAB: QUICK LISTEN (Web Speech API)
+    ═══════════════════════════════════════ -->
+    <div id="panel-listen" class="tab-panel active">
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <span class="section-label" data-i18n="labelVoice">Voice</span>
+          <select id="speech-voice"></select>
         </div>
-        <input type="range" id="rate" min="0.5" max="1.5" step="0.05" value="0.85">
+        <div class="control-group">
+          <div class="range-row">
+            <span class="section-label" data-i18n="labelSpeed">Speed</span>
+            <span class="range-val" id="speech-rate-val">0.85×</span>
+          </div>
+          <input type="range" id="speech-rate" min="0.5" max="1.5" step="0.05" value="0.85">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button id="btn-speak" data-i18n="btnSpeak">▶ Speak</button>
+        <button id="btn-stop"  data-i18n="btnStop">⏹ Stop</button>
+      </div>
+
+      <div class="status-row">
+        <div class="dot" id="listen-dot"></div>
+        <span id="listen-status-text" data-i18n="statusListenReady">Ready — select a voice and click Speak</span>
       </div>
     </div>
 
-    <div class="filename-row">
-      <span class="section-label">File name (no extension)</span>
-      <input type="text" id="filename" value="audio_english" placeholder="e.g. lesson1_watercycle">
+    <!-- ══════════════════════════════════
+         TAB: DOWNLOAD MP3 (Kokoro TTS)
+    ═══════════════════════════════════════ -->
+    <div id="panel-download" class="tab-panel">
+
+      <div class="controls-grid">
+        <div class="control-group">
+          <span class="section-label" data-i18n="labelVoice">Voice</span>
+          <select id="voice-select"></select>
+        </div>
+        <div class="control-group">
+          <div class="range-row">
+            <span class="section-label" data-i18n="labelSpeed">Speed</span>
+            <span class="range-val" id="rate-val">0.85×</span>
+          </div>
+          <input type="range" id="rate" min="0.5" max="1.5" step="0.05" value="0.85">
+        </div>
+      </div>
+
+      <div class="filename-row">
+        <span class="section-label" data-i18n="labelFilename">File name (no extension)</span>
+        <input type="text" id="filename" value="audio_english" placeholder="e.g. lesson1_watercycle">
+      </div>
+
+      <div class="info-box" id="info-box" data-i18n-html="infoBox">
+        <strong>How it works:</strong> The voice model runs entirely in your browser — no servers, no API keys. The <strong>first use downloads the model (~86 MB)</strong> and caches it; after that it's instant. Requires internet only on first load.
+      </div>
+
+      <div class="btn-row">
+        <button id="btn-generate" data-i18n="btnGenerate">🎙 Generate Audio</button>
+        <button id="btn-preview"  data-i18n="btnPreview">▶ Preview</button>
+        <button id="btn-download" data-i18n="btnDownload">⬇ Download MP3</button>
+      </div>
+
+      <div class="status-row">
+        <div class="dot" id="dot"></div>
+        <span id="status-text" data-i18n="statusDownloadReady">Ready — enter your text and click Generate</span>
+      </div>
+      <audio id="audio-player"></audio>
     </div>
 
-    <div class="info-box" id="info-box">
-      <strong>How it works:</strong> The voice model runs entirely in your browser — no servers, no API keys. The <strong>first use downloads the model (~86 MB)</strong> and caches it; after that it's instant. Requires internet only on first load.
-    </div>
-
-    <div class="btn-row">
-      <button id="btn-generate">🎙 Generate Audio</button>
-      <button id="btn-preview">▶ Preview</button>
-      <button id="btn-download">⬇ Download MP3</button>
-    </div>
-
-    <div class="status-row">
-      <div class="dot" id="dot"></div>
-      <span id="status-text">Ready — enter your text and click Generate</span>
-    </div>
-    <audio id="audio-player"></audio>
   </article>
 
   <!-- SIDEBAR -->
   <aside class="sidebar">
-
-    <!-- AD SIDEBAR (250×250) -->
-    <!--div class="ad-sidebar">
-      <span class="ad-label">Advertisement</span>
-      <ins class="adsbygoogle"
-           style="display:inline-block;width:250px;height:250px"
-           data-ad-client="ca-pub-7086938365759492"
-           data-ad-slot="auto"></ins>
-          adsbygoogle disabled until AdSense approval 
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-     
-    </div> -->
     <div class="ad-sidebar">
       <span class="ad-label">Advertisement</span>
       <div class="ad-placeholder-sidebar">250×250</div>
     </div>
-    <!-- TIPS -->
     <div class="tips-card">
-      <h3>🎓 Teaching Tips</h3>
-      <div class="tip-item"><span class="tip-icon">🐢</span><span><strong>0.7×</strong> — Listening comprehension for beginners</span></div>
-      <div class="tip-item"><span class="tip-icon">🚶</span><span><strong>0.85×</strong> — Standard listening exercise</span></div>
-      <div class="tip-item"><span class="tip-icon">🏃</span><span><strong>1.0×</strong> — Dictation at native speed</span></div>
-      <div class="tip-item"><span class="tip-icon">💡</span><span>Try <strong>Emma (British)</strong> for Cambridge exam prep</span></div>
-      <div class="tip-item"><span class="tip-icon">📊</span><span>In PowerPoint: Insert → Audio → Audio on my PC</span></div>
+      <h3 data-i18n="tipsTitle">🎓 Teaching Tips</h3>
+      <div class="tip-item"><span class="tip-icon">🐢</span><span data-i18n-html="tip1"><strong>0.7×</strong> — Listening comprehension for beginners</span></div>
+      <div class="tip-item"><span class="tip-icon">🚶</span><span data-i18n-html="tip2"><strong>0.85×</strong> — Standard listening exercise</span></div>
+      <div class="tip-item"><span class="tip-icon">🏃</span><span data-i18n-html="tip3"><strong>1.0×</strong> — Dictation at native speed</span></div>
+      <div class="tip-item"><span class="tip-icon">💡</span><span data-i18n-html="tip4">Try <strong>Emma (British)</strong> for Cambridge exam prep</span></div>
+      <div class="tip-item"><span class="tip-icon">📊</span><span data-i18n="tip5">In PowerPoint: Insert → Audio → Audio on my PC</span></div>
     </div>
   </aside>
 </main>
 
 <!-- ── SEO CONTENT ── -->
 <section class="content-section" id="how-it-works">
-  <h2>How it works</h2>
-  <p>English Audio Generator uses a neural voice model that runs entirely in your browser — no servers, no uploads, no sign-up required. Your text never leaves your device. Click Generate Audio, wait a few seconds, then download the MP3 file directly to your computer.</p>
-  <p>The downloaded file (MP3 format) is compatible with PowerPoint, Google Slides, and any media player or video editing software. It's perfect for creating listening exercises, dictation tracks, pronunciation models, and narrated presentations.</p>
 
-  <div class="faq" id="faq">
-    <h2>Frequently Asked Questions</h2>
-    <div class="faq-item">
-      <h3>Is this tool completely free?</h3>
-      <p>Yes. It uses your browser's built-in text-to-speech engine, which is free and requires no API keys or subscriptions. There are no hidden costs.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Which browsers are supported?</h3>
-      <p>Google Chrome and Microsoft Edge are recommended. The tool works in any modern browser that supports WebAssembly. Safari and Firefox also work, but Chrome gives the best performance.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Can I use the audio in PowerPoint?</h3>
-      <p>Yes. After downloading, go to Insert → Audio → Audio on my PC and select the MP3 file. MP3 is supported in all versions of PowerPoint.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Is my text stored or sent anywhere?</h3>
-      <p>No. Everything happens locally in your browser. Your text is never sent to any server.</p>
+  <!-- English content -->
+  <div class="lang-content lang-en">
+    <h2>How it works</h2>
+    <p>English Audio Generator uses a neural voice model that runs entirely in your browser — no servers, no uploads, no sign-up required. Your text never leaves your device. Click Generate Audio, wait a few seconds, then download the MP3 file directly to your computer.</p>
+    <p>The downloaded file (MP3 format) is compatible with PowerPoint, Google Slides, and any media player or video editing software. It's perfect for creating listening exercises, dictation tracks, pronunciation models, and narrated presentations.</p>
+    <div class="faq" id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <h3>Is this tool completely free?</h3>
+        <p>Yes. The neural voice model runs locally in your browser with no API keys or subscriptions required. There are no hidden costs.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Which browsers are supported?</h3>
+        <p>Google Chrome and Microsoft Edge are recommended. The tool works in any modern browser that supports WebAssembly. Safari and Firefox also work, but Chrome gives the best performance.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Can I use the audio in PowerPoint?</h3>
+        <p>Yes. After downloading, go to Insert → Audio → Audio on my PC and select the MP3 file. MP3 is supported in all versions of PowerPoint.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Is my text stored or sent anywhere?</h3>
+        <p>No. Everything happens locally in your browser. Your text is never sent to any server.</p>
+      </div>
     </div>
   </div>
+
+  <!-- Spanish content -->
+  <div class="lang-content lang-es" hidden>
+    <h2>Cómo funciona</h2>
+    <p>English Audio Generator usa un modelo de voz neuronal que corre completamente en tu navegador — sin servidores, sin cargas, sin registro. Tu texto nunca sale de tu dispositivo. Haz clic en Generar Audio, espera unos segundos y descarga el archivo MP3 directamente a tu computadora.</p>
+    <p>El archivo descargado (formato MP3) es compatible con PowerPoint, Google Slides y cualquier reproductor de medios o software de edición de video. Es perfecto para crear ejercicios de escucha, pistas de dictado, modelos de pronunciación y presentaciones narradas.</p>
+    <div class="faq">
+      <h2>Preguntas Frecuentes</h2>
+      <div class="faq-item">
+        <h3>¿Es esta herramienta completamente gratuita?</h3>
+        <p>Sí. El modelo de voz neuronal corre localmente en tu navegador sin necesidad de claves API ni suscripciones. No hay costos ocultos.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Qué navegadores son compatibles?</h3>
+        <p>Se recomiendan Google Chrome y Microsoft Edge. La herramienta funciona en cualquier navegador moderno que soporte WebAssembly. Safari y Firefox también funcionan, pero Chrome ofrece el mejor rendimiento.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Puedo usar el audio en PowerPoint?</h3>
+        <p>Sí. Después de descargar, ve a Insertar → Audio → Audio en mi PC y selecciona el archivo MP3. El formato MP3 es compatible con todas las versiones de PowerPoint.</p>
+      </div>
+      <div class="faq-item">
+        <h3>¿Mi texto se almacena o se envía a algún servidor?</h3>
+        <p>No. Todo ocurre localmente en tu navegador. Tu texto nunca se envía a ningún servidor.</p>
+      </div>
+    </div>
+  </div>
+
 </section>
 
-<!-- ── AD BOTTOM (970×90) ── -
-<div class="ad-bottom">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-7086938365759492"
-       data-ad-slot="auto"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>-->
+<!-- ── AD BOTTOM ── -->
 <div class="ad-bottom">
   <div class="ad-placeholder-bottom">970×90</div>
 </div>
+
 <!-- ── FOOTER ── -->
 <footer>
   <p>© 2026 English Audio Generator · Free text-to-speech for educators</p>
@@ -507,17 +624,227 @@
     <a href="#">Terms of Use</a>
     <a href="#">Contact</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.8.1</p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.9.0</p>
 </footer>
 
 <script type="module">
   import { KokoroTTS } from 'https://cdn.jsdelivr.net/npm/kokoro-js/dist/kokoro.web.js';
 
+  /* ══════════════════════════════════════════════════
+     TRANSLATIONS
+  ══════════════════════════════════════════════════ */
+  const I18N = {
+    en: {
+      navHow: 'How it works', navFaq: 'FAQ',
+      eyebrow: 'Free · No sign-up · Instant download',
+      h1: 'Turn any English text into<br><em>downloadable audio</em>',
+      heroParagraph: 'The easiest way for ESL teachers to create listening exercises, dictation audio, and PowerPoint narrations — for free.',
+      badgeFree: '✓ Free forever', badgeVoices: '✓ Multiple voices',
+      badgeDownload: '✓ Downloadable audio file', badgeOffline: '✓ Works offline after load',
+      labelText: 'Your text',
+      placeholderText: 'Paste or type any English paragraph here...',
+      tabListen: '🎧 Quick Listen', tabDownload: '⬇ Download MP3',
+      labelVoice: 'Voice', labelSpeed: 'Speed', labelFilename: 'File name (no extension)',
+      btnSpeak: '▶ Speak', btnPause: '⏸ Pause', btnStop: '⏹ Stop',
+      btnGenerate: '🎙 Generate Audio', btnPreview: '▶ Preview', btnDownload: '⬇ Download MP3',
+      statusListenReady: 'Ready — select a voice and click Speak',
+      statusListenSpeaking: 'Speaking…', statusListenDone: 'Done',
+      statusListenStopped: 'Stopped',
+      noVoices: 'No English voices found — try Chrome or Edge',
+      statusDownloadReady: 'Ready — enter your text and click Generate',
+      infoBox: '<strong>How it works:</strong> The voice model runs entirely in your browser — no servers, no API keys. The <strong>first use downloads the model (~86 MB)</strong> and caches it; after that it\'s instant. Requires internet only on first load.',
+      tipsTitle: '🎓 Teaching Tips',
+      tip1: '<strong>0.7×</strong> — Listening comprehension for beginners',
+      tip2: '<strong>0.85×</strong> — Standard listening exercise',
+      tip3: '<strong>1.0×</strong> — Dictation at native speed',
+      tip4: 'Try <strong>Emma (British)</strong> for Cambridge exam prep',
+      tip5: 'In PowerPoint: Insert → Audio → Audio on my PC',
+    },
+    es: {
+      navHow: 'Cómo funciona', navFaq: 'FAQ',
+      eyebrow: 'Gratis · Sin registro · Descarga instantánea',
+      h1: 'Convierte cualquier texto en inglés en<br><em>audio descargable</em>',
+      heroParagraph: 'La forma más fácil para profesores de inglés de crear ejercicios de escucha, dictados y narraciones para PowerPoint — gratis.',
+      badgeFree: '✓ Siempre gratis', badgeVoices: '✓ Múltiples voces',
+      badgeDownload: '✓ Archivo de audio descargable', badgeOffline: '✓ Funciona sin internet tras la primera carga',
+      labelText: 'Tu texto',
+      placeholderText: 'Pega o escribe aquí cualquier párrafo en inglés...',
+      tabListen: '🎧 Escuchar', tabDownload: '⬇ Descargar MP3',
+      labelVoice: 'Voz', labelSpeed: 'Velocidad', labelFilename: 'Nombre de archivo (sin extensión)',
+      btnSpeak: '▶ Hablar', btnPause: '⏸ Pausar', btnStop: '⏹ Detener',
+      btnGenerate: '🎙 Generar Audio', btnPreview: '▶ Vista previa', btnDownload: '⬇ Descargar MP3',
+      statusListenReady: 'Listo — selecciona una voz y haz clic en Hablar',
+      statusListenSpeaking: 'Hablando…', statusListenDone: 'Listo',
+      statusListenStopped: 'Detenido',
+      noVoices: 'No se encontraron voces en inglés — intenta con Chrome o Edge',
+      statusDownloadReady: 'Listo — ingresa tu texto y haz clic en Generar',
+      infoBox: '<strong>Cómo funciona:</strong> El modelo de voz corre completamente en tu navegador — sin servidores, sin claves API. El <strong>primer uso descarga el modelo (~86 MB)</strong> y lo guarda en caché; luego es instantáneo. Solo requiere internet en la primera carga.',
+      tipsTitle: '🎓 Consejos para Docentes',
+      tip1: '<strong>0.7×</strong> — Comprensión auditiva para principiantes',
+      tip2: '<strong>0.85×</strong> — Ejercicio de escucha estándar',
+      tip3: '<strong>1.0×</strong> — Dictado a velocidad nativa',
+      tip4: 'Usa <strong>Emma (Británico)</strong> para preparación Cambridge',
+      tip5: 'En PowerPoint: Insertar → Audio → Audio en mi PC',
+    }
+  };
+
+  /* ══════════════════════════════════════════════════
+     LANGUAGE
+  ══════════════════════════════════════════════════ */
+  let currentLang = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('lang', lang);
+    const t = I18N[lang];
+
+    // Language buttons
+    document.querySelectorAll('.lang-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.lang === lang));
+
+    // data-i18n → textContent
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const v = t[el.dataset.i18n];
+      if (v !== undefined) el.textContent = v;
+    });
+
+    // data-i18n-html → innerHTML
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const v = t[el.dataset.i18nHtml];
+      if (v !== undefined) el.innerHTML = v;
+    });
+
+    // data-i18n-placeholder → placeholder attribute
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const v = t[el.dataset.i18nPlaceholder];
+      if (v !== undefined) el.placeholder = v;
+    });
+
+    // Long-form content blocks
+    document.querySelectorAll('.lang-content').forEach(el =>
+      el.hidden = !el.classList.contains('lang-' + lang));
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
+  /* ══════════════════════════════════════════════════
+     TABS
+  ══════════════════════════════════════════════════ */
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.tab === tabId));
+    document.querySelectorAll('.tab-panel').forEach(p =>
+      p.classList.toggle('active', p.id === 'panel-' + tabId));
+    localStorage.setItem('activeTab', tabId);
+    // Stop speech when switching away from listen tab
+    if (tabId !== 'listen') speechSynthesis.cancel();
+  }
+
+  document.querySelectorAll('.tab-btn').forEach(b =>
+    b.addEventListener('click', () => switchTab(b.dataset.tab)));
+
+  /* ══════════════════════════════════════════════════
+     QUICK LISTEN — Web Speech API
+  ══════════════════════════════════════════════════ */
+  function loadSpeechVoices() {
+    const voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+    const sel = document.getElementById('speech-voice');
+    sel.innerHTML = '';
+    if (voices.length === 0) {
+      const o = document.createElement('option');
+      o.textContent = I18N[currentLang].noVoices;
+      o.disabled = true;
+      sel.appendChild(o);
+      return;
+    }
+    voices.forEach(v => {
+      const o = document.createElement('option');
+      o.value = v.name;
+      o.textContent = `${v.name} (${v.lang})`;
+      sel.appendChild(o);
+    });
+  }
+
+  speechSynthesis.addEventListener('voiceschanged', loadSpeechVoices);
+  loadSpeechVoices();
+
+  document.getElementById('speech-rate').addEventListener('input', e =>
+    document.getElementById('speech-rate-val').textContent =
+      parseFloat(e.target.value).toFixed(2) + '×');
+
+  function setListenStatus(state, msg) {
+    document.getElementById('listen-dot').className = 'dot ' + state;
+    document.getElementById('listen-status-text').textContent = msg;
+  }
+
+  const btnSpeak = document.getElementById('btn-speak');
+  const btnStop  = document.getElementById('btn-stop');
+
+  btnSpeak.addEventListener('click', () => {
+    const text = document.getElementById('text').value.trim();
+    if (!text) return;
+    const t = I18N[currentLang];
+
+    // Pause/Resume
+    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+      speechSynthesis.pause();
+      btnSpeak.textContent = t.btnSpeak;
+      return;
+    }
+    if (speechSynthesis.paused) {
+      speechSynthesis.resume();
+      btnSpeak.textContent = t.btnPause;
+      setListenStatus('recording', t.statusListenSpeaking);
+      return;
+    }
+
+    // New utterance
+    const allVoices = speechSynthesis.getVoices();
+    const selName   = document.getElementById('speech-voice').value;
+    const voice     = allVoices.find(v => v.name === selName) || null;
+    const rate      = parseFloat(document.getElementById('speech-rate').value);
+
+    const utt = new SpeechSynthesisUtterance(text);
+    if (voice) utt.voice = voice;
+    utt.rate = rate;
+
+    utt.onstart = () => {
+      btnSpeak.textContent = t.btnPause;
+      btnStop.style.display = 'flex';
+      setListenStatus('recording', t.statusListenSpeaking);
+    };
+    utt.onend = () => {
+      btnSpeak.textContent = t.btnSpeak;
+      btnStop.style.display = 'none';
+      setListenStatus('done', t.statusListenDone);
+    };
+    utt.onerror = ev => {
+      if (ev.error === 'interrupted') return;
+      btnSpeak.textContent = t.btnSpeak;
+      btnStop.style.display = 'none';
+      setListenStatus('error', ev.error);
+    };
+
+    speechSynthesis.speak(utt);
+  });
+
+  btnStop.addEventListener('click', () => {
+    speechSynthesis.cancel();
+    const t = I18N[currentLang];
+    btnSpeak.textContent = t.btnSpeak;
+    btnStop.style.display = 'none';
+    setListenStatus('', t.statusListenStopped);
+  });
+
+  /* ══════════════════════════════════════════════════
+     DOWNLOAD MP3 — Kokoro TTS
+  ══════════════════════════════════════════════════ */
   let audioBlob = null, audioURL = null;
   let ttsModel = null;
 
   const MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX';
-  const VOICES = [
+  const KOKORO_VOICES = [
     { id: 'af_heart',  label: 'Heart — US Female (Natural)' },
     { id: 'af_bella',  label: 'Bella — US Female (Warm)' },
     { id: 'am_adam',   label: 'Adam — US Male' },
@@ -525,9 +852,9 @@
     { id: 'bm_george', label: 'George — British Male' },
   ];
 
-  (function initVoices() {
+  (function initKokoroVoices() {
     const sel = document.getElementById('voice-select');
-    VOICES.forEach(v => {
+    KOKORO_VOICES.forEach(v => {
       const o = document.createElement('option');
       o.value = v.id; o.textContent = v.label;
       sel.appendChild(o);
@@ -535,9 +862,10 @@
   })();
 
   document.getElementById('rate').addEventListener('input', e =>
-    document.getElementById('rate-val').textContent = parseFloat(e.target.value).toFixed(2) + '×');
+    document.getElementById('rate-val').textContent =
+      parseFloat(e.target.value).toFixed(2) + '×');
 
-  function setStatus(state, msg) {
+  function setDownloadStatus(state, msg) {
     document.getElementById('dot').className = 'dot ' + state;
     document.getElementById('status-text').textContent = msg;
   }
@@ -561,7 +889,7 @@
 
   async function generateAudio() {
     const text = document.getElementById('text').value.trim();
-    if (!text) { setStatus('error', 'Please enter some text first.'); return; }
+    if (!text) { setDownloadStatus('error', I18N[currentLang].statusDownloadReady); return; }
 
     const btn = document.getElementById('btn-generate');
     btn.disabled = true; btn.classList.add('recording');
@@ -571,17 +899,17 @@
 
     try {
       if (!ttsModel) {
-        setStatus('recording', 'Loading voice model (~86 MB, cached after first use)…');
+        setDownloadStatus('recording', 'Loading voice model (~86 MB, cached after first use)…');
         ttsModel = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
       }
 
-      setStatus('recording', 'Synthesising speech…');
+      setDownloadStatus('recording', 'Synthesising speech…');
       const result = await ttsModel.generate(text, { voice: voiceId, speed });
 
-      const pcm = result.audio;         // Float32Array — 24 kHz mono
-      const sr  = result.sampling_rate; // 24000
+      const pcm = result.audio;
+      const sr  = result.sampling_rate;
 
-      setStatus('recording', 'Encoding to MP3…');
+      setDownloadStatus('recording', 'Encoding to MP3…');
       audioBlob = pcmToMp3(pcm, sr);
       if (audioURL) URL.revokeObjectURL(audioURL);
       audioURL = URL.createObjectURL(audioBlob);
@@ -589,11 +917,11 @@
       ap.src = audioURL; ap.load();
 
       document.getElementById('btn-download').style.display = 'flex';
-      document.getElementById('btn-preview').style.display = 'flex';
-      setStatus('done', 'MP3 ready ✓ — preview or download');
+      document.getElementById('btn-preview').style.display  = 'flex';
+      setDownloadStatus('done', 'MP3 ready ✓ — preview or download');
     } catch (err) {
       console.error(err);
-      setStatus('error', err.message);
+      setDownloadStatus('error', err.message);
     }
     btn.disabled = false; btn.classList.remove('recording');
   }
@@ -603,16 +931,25 @@
   const ap = document.getElementById('audio-player');
   const bp = document.getElementById('btn-preview');
   bp.addEventListener('click', () => {
-    if (ap.paused) { if (ap.ended) ap.currentTime = 0; ap.play(); bp.textContent = '⏸ Pause'; }
-    else { ap.pause(); bp.textContent = '▶ Preview'; }
+    const t = I18N[currentLang];
+    if (ap.paused) { if (ap.ended) ap.currentTime = 0; ap.play(); bp.textContent = t.btnPause; }
+    else { ap.pause(); bp.textContent = t.btnPreview; }
   });
-  ap.addEventListener('ended', () => { bp.textContent = '▶ Preview'; });
+  ap.addEventListener('ended', () => {
+    document.getElementById('btn-preview').textContent = I18N[currentLang].btnPreview;
+  });
 
   document.getElementById('btn-download').addEventListener('click', () => {
     if (!audioBlob) return;
     const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
     const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
   });
+
+  /* ══════════════════════════════════════════════════
+     INIT — apply saved preferences
+  ══════════════════════════════════════════════════ */
+  applyLang(currentLang);
+  switchTab(localStorage.getItem('activeTab') || 'listen');
 </script>
 </body>
 </html>
