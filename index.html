@@ -782,6 +782,8 @@
 
   const btnSpeak = document.getElementById('btn-speak');
   const btnStop  = document.getElementById('btn-stop');
+  // Chrome fires onend prematurely when pause() is called — track pause state manually
+  let listenPaused = false;
 
   btnSpeak.addEventListener('click', () => {
     const text = document.getElementById('text').value.trim();
@@ -794,20 +796,26 @@
       return;
     }
 
-    // Pause/Resume
-    if (speechSynthesis.speaking && !speechSynthesis.paused) {
+    // Pause
+    if (speechSynthesis.speaking && !listenPaused) {
       speechSynthesis.pause();
+      listenPaused = true;
       btnSpeak.textContent = t.btnSpeak;
       return;
     }
-    if (speechSynthesis.paused) {
+    // Resume
+    if (listenPaused) {
       speechSynthesis.resume();
+      listenPaused = false;
       btnSpeak.textContent = t.btnPause;
       setListenStatus('recording', t.statusListenSpeaking);
       return;
     }
 
-    // New utterance
+    // New utterance — cancel first to clear any stuck state
+    listenPaused = false;
+    speechSynthesis.cancel();
+
     const allVoices = speechSynthesis.getVoices();
     const selName   = document.getElementById('speech-voice').value;
     const voice     = allVoices.find(v => v.name === selName) || null;
@@ -823,12 +831,15 @@
       setListenStatus('recording', t.statusListenSpeaking);
     };
     utt.onend = () => {
+      if (listenPaused) return; // Chrome bug: onend fires on pause — ignore
+      listenPaused = false;
       btnSpeak.textContent = t.btnSpeak;
       btnStop.style.display = 'none';
       setListenStatus('done', t.statusListenDone);
     };
     utt.onerror = ev => {
       if (ev.error === 'interrupted') return;
+      listenPaused = false;
       btnSpeak.textContent = t.btnSpeak;
       btnStop.style.display = 'none';
       setListenStatus('error', ev.error);
@@ -838,6 +849,7 @@
   });
 
   btnStop.addEventListener('click', () => {
+    listenPaused = false;
     speechSynthesis.cancel();
     const t = I18N[currentLang];
     btnSpeak.textContent = t.btnSpeak;
