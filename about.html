@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KTXQJMMH');</script>
+  <!-- End Google Tag Manager -->
+
+  <meta charset="UTF-8">
+  <meta name="google-adsense-account" content="ca-pub-7086938365759492">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>About — ListeningClassroom.com</title>
+  <meta name="description" content="Learn about ListeningClassroom.com — a free English text-to-speech tool built for ESL teachers and educators.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://listeningclassroom.com/about.html">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="shortcut icon" href="favicon.svg">
+
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #7d8590;
+      --accent: #58a6ff;
+      --accent-warm: #f78166;
+      --accent-green: #3fb950;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--accent-warm); }
+    .header-right { display: flex; align-items: center; gap: 1.5rem; }
+    nav a {
+      color: var(--muted); font-size: 0.85rem; text-decoration: none;
+      margin-left: 1.5rem; transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
+
+    /* ── LANGUAGE SWITCHER ── */
+    .lang-switcher {
+      display: flex;
+      gap: 2px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+    }
+    .lang-btn {
+      padding: 0.22rem 0.65rem;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.04em;
+    }
+    .lang-btn.active { background: var(--accent); color: #0d1117; }
+    .lang-btn:hover:not(.active) { color: var(--text); }
+
+    /* ── CONTENT ── */
+    .page-wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .page-eyebrow {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    h1 em { color: var(--accent-warm); font-style: normal; }
+
+    .last-updated {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .policy-section {
+      margin-bottom: 2.2rem;
+    }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    h2 .section-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      margin-bottom: 0.75rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0.75rem 0;
+    }
+    ul li {
+      color: var(--muted);
+      font-size: 0.93rem;
+      padding: 0.35rem 0 0.35rem 1.2rem;
+      position: relative;
+    }
+    ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.75rem;
+      top: 0.45rem;
+    }
+    ul li strong { color: var(--text); }
+
+    .highlight-box {
+      background: rgba(88,166,255,0.07);
+      border: 1px solid rgba(88,166,255,0.2);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.75rem 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    .cta-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .cta-card p { margin: 0; font-size: 0.88rem; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      align-self: flex-start;
+      transition: opacity 0.15s;
+    }
+    .cta-btn:hover { opacity: 0.85; text-decoration: none; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KTXQJMMH"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- ── HEADER ── -->
+<header>
+  <a href="index.html" class="logo">Listening<span>Classroom</span></a>
+  <div class="header-right">
+    <nav>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="es">ES</button>
+    </div>
+  </div>
+</header>
+
+<!-- ── ENGLISH VERSION ── -->
+<div class="lang-content lang-en">
+<div class="page-wrapper">
+
+  <p class="page-eyebrow">About us</p>
+  <h1>About <em>ListeningClassroom</em></h1>
+  <p class="last-updated">Free English text-to-speech for educators</p>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">🎯</span> Our Mission</h2>
+    <p>ListeningClassroom.com exists for one purpose: to make it easier for English teachers to create high-quality listening materials — for free, without technical barriers.</p>
+    <p>Preparing dictation tracks, listening exercises, and narrated presentations takes time. We built this tool so that any teacher can generate professional-sounding audio in seconds, without needing an account, a subscription, or technical skills.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">👩‍🏫</span> Who Is This For?</h2>
+    <p>This tool is designed primarily for:</p>
+    <ul>
+      <li><strong>ESL / EFL teachers</strong> who create listening exercises for their students.</li>
+      <li><strong>Language tutors</strong> who need pronunciation models and reading-aloud examples.</li>
+      <li><strong>Curriculum developers</strong> building audio content for e-learning platforms.</li>
+      <li><strong>Classroom teachers</strong> who need MP3 audio for PowerPoint or Google Slides.</li>
+    </ul>
+    <p>It is used by educators at all levels — from primary school to university and adult education.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">⚙️</span> How It Works</h2>
+    <p>ListeningClassroom.com uses a state-of-the-art neural text-to-speech model called <strong>Kokoro TTS</strong>, which runs entirely in your browser using WebAssembly. This means:</p>
+    <ul>
+      <li>Your text is <strong>never sent to any server</strong> — everything is processed locally on your device.</li>
+      <li>The tool works <strong>offline after the first load</strong> (the voice model is cached in your browser).</li>
+      <li>No account, no API key, no subscription — <strong>completely free</strong>.</li>
+    </ul>
+    <div class="highlight-box">
+      <strong>Quick Listen</strong> mode uses your browser's built-in Web Speech API for instant playback. <strong>Download MP3</strong> mode uses the Kokoro neural model for studio-quality audio you can save and share.
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">🔒</span> Privacy and Safety</h2>
+    <p>We take privacy seriously, especially given that teachers may be preparing materials for use with children. The tool is designed with privacy as a default:</p>
+    <ul>
+      <li>No text you enter is stored or transmitted.</li>
+      <li>No user accounts or personal data are collected.</li>
+      <li>Audio files are generated locally and downloaded directly to your computer.</li>
+    </ul>
+    <p>For full details, see our <a href="privacy.html">Privacy Policy</a>.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">💬</span> Get in Touch</h2>
+    <p>Have feedback, a bug to report, or a feature request? We'd love to hear from you.</p>
+    <div class="cta-card">
+      <p>Reach out at any time — we typically respond within 48 hours.</p>
+      <a href="contact.html" class="cta-btn">Go to Contact page →</a>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ── SPANISH VERSION ── -->
+<div class="lang-content lang-es" hidden>
+<div class="page-wrapper">
+
+  <p class="page-eyebrow">Acerca de nosotros</p>
+  <h1>Acerca de <em>ListeningClassroom</em></h1>
+  <p class="last-updated">Texto a voz en inglés gratuito para educadores</p>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">🎯</span> Nuestra Misión</h2>
+    <p>ListeningClassroom.com existe con un único propósito: facilitar a los profesores de inglés la creación de materiales de escucha de alta calidad — de forma gratuita y sin barreras técnicas.</p>
+    <p>Preparar pistas de dictado, ejercicios de escucha y presentaciones narradas lleva tiempo. Creamos esta herramienta para que cualquier docente pueda generar audio de calidad profesional en segundos, sin necesidad de cuenta, suscripción ni conocimientos técnicos.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">👩‍🏫</span> ¿Para Quién Es?</h2>
+    <p>Esta herramienta está diseñada principalmente para:</p>
+    <ul>
+      <li><strong>Profesores de inglés como lengua extranjera (ESL/EFL)</strong> que crean ejercicios de escucha para sus estudiantes.</li>
+      <li><strong>Tutores de idiomas</strong> que necesitan modelos de pronunciación y ejemplos de lectura en voz alta.</li>
+      <li><strong>Desarrolladores de currículum</strong> que crean contenido de audio para plataformas de e-learning.</li>
+      <li><strong>Docentes</strong> que necesitan audio MP3 para PowerPoint o Google Slides.</li>
+    </ul>
+    <p>Es utilizada por educadores de todos los niveles, desde escuela primaria hasta universidad y educación para adultos.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">⚙️</span> Cómo Funciona</h2>
+    <p>ListeningClassroom.com utiliza un modelo neuronal de texto a voz de última generación llamado <strong>Kokoro TTS</strong>, que corre completamente en tu navegador mediante WebAssembly. Esto significa:</p>
+    <ul>
+      <li>Tu texto <strong>nunca se envía a ningún servidor</strong> — todo se procesa localmente en tu dispositivo.</li>
+      <li>La herramienta funciona <strong>sin internet tras la primera carga</strong> (el modelo de voz queda en caché en tu navegador).</li>
+      <li>Sin cuenta, sin clave API, sin suscripción — <strong>completamente gratuita</strong>.</li>
+    </ul>
+    <div class="highlight-box">
+      El modo <strong>Escuchar</strong> usa la API de síntesis de voz nativa de tu navegador para reproducción instantánea. El modo <strong>Descargar MP3</strong> usa el modelo neuronal Kokoro para audio de calidad de estudio que puedes guardar y compartir.
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">🔒</span> Privacidad y Seguridad</h2>
+    <p>Nos tomamos la privacidad muy en serio, especialmente dado que los docentes pueden estar preparando materiales para usar con niños. La herramienta está diseñada con la privacidad como valor predeterminado:</p>
+    <ul>
+      <li>Ningún texto que ingreses se almacena ni transmite.</li>
+      <li>No se recopilan cuentas de usuario ni datos personales.</li>
+      <li>Los archivos de audio se generan localmente y se descargan directamente en tu computadora.</li>
+    </ul>
+    <p>Para más detalles, consulta nuestra <a href="privacy.html">Política de Privacidad</a>.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">💬</span> Contáctanos</h2>
+    <p>¿Tienes sugerencias, un error que reportar o una solicitud de función? Nos encantaría escucharte.</p>
+    <div class="cta-card">
+      <p>Escríbenos cuando quieras — normalmente respondemos en menos de 48 horas.</p>
+      <a href="contact.html" class="cta-btn">Ir a la página de contacto →</a>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <p>© 2026 ListeningClassroom.com · Free text-to-speech for educators</p>
+  <p style="margin-top:0.5rem">
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+  </p>
+  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.9.5</p>
+</footer>
+
+<script>
+  // ── Language switcher ──
+  const saved = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    localStorage.setItem('lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.lang === lang));
+    document.querySelectorAll('.lang-content').forEach(el =>
+      el.hidden = !el.classList.contains('lang-' + lang));
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
+  applyLang(saved);
+</script>
+</body>
+</html>

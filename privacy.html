@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KTXQJMMH');</script>
+  <!-- End Google Tag Manager -->
+
   <meta charset="UTF-8">
   <meta name="google-adsense-account" content="ca-pub-7086938365759492">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,6 +70,11 @@
     }
     .logo span { color: var(--accent-warm); }
     .header-right { display: flex; align-items: center; gap: 1.5rem; }
+    nav a {
+      color: var(--muted); font-size: 0.85rem; text-decoration: none;
+      margin-left: 1.5rem; transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
 
     /* ── LANGUAGE SWITCHER ── */
     .lang-switcher {
@@ -231,11 +244,19 @@
   </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KTXQJMMH"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <!-- ── HEADER ── -->
 <header>
   <a href="index.html" class="logo">Listening<span>Classroom</span></a>
   <div class="header-right">
+    <nav>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
     <div class="lang-switcher">
       <button class="lang-btn active" data-lang="en">EN</button>
       <button class="lang-btn" data-lang="es">ES</button>
@@ -391,9 +412,10 @@
 <footer>
   <p>© 2026 ListeningClassroom.com · Free text-to-speech for educators</p>
   <p style="margin-top:0.5rem">
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
     <a href="privacy.html">Privacy Policy</a>
-    <a href="#">Terms of Use</a>
-    <a href="mailto:contactlisteningclassroom@gmail.com">Contact</a>
+    <a href="terms.html">Terms of Use</a>
   </p>
 </footer>
 
