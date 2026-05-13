@@ -64,28 +64,19 @@ Esto mejora el SEO (canonical URL y Open Graph).
 3. Ingresa la URL de tu sitio GitHub Pages
 4. Sigue el proceso de verificación (pueden pasar 1-14 días para aprobación)
 
-### Paso 2 — Agregar el código de verificación
-Mientras esperas aprobación, AdSense te dará un código así:
-```html
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
-```
-Pégalo en el `<head>` del `index.html` (ya hay un comentario marcando el lugar).
+### Paso 2 — Revisar la monetización
+El sitio ahora carga Google Tag Manager y AdSense solo después de que el usuario acepta las cookies no esenciales mediante el banner de consentimiento.
 
-### Paso 3 — Cuando te aprueben
-Busca los 3 bloques de comentarios en `index.html` marcados con:
-```
-<!-- AdSense: reemplaza cuando tengas tu código aprobado
-```
-Descomenta cada bloque y reemplaza:
-- `ca-pub-XXXXXXXXXXXXXXXX` → tu Publisher ID
-- `XXXXXXXXXX` → el Ad Slot ID de cada unidad
+Eso significa que:
+- no hay bloques manuales de anuncio en el HTML;
+- puedes usar Auto Ads desde tu cuenta de AdSense;
+- si más adelante quieres insertar unidades manuales, tendrás que agregar los `ins` de AdSense correspondientes.
 
-Los 3 espacios de publicidad están listos:
-| Posición | Tamaño | Tipo |
-|----------|--------|------|
-| Top banner | 728×90 | Leaderboard |
-| Sidebar | 250×250 | Square |
-| Bottom | 970×90 | Leaderboard |
+### Paso 3 — Confirmar el dominio
+Asegúrate de que la URL canónica en el HTML y el dominio del `CNAME` coincidan con tu sitio publicado:
+```txt
+https://listeningclassroom.com/
+```
 
 ---
 
