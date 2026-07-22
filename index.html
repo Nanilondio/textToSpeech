@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KTXQJMMH');</script>
+  <!-- End Google Tag Manager -->
   <!-- ═══════════════════════════════════════════
        SEO ESSENTIALS
   ════════════════════════════════════════════ -->
@@ -99,9 +106,10 @@
     }
     .logo span { color: var(--accent-warm); }
     .header-right { display: flex; align-items: center; gap: 1.5rem; }
+    nav { display: flex; align-items: center; flex-wrap: wrap; gap: 0.95rem 1.5rem; }
     nav a {
       color: var(--muted); font-size: 0.85rem; text-decoration: none;
-      margin-left: 1.5rem; transition: color 0.2s;
+      transition: color 0.2s;
     }
     nav a:hover { color: var(--text); }
 
@@ -132,6 +140,23 @@
       color: #0d1117;
     }
     .lang-btn:hover:not(.active) { color: var(--text); }
+    @media (max-width: 700px) {
+      header {
+        align-items: flex-start;
+        gap: 0.85rem;
+        padding: 0.85rem 1rem;
+      }
+      .header-right {
+        align-items: flex-end;
+        flex-direction: column-reverse;
+        gap: 0.7rem;
+      }
+      nav {
+        justify-content: flex-end;
+        gap: 0.45rem 0.9rem;
+      }
+      nav a { font-size: 0.78rem; }
+    }
 
     /* ── HERO ── */
     .hero {
@@ -391,7 +416,11 @@
     @media (max-width: 768px) {
       .use-grid { grid-template-columns: 1fr; }
     }
-    .faq { margin-top: 2rem; }
+    .anchor-target {
+      display: block;
+      scroll-margin-top: 90px;
+    }
+    .faq { margin-top: 2rem; scroll-margin-top: 90px; }
     .faq-item { border-top: 1px solid var(--border); padding: 1.2rem 0; }
     .faq-item h3 { font-size: 0.95rem; color: var(--text); margin-bottom: 0.5rem; }
     .faq-item p { color: var(--muted); font-size: 0.88rem; line-height: 1.7; margin: 0; }
@@ -406,13 +435,17 @@
   </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KTXQJMMH"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <!-- ── HEADER ── -->
 <header>
   <a href="/" class="logo">Listening<span>Classroom</span></a>
   <div class="header-right">
     <nav>
-      <a href="#how-it-works" data-i18n="navHow">How it works</a>
-      <a href="#faq" data-i18n="navFaq">FAQ</a>
+      <a href="#how-it-works" data-scroll-target="how-it-works" data-i18n="navHow">How it works</a>
+      <a href="#faq" data-scroll-target="faq" data-i18n="navFaq">FAQ</a>
       <a href="about.html" data-i18n="navAbout">About</a>
       <a href="contact.html" data-i18n="navContact">Contact</a>
     </nav>
@@ -546,7 +579,8 @@
     <h2>How it works</h2>
     <p>ListeningClassroom.com uses a neural voice model that runs entirely in your browser — no servers, no uploads, no sign-up required. Your text never leaves your device. Click Generate Audio, wait a few seconds, then download the MP3 file directly to your computer.</p>
     <p>The downloaded file (MP3 format) is compatible with PowerPoint, Google Slides, and any media player or video editing software. It's perfect for creating listening exercises, dictation tracks, pronunciation models, and narrated presentations.</p>
-    <div class="faq" id="faq">
+    <span id="faq" class="anchor-target" aria-hidden="true"></span>
+    <div class="faq" data-section="faq">
       <h2>Frequently Asked Questions</h2>
       <div class="faq-item">
         <h3>Is this tool completely free?</h3>
@@ -572,7 +606,7 @@
     <h2>Cómo funciona</h2>
     <p>ListeningClassroom.com usa un modelo de voz neuronal que corre completamente en tu navegador — sin servidores, sin cargas, sin registro. Tu texto nunca sale de tu dispositivo. Haz clic en Generar Audio, espera unos segundos y descarga el archivo MP3 directamente a tu computadora.</p>
     <p>El archivo descargado (formato MP3) es compatible con PowerPoint, Google Slides y cualquier reproductor de medios o software de edición de video. Es perfecto para crear ejercicios de escucha, pistas de dictado, modelos de pronunciación y presentaciones narradas.</p>
-    <div class="faq">
+    <div class="faq" data-section="faq">
       <h2>Preguntas Frecuentes</h2>
       <div class="faq-item">
         <h3>¿Es esta herramienta completamente gratuita?</h3>
@@ -761,7 +795,26 @@
   }
 
   document.querySelectorAll('.lang-btn').forEach(b =>
-    b.addEventListener('click', () => applyLang(b.dataset.lang)));
+    b.addEventListener('click', () => {
+      applyLang(b.dataset.lang);
+      if (location.hash === '#faq') scrollToSection('faq');
+    }));
+
+  function scrollToSection(section) {
+    const target = section === 'faq'
+      ? document.querySelector('.lang-content:not([hidden]) .faq')
+      : document.getElementById(section);
+    if (target) target.scrollIntoView({ block: 'start' });
+  }
+
+  document.querySelectorAll('[data-scroll-target]').forEach(link =>
+    link.addEventListener('click', (event) => {
+      const target = link.dataset.scrollTarget;
+      if (!target) return;
+      event.preventDefault();
+      history.pushState(null, '', '#' + target);
+      scrollToSection(target);
+    }));
 
   /* ══════════════════════════════════════════════════
      TABS
@@ -1001,6 +1054,7 @@
   ══════════════════════════════════════════════════ */
   applyLang(currentLang);
   switchTab(localStorage.getItem('activeTab') || 'listen');
+  if (location.hash === '#faq') requestAnimationFrame(() => scrollToSection('faq'));
 </script>
 </body>
 </html>

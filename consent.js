@@ -1,7 +1,6 @@
 (() => {
   const STORAGE_KEY = 'lc_cookie_consent';
   const ADSENSE_CLIENT = 'ca-pub-7086938365759492';
-  const GTM_ID = 'GTM-KTXQJMMH';
 
   const state = () => {
     try {
@@ -129,10 +128,6 @@
     if (window.__lcMarketingLoaded) return;
     window.__lcMarketingLoaded = true;
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-
-    await loadScript(`https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(GTM_ID)}`);
     await loadScript(
       `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(ADSENSE_CLIENT)}`,
       { crossorigin: 'anonymous' }

@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KTXQJMMH');</script>
+  <!-- End Google Tag Manager -->
   <meta charset="UTF-8">
   <meta name="google-adsense-account" content="ca-pub-7086938365759492">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -64,9 +71,10 @@
     }
     .logo span { color: var(--accent-warm); }
     .header-right { display: flex; align-items: center; gap: 1.5rem; }
+    nav { display: flex; align-items: center; flex-wrap: wrap; gap: 0.95rem 1.5rem; }
     nav a {
       color: var(--muted); font-size: 0.85rem; text-decoration: none;
-      margin-left: 1.5rem; transition: color 0.2s;
+      transition: color 0.2s;
     }
     nav a:hover { color: var(--text); }
 
@@ -94,6 +102,23 @@
     }
     .lang-btn.active { background: var(--accent); color: #0d1117; }
     .lang-btn:hover:not(.active) { color: var(--text); }
+    @media (max-width: 700px) {
+      header {
+        align-items: flex-start;
+        gap: 0.85rem;
+        padding: 0.85rem 1rem;
+      }
+      .header-right {
+        align-items: flex-end;
+        flex-direction: column-reverse;
+        gap: 0.7rem;
+      }
+      nav {
+        justify-content: flex-end;
+        gap: 0.45rem 0.9rem;
+      }
+      nav a { font-size: 0.78rem; }
+    }
 
     /* ── CONTENT ── */
     .page-wrapper {
@@ -229,11 +254,18 @@
   </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KTXQJMMH"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <!-- ── HEADER ── -->
 <header>
   <a href="index.html" class="logo">Listening<span>Classroom</span></a>
   <div class="header-right">
     <nav>
+      <a href="index.html">Home</a>
+      <a href="index.html#how-it-works">How it works</a>
+      <a href="index.html#faq">FAQ</a>
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
     </nav>
