@@ -8,9 +8,9 @@
   <meta name="google-adsense-account" content="ca-pub-7086938365759492">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>ListeningClassroom.com — Free English Text to Speech for Teachers</title>
-  <meta name="description" content="Convert any English paragraph to downloadable audio instantly. Free text-to-speech tool for ESL teachers. Control speed, choose voice, and download MP3 audio for PowerPoint presentations.">
-  <meta name="keywords" content="english text to speech, TTS for teachers, ESL audio generator, free audio classroom, download english audio, text to speech MP3, listening exercise generator, listening classroom">
+  <title>English Dialogue Generator — Two Voice MP3 Audio for Teachers | ListeningClassroom</title>
+  <meta name="description" content="Create free English dialogue audio with two different voices. Choose voices for each speaker, generate a downloadable MP3, and make listening exercises for ESL classes.">
+  <meta name="keywords" content="English dialogue generator, two voice text to speech, dialogue audio generator, ESL listening exercises, English conversation audio, classroom MP3, text to speech for teachers, downloadable English audio">
   <meta name="author" content="ListeningClassroom.com">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://listeningclassroom.com/">
@@ -21,15 +21,15 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="ListeningClassroom.com — Free English Text to Speech for Teachers">
-  <meta property="og:description" content="Generate downloadable English audio from any paragraph. Perfect for ESL classrooms, listening exercises, and PowerPoint presentations.">
+  <meta property="og:title" content="English Dialogue Generator — Create Two-Voice MP3 Audio">
+  <meta property="og:description" content="Create classroom dialogue audio by assigning two different English voices to each speaker. Free, browser-based, and downloadable as MP3.">
   <meta property="og:url" content="https://listeningclassroom.com/">
   <meta property="og:image" content="https://listeningclassroom.com/logo.svg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ListeningClassroom.com — Free English Text to Speech for Teachers">
-  <meta name="twitter:description" content="Generate downloadable English audio from any paragraph. Free, no sign-up required.">
+  <meta name="twitter:title" content="English Dialogue Generator — Two-Voice MP3 Audio">
+  <meta name="twitter:description" content="Create free English conversation audio with two voices for ESL listening exercises and classroom presentations.">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -37,12 +37,13 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "ListeningClassroom.com",
-    "description": "Free text-to-speech tool for ESL teachers at ListeningClassroom.com. Convert English paragraphs to downloadable audio files.",
+    "description": "Free English text-to-speech and dialogue generator for ESL teachers. Assign two voices to a conversation and download the result as an MP3 audio file.",
     "url": "https://listeningclassroom.com/",
     "applicationCategory": "EducationApplication",
     "operatingSystem": "Any",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "audience": { "@type": "Audience", "audienceType": "Teachers, ESL educators" }
+    "audience": { "@type": "Audience", "audienceType": "Teachers, ESL educators" },
+    "featureList": ["Two-voice English dialogue generation", "Downloadable MP3 audio", "Adjustable speech speed", "Browser-based text to speech"]
   }
   </script>
 
@@ -267,6 +268,18 @@
     }
     input[type=text]:focus { border-color: var(--accent); }
 
+    .mode-switch { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; }
+    .mode-btn { background: var(--surface2); color: var(--muted); border-color: var(--border); }
+    .mode-btn.active { background: rgba(88,166,255,0.14); color: var(--accent); border-color: var(--accent); }
+    .dialogue-help { color: var(--muted); font-size: 0.8rem; margin: -0.7rem 0 0.8rem; }
+    .dialogue-example { background: rgba(63,185,80,0.07); border: 1px solid rgba(63,185,80,0.2); border-radius: 8px; padding: 0.7rem 0.85rem; color: var(--muted); font-size: 0.8rem; margin-bottom: 1rem; }
+    .dialogue-example strong { color: var(--accent-green); }
+    .mode-description { color: var(--muted); font-size: 0.85rem; margin: -0.7rem 0 1.1rem; }
+    .dialogue-progress { color: var(--accent); font-size: 0.8rem; margin-top: 0.55rem; }
+    #dialogue-text { min-height: 190px; margin-bottom: 0.6rem; }
+    .dialogue-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    @media (max-width: 540px) { .dialogue-controls { grid-template-columns: 1fr; } }
+
     /* ── INFO BOX ── */
     .info-box {
       background: rgba(88,166,255,0.07); border: 1px solid rgba(88,166,255,0.2);
@@ -426,7 +439,7 @@
 <!-- ── HERO ── -->
 <section class="hero">
   <span class="hero-eyebrow" data-i18n="eyebrow">For educators · No account required · Instant download</span>
-  <h1 data-i18n-html="h1">Turn any English text into<br><em>downloadable audio</em></h1>
+  <h1 data-i18n-html="h1">English Audio Generator — Create classroom audio quickly<br><em>Now supports two-voice dialogues</em></h1>
   <p data-i18n="heroParagraph">A browser-based audio tool for teachers, tutors, and lesson designers who need listening material, pronunciation models, or narrated slides — without setup friction.</p>
   <div class="badges">
     <span class="badge green" data-i18n="badgeFree">✓ Free forever</span>
@@ -442,20 +455,19 @@
   <!-- TOOL -->
   <article class="tool-card" id="tool">
 
-    <!-- ── Shared textarea ── -->
-    <span class="section-label" data-i18n="labelText">Your text</span>
-    <textarea id="text" data-i18n-placeholder="placeholderText">The water cycle is the continuous movement of water through the environment. Water evaporates from oceans and lakes, rises into the atmosphere, forms clouds, and eventually falls back to Earth as precipitation.</textarea>
-
     <!-- ── Tabs ── -->
     <div class="tabs">
-      <button class="tab-btn active" data-tab="listen" data-i18n="tabListen">🎧 Quick Listen</button>
-      <button class="tab-btn" data-tab="download" data-i18n="tabDownload">⬇ Download MP3</button>
+      <button class="tab-btn active" data-tab="download" data-mode="single" data-i18n="modeSingle">👤 Single voice</button>
+      <button class="tab-btn" data-tab="download" data-mode="dialogue" data-i18n="modeDialogue">👥 Dialogue</button>
     </div>
 
     <!-- ══════════════════════════════════
          TAB: QUICK LISTEN (Web Speech API)
     ═══════════════════════════════════════ -->
     <div id="panel-listen" class="tab-panel active">
+
+      <span class="section-label" data-i18n="labelText">Your text</span>
+      <textarea id="text" data-i18n-placeholder="placeholderText">The water cycle is the continuous movement of water through the environment. Water evaporates from oceans and lakes, rises into the atmosphere, forms clouds, and eventually falls back to Earth as precipitation.</textarea>
 
       <div class="controls-grid">
         <div class="control-group">
@@ -487,11 +499,10 @@
     ═══════════════════════════════════════ -->
     <div id="panel-download" class="tab-panel">
 
-      <div class="controls-grid">
-        <div class="control-group">
-          <span class="section-label" data-i18n="labelVoice">Voice</span>
-          <select id="voice-select"></select>
-        </div>
+      <!-- mode-switch removed: top tabs select Single/Dialogue -->
+      <p class="mode-description" id="mode-description" data-i18n="modeSingleHelp">Use one voice for the whole text.</p>
+
+      <div class="shared-controls">
         <div class="control-group">
           <div class="range-row">
             <span class="section-label" data-i18n="labelSpeed">Speed</span>
@@ -501,9 +512,34 @@
         </div>
       </div>
 
+      <div id="single-audio-settings">
+      <span class="section-label" data-i18n="labelText">Your text</span>
+      <textarea id="download-text" data-i18n-placeholder="placeholderText">The water cycle is the continuous movement of water through the environment. Water evaporates from oceans and lakes, rises into the atmosphere, forms clouds, and eventually falls back to Earth as precipitation.</textarea>
+      <div class="controls-grid">
+        <div class="control-group">
+          <span class="section-label" data-i18n="labelVoice">Voice</span>
+          <select id="voice-select"></select>
+        </div>
+      </div>
+
       <div class="filename-row">
         <span class="section-label" data-i18n="labelFilename">File name (no extension)</span>
         <input type="text" id="filename" value="audio_english" placeholder="e.g. lesson1_watercycle">
+      </div>
+      </div>
+
+      <div id="dialogue-settings" hidden>
+        <span class="section-label" data-i18n="labelDialogue">Dialogue script</span>
+        <p class="dialogue-help" data-i18n="dialogueHelp">Write one turn per line using Speaker 1: text and Speaker 2: text.</p>
+        <div class="dialogue-example" data-i18n-html="dialogueExample"><strong>Example:</strong><br>Speaker 1: Hello, how are you?<br>Speaker 2: I'm fine, thank you.</div>
+        <textarea id="dialogue-text" data-i18n-placeholder="dialoguePlaceholder">Speaker 1: Good morning! How are you today?
+Speaker 2: Good morning! I'm very well, thank you.
+Speaker 1: What are you going to do after class?
+Speaker 2: I'm going to practice my English.</textarea>
+        <div class="dialogue-controls">
+          <div class="control-group"><span class="section-label" data-i18n="speakerOne">Speaker 1 voice</span><select id="dialogue-voice-1"></select></div>
+          <div class="control-group"><span class="section-label" data-i18n="speakerTwo">Speaker 2 voice</span><select id="dialogue-voice-2"></select></div>
+        </div>
       </div>
 
       <div class="info-box" id="info-box" data-i18n-html="infoBox">
@@ -520,6 +556,7 @@
         <div class="dot" id="dot"></div>
         <span id="status-text" data-i18n="statusDownloadReady">Ready — enter your text and click Generate</span>
       </div>
+      <div class="dialogue-progress" id="dialogue-progress" hidden></div>
       <audio id="audio-player"></audio>
     </div>
 
@@ -544,10 +581,16 @@
   <!-- English content -->
   <div class="lang-content lang-en">
     <h2>How it works</h2>
+    <h2 class="seo-feature-heading">English dialogue audio for listening lessons</h2>
+    <p>Use Dialogue mode to turn a conversation script into a two-voice English MP3. Assign a different voice to Speaker 1 and Speaker 2, adjust the speed, and download one audio file ready for classroom activities, role-play practice, or PowerPoint.</p>
     <p>ListeningClassroom.com uses a neural voice model that runs entirely in your browser — no servers, no uploads, no sign-up required. Your text never leaves your device. Click Generate Audio, wait a few seconds, then download the MP3 file directly to your computer.</p>
     <p>The downloaded file (MP3 format) is compatible with PowerPoint, Google Slides, and any media player or video editing software. It's perfect for creating listening exercises, dictation tracks, pronunciation models, and narrated presentations.</p>
     <div class="faq" id="faq">
       <h2>Frequently Asked Questions</h2>
+      <div class="faq-item">
+        <h3>Can I create an English dialogue with two voices?</h3>
+        <p>Yes. Choose Dialogue mode, write one speaker turn per line, select a voice for each speaker, and generate a single MP3 with both voices and short pauses between turns.</p>
+      </div>
       <div class="faq-item">
         <h3>Is this tool completely free?</h3>
         <p>Yes. The neural voice model runs locally in your browser with no API keys or subscriptions required. There are no hidden costs.</p>
@@ -570,10 +613,16 @@
   <!-- Spanish content -->
   <div class="lang-content lang-es" hidden>
     <h2>Cómo funciona</h2>
+    <h2 class="seo-feature-heading">Audio de diálogos en inglés para clases</h2>
+    <p>Usa el modo Diálogo para convertir un guion en inglés en un MP3 con dos voces. Asigna una voz diferente al Orador 1 y al Orador 2, ajusta la velocidad y descarga un archivo listo para actividades de aula, práctica de roles o PowerPoint.</p>
     <p>ListeningClassroom.com usa un modelo de voz neuronal que corre completamente en tu navegador — sin servidores, sin cargas, sin registro. Tu texto nunca sale de tu dispositivo. Haz clic en Generar Audio, espera unos segundos y descarga el archivo MP3 directamente a tu computadora.</p>
     <p>El archivo descargado (formato MP3) es compatible con PowerPoint, Google Slides y cualquier reproductor de medios o software de edición de video. Es perfecto para crear ejercicios de escucha, pistas de dictado, modelos de pronunciación y presentaciones narradas.</p>
     <div class="faq">
       <h2>Preguntas Frecuentes</h2>
+      <div class="faq-item">
+        <h3>¿Puedo crear un diálogo en inglés con dos voces?</h3>
+        <p>Sí. Elige el modo Diálogo, escribe un turno por línea, selecciona una voz para cada orador y genera un único MP3 con ambas voces y pausas breves.</p>
+      </div>
       <div class="faq-item">
         <h3>¿Es esta herramienta completamente gratuita?</h3>
         <p>Sí. El modelo de voz neuronal corre localmente en tu navegador sin necesidad de claves API ni suscripciones. No hay costos ocultos.</p>
@@ -672,7 +721,7 @@
     en: {
       navHow: 'How it works', navFaq: 'FAQ', navAbout: 'About', navContact: 'Contact',
       eyebrow: 'For educators · No account required · Instant download',
-      h1: 'Turn any English text into<br><em>downloadable audio</em>',
+      h1: 'English Audio Generator — Create classroom audio quickly<br><em>Now supports two-voice dialogues</em>',
       heroParagraph: 'A browser-based audio tool for teachers, tutors, and lesson designers who need listening material, pronunciation models, or narrated slides — without setup friction.',
       badgeFree: '✓ Free forever', badgeVoices: '✓ Multiple voices',
       badgeDownload: '✓ Downloadable audio file', badgeOffline: '✓ Works offline after load',
@@ -680,6 +729,11 @@
       placeholderText: 'Paste or type any English paragraph here...',
       tabListen: '🎧 Quick Listen', tabDownload: '⬇ Download MP3',
       labelVoice: 'Voice', labelSpeed: 'Speed', labelFilename: 'File name (no extension)',
+      modeSingle: '👤 Single voice', modeDialogue: '👥 Dialogue', labelDialogue: 'Dialogue script',
+      modeSingleHelp: 'Use one voice for the whole text.', modeDialogueHelp: 'Give each person a voice and write their turns below.',
+      dialogueExample: '<strong>Example:</strong><br>Speaker 1: Hello, how are you?<br>Speaker 2: I\'m fine, thank you.',
+      dialogueHelp: 'Write one turn per line using Speaker 1: text and Speaker 2: text.',
+      dialoguePlaceholder: 'Speaker 1: Hello!\nSpeaker 2: Hi! How are you?', speakerOne: 'Speaker 1 voice', speakerTwo: 'Speaker 2 voice',
       btnSpeak: '▶ Speak', btnPause: '⏸ Pause', btnStop: '⏹ Stop',
       btnGenerate: '🎙 Generate Audio', btnPreview: '▶ Preview', btnDownload: '⬇ Download MP3',
       statusListenReady: 'Ready — select a voice and click Speak',
@@ -698,7 +752,7 @@
     es: {
       navHow: 'Cómo funciona', navFaq: 'FAQ', navAbout: 'Acerca de', navContact: 'Contacto',
       eyebrow: 'Para docentes · Sin cuenta · Descarga instantánea',
-      h1: 'Convierte cualquier texto en inglés en<br><em>audio descargable</em>',
+      h1: 'Generador de audio — Crea audio para clases rápidamente<br><em>Ahora con soporte para diálogos de dos voces</em>',
       heroParagraph: 'Una herramienta de audio en el navegador para docentes, tutores y diseñadores de clases que necesitan material de escucha, modelos de pronunciación o diapositivas narradas, sin complicaciones.',
       badgeFree: '✓ Siempre gratis', badgeVoices: '✓ Múltiples voces',
       badgeDownload: '✓ Archivo de audio descargable', badgeOffline: '✓ Funciona sin internet tras la primera carga',
@@ -706,6 +760,11 @@
       placeholderText: 'Pega o escribe aquí cualquier párrafo en inglés...',
       tabListen: '🎧 Escuchar', tabDownload: '⬇ Descargar MP3',
       labelVoice: 'Voz', labelSpeed: 'Velocidad', labelFilename: 'Nombre de archivo (sin extensión)',
+      modeSingle: '👤 Una voz', modeDialogue: '👥 Diálogo', labelDialogue: 'Guion del diálogo',
+      modeSingleHelp: 'Usa una voz para todo el texto.', modeDialogueHelp: 'Asigna una voz a cada persona y escribe sus turnos abajo.',
+      dialogueExample: '<strong>Ejemplo:</strong><br>Orador 1: Hola, ¿cómo estás?<br>Orador 2: Estoy bien, gracias.',
+      dialogueHelp: 'Escribe un turno por línea usando Orador 1: texto y Orador 2: texto.',
+      dialoguePlaceholder: 'Orador 1: ¡Hola!\nOrador 2: ¡Hola! ¿Cómo estás?', speakerOne: 'Voz del orador 1', speakerTwo: 'Voz del orador 2',
       btnSpeak: '▶ Hablar', btnPause: '⏸ Pausar', btnStop: '⏹ Detener',
       btnGenerate: '🎙 Generar Audio', btnPreview: '▶ Vista previa', btnDownload: '⬇ Descargar MP3',
       statusListenReady: 'Listo — selecciona una voz y haz clic en Hablar',
@@ -758,6 +817,8 @@
     // Long-form content blocks
     document.querySelectorAll('.lang-content').forEach(el =>
       el.hidden = !el.classList.contains('lang-' + lang));
+    const description = document.getElementById('mode-description');
+    if (description) description.textContent = I18N[lang][audioMode === 'dialogue' ? 'modeDialogueHelp' : 'modeSingleHelp'];
   }
 
   document.querySelectorAll('.lang-btn').forEach(b =>
@@ -766,18 +827,39 @@
   /* ══════════════════════════════════════════════════
      TABS
   ══════════════════════════════════════════════════ */
-  function switchTab(tabId) {
-    document.querySelectorAll('.tab-btn').forEach(b =>
-      b.classList.toggle('active', b.dataset.tab === tabId));
+  let audioMode = 'single';
+  function switchTab(tabId, mode) {
+    // If a mode is provided (single/dialogue), activate the matching tab button; otherwise match by tabId
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      if (mode) b.classList.toggle('active', b.dataset.mode === mode);
+      else b.classList.toggle('active', b.dataset.tab === tabId);
+    });
+
     document.querySelectorAll('.tab-panel').forEach(p =>
       p.classList.toggle('active', p.id === 'panel-' + tabId));
-    localStorage.setItem('activeTab', tabId);
-    // Stop speech when switching away from listen tab
+
+    localStorage.setItem('activeTab', tabId + (mode ? ('|' + mode) : ''));
+
+    // Determine audioMode: prefer explicit mode from tab button, else map legacy tab ids
+    const desiredMode = mode || (tabId === 'listen' ? 'single' : 'dialogue');
+    audioMode = desiredMode;
+
+    // Update single/dialogue settings visibility
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === audioMode));
+    const singleSettings = document.getElementById('single-audio-settings');
+    const dialogueSettings = document.getElementById('dialogue-settings');
+    if (singleSettings) singleSettings.hidden = audioMode !== 'single';
+    if (dialogueSettings) dialogueSettings.hidden = audioMode !== 'dialogue';
+
+    const description = document.getElementById('mode-description');
+    if (description) description.textContent = I18N[currentLang][audioMode === 'dialogue' ? 'modeDialogueHelp' : 'modeSingleHelp'];
+
+    // Stop speech when switching away from listen/single
     if (tabId !== 'listen') speechSynthesis.cancel();
   }
 
   document.querySelectorAll('.tab-btn').forEach(b =>
-    b.addEventListener('click', () => switchTab(b.dataset.tab)));
+    b.addEventListener('click', () => switchTab(b.dataset.tab, b.dataset.mode)));
 
   /* ══════════════════════════════════════════════════
      QUICK LISTEN — Web Speech API
@@ -891,8 +973,9 @@
   /* ══════════════════════════════════════════════════
      DOWNLOAD MP3 — Kokoro TTS
   ══════════════════════════════════════════════════ */
-  let audioBlob = null, audioURL = null;
+  let audioBlob = null, audioURL = null, previewURL = null, lastPCM = null, lastSR = null;
   let ttsModel = null;
+  let encodeWaitingDownload = false;
 
   const MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX';
   const KOKORO_VOICES = [
@@ -904,13 +987,116 @@
   ];
 
   (function initKokoroVoices() {
-    const sel = document.getElementById('voice-select');
-    KOKORO_VOICES.forEach(v => {
-      const o = document.createElement('option');
-      o.value = v.id; o.textContent = v.label;
-      sel.appendChild(o);
+    ['voice-select', 'dialogue-voice-1', 'dialogue-voice-2'].forEach((id, index) => {
+      const sel = document.getElementById(id);
+      KOKORO_VOICES.forEach(v => {
+        const o = document.createElement('option');
+        o.value = v.id; o.textContent = v.label;
+        sel.appendChild(o);
+      });
+      if (index === 1) sel.value = 'af_bella';
+      if (index === 2) sel.value = 'am_adam';
     });
   })();
+
+  // Create a Web Worker (module) for Kokoro generation to avoid blocking the UI
+  let kokoroWorker = null;
+  let workerAvailable = false;
+  let workerReadyResolve;
+  let workerReady = new Promise(resolve => { workerReadyResolve = resolve; });
+  try {
+    // Use local worker file to avoid cross-origin redirects/import issues
+    kokoroWorker = new Worker('./kokoro-worker.js', { type: 'module' });
+    workerAvailable = true;
+  } catch (err) {
+    console.warn('Failed to create kokoro worker, will use main-thread fallback', err);
+    kokoroWorker = null; workerAvailable = false;
+    workerReadyResolve();
+  }
+
+  // Helper to call worker and receive a single result via Promise
+  function workerGenerate(payload) {
+    return new Promise((resolve, reject) => {
+      if (!workerAvailable || !kokoroWorker) return reject(new Error('Worker not available'));
+      const onmsg = (ev) => {
+        const d = ev.data;
+        if (d.type === 'result') {
+          kokoroWorker.removeEventListener('message', onmsg);
+          resolve(d);
+        } else if (d.type === 'error') {
+          kokoroWorker.removeEventListener('message', onmsg);
+          reject(new Error(d.message || 'Worker error'));
+        } else if (d.type === 'progress') {
+          // forward progress to UI
+          document.getElementById('dialogue-progress').hidden = false;
+          document.getElementById('dialogue-progress').textContent = `Generating line ${d.index + 1} of ${d.total}…`;
+        }
+      };
+      kokoroWorker.addEventListener('message', onmsg);
+      try {
+        kokoroWorker.postMessage({ ...payload, modelId: MODEL_ID });
+      } catch (e) { kokoroWorker.removeEventListener('message', onmsg); reject(e); }
+    });
+  }
+
+  // Prefetch Kokoro as soon as the page initializes. Generation only waits for
+  // this shared promise; it never starts a second model download.
+  function preloadKokoro() {
+    if (!workerAvailable || !kokoroWorker) return;
+    console.log('kokoro preload:start', performance.now());
+    try {
+      kokoroWorker.postMessage({ type: 'loadModel', modelId: MODEL_ID });
+    } catch (e) {
+      console.warn('kokoroWorker preload failed', e);
+      workerReadyResolve();
+    }
+  }
+  preloadKokoro();
+  if (kokoroWorker) {
+    kokoroWorker.onerror = (ev) => { console.error('Worker error', ev); };
+    kokoroWorker.addEventListener('message', ev => {
+      const d = ev.data;
+      if (d && d.type === 'loaded') {
+        console.log('kokoro worker: model loaded at', performance.now());
+        workerReadyResolve();
+      }
+    });
+  }
+
+  // Create encode worker (for MP3) to avoid blocking the UI during encoding
+  let encodeWorker = null;
+  let encodeWorkerAvailable = false;
+  try {
+    encodeWorker = new Worker('./encode-worker.js');
+    encodeWorkerAvailable = true;
+  } catch (err) {
+    console.warn('Encode worker not available, will encode in main thread', err);
+    encodeWorker = null; encodeWorkerAvailable = false;
+  }
+
+  if (encodeWorker) {
+    encodeWorker.onmessage = (ev) => {
+      const d = ev.data;
+      if (d.type === 'mp3') {
+    console.timeEnd('mp3-encode'); console.log('mp3-encode:done', performance.now());
+    const mp3 = new Uint8Array(d.mp3);
+    audioBlob = new Blob([mp3], { type: 'audio/mpeg' });
+    if (audioURL) URL.revokeObjectURL(audioURL);
+    audioURL = URL.createObjectURL(audioBlob);
+    setDownloadStatus('done', 'MP3 ready ✓ — download starting');
+    // Trigger download immediately if we were encoding because user clicked Download
+    if (encodeWaitingDownload) {
+      const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
+      const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
+      encodeWaitingDownload = false;
+    }
+  } else if (d.type === 'error') {
+    console.error('Encode worker error', d.message);
+    setDownloadStatus('error', d.message || 'Encoding failed');
+    encodeWaitingDownload = false;
+  }
+    };
+  }
 
   document.getElementById('rate').addEventListener('input', e =>
     document.getElementById('rate-val').textContent =
@@ -938,41 +1124,173 @@
     return new Blob(out, { type: 'audio/mpeg' });
   }
 
+  function float32ToWavBlob(float32, sampleRate) {
+    // Convert Float32Array PCM to 16-bit WAV Blob
+    const numChannels = 1;
+    const bytesPerSample = 2;
+    const blockAlign = numChannels * bytesPerSample;
+    const byteRate = sampleRate * blockAlign;
+    const dataSize = float32.length * bytesPerSample;
+    const buffer = new ArrayBuffer(44 + dataSize);
+    const view = new DataView(buffer);
+
+    function writeString(view, offset, str) {
+      for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+    }
+
+    writeString(view, 0, 'RIFF');
+    view.setUint32(4, 36 + dataSize, true);
+    writeString(view, 8, 'WAVE');
+    writeString(view, 12, 'fmt ');
+    view.setUint32(16, 16, true);
+    view.setUint16(20, 1, true);
+    view.setUint16(22, numChannels, true);
+    view.setUint32(24, sampleRate, true);
+    view.setUint32(28, byteRate, true);
+    view.setUint16(32, blockAlign, true);
+    view.setUint16(34, bytesPerSample * 8, true);
+    writeString(view, 36, 'data');
+    view.setUint32(40, dataSize, true);
+
+    let offset = 44;
+    for (let i = 0; i < float32.length; i++, offset += 2) {
+      let s = Math.max(-1, Math.min(1, float32[i]));
+      view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+    }
+    return new Blob([view], { type: 'audio/wav' });
+  }
+
+  function parseDialogue(source) {
+    return source.split('\n').map(line => line.trim()).filter(Boolean).map((line, index) => {
+      const match = line.match(/^(?:speaker|orador)\s*([12])\s*:\s*(.+)$/i);
+      if (!match) throw new Error(`Line ${index + 1}: use Speaker 1: text or Speaker 2: text`);
+      return { speaker: match[1], text: match[2] };
+    });
+  }
+
   async function generateAudio() {
-    const text = document.getElementById('text').value.trim();
+    const text = (audioMode === 'dialogue'
+      ? document.getElementById('dialogue-text').value.trim()
+      : document.getElementById('download-text').value.trim());
     if (!text) { setDownloadStatus('error', I18N[currentLang].statusDownloadReady); return; }
 
     const btn = document.getElementById('btn-generate');
     btn.disabled = true; btn.classList.add('recording');
+    document.getElementById('btn-preview').style.display = 'none';
+    document.getElementById('btn-download').style.display = 'none';
 
     const voiceId = document.getElementById('voice-select').value;
     const speed   = parseFloat(document.getElementById('rate').value);
 
     try {
-      if (!ttsModel) {
-        setDownloadStatus('recording', 'Loading voice model (~86 MB, cached after first use)…');
-        ttsModel = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
+      // If single voice: generate Kokoro preview (no Web Speech API). Start worker generation immediately and play when ready.
+      if (audioMode === 'single') {
+        setDownloadStatus('recording', 'Generating preview…');
+        console.time('preview-gen'); console.log('preview-gen:start', performance.now());
+        try {
+          // race worker with a timeout: if worker doesn't reply in 60s, fall back to main
+          const workerPromise = workerReady.then(() => workerGenerate({ type: 'generate', text, voice: voiceId, speed }));
+          const timeoutPromise = new Promise((_, rej) => setTimeout(() => rej(new Error('Worker timeout')), 60000));
+          const res = await Promise.race([workerPromise, timeoutPromise]).catch(async (err) => {
+            console.warn('Worker failed or timed out:', err);
+            // Fallback: try main-thread generation so user still gets audio
+            try {
+              console.time('model-load');
+              setDownloadStatus('recording', 'Fallback: generating in main thread…');
+              if (!ttsModel) ttsModel = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
+              console.timeEnd('model-load');
+              console.time('preview-gen-fallback');
+              const mainRes = await ttsModel.generate(text, { voice: voiceId, speed });
+              console.timeEnd('preview-gen-fallback');
+              return { pcm: mainRes.audio.buffer, sr: mainRes.sampling_rate };
+            } catch (mainErr) {
+              throw mainErr;
+            }
+          });
+
+          // handle result (res may be from workerGenerate or fallback main)
+          const pcmBuf = res.pcm;
+          const sr = res.sr;
+          const pcm = new Float32Array(pcmBuf);
+          lastPCM = pcm; lastSR = sr;
+          // Clear any previous MP3 (must encode on Download)
+          if (audioURL) { URL.revokeObjectURL(audioURL); audioURL = null; }
+          audioBlob = null; encodeWaitingDownload = false;
+          if (previewURL) URL.revokeObjectURL(previewURL);
+          const wav = float32ToWavBlob(pcm, sr);
+          previewURL = URL.createObjectURL(wav);
+          const ap = document.getElementById('audio-player');
+          ap.src = previewURL; ap.load();
+          // Publish preview first. MP3 encoding is independent and starts only on Download.
+          document.getElementById('btn-preview').style.display  = 'flex';
+          document.getElementById('btn-download').style.display = 'none';
+          try { await ap.play(); document.getElementById('btn-preview').textContent = I18N[currentLang].btnPause; } catch(e) { /* autoplay may be blocked */ }
+          document.getElementById('btn-download').style.display = 'flex';
+          setDownloadStatus('done', 'Preview ready — click Download to encode MP3 (may take longer)');
+        } catch (finalErr) {
+          console.error('Both worker and fallback generation failed', finalErr);
+          setDownloadStatus('error', finalErr.message || String(finalErr));
+        } finally {
+          console.timeEnd('preview-gen');
+        }
+
+        // Re-enable generate button
+        btn.disabled = false; btn.classList.remove('recording');
+        return;
       }
 
-      setDownloadStatus('recording', 'Synthesising speech…');
-      const result = await ttsModel.generate(text, { voice: voiceId, speed });
+      // Dialogue: run generation inside worker to avoid blocking UI
+      setDownloadStatus('recording', 'Generating dialogue (background worker)…');
+      const turns = parseDialogue(document.getElementById('dialogue-text').value);
+      if (!turns.length) throw new Error('Add at least two dialogue lines.');
+      // Build turns payload with voice selections
+      const payloadTurns = turns.map(t => ({ speaker: t.speaker, text: t.text, voice: document.getElementById(`dialogue-voice-${t.speaker}`).value }));
+      let res = null;
+      try {
+        res = await workerReady.then(() => workerGenerate({ type: 'generate_dialogue', turns: payloadTurns, speed }));
+      } catch (workerErr) {
+        console.warn('Worker generate_dialogue failed, falling back to main thread:', workerErr);
+        // Fallback: generate sequentially on main thread (preserve original behavior)
+        if (!ttsModel) {
+          setDownloadStatus('recording', 'Loading voice model (~86 MB, cached after first use)…');
+          ttsModel = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
+        }
+        const pieces = [];
+        let sr = 22050;
+        for (let turnIndex = 0; turnIndex < payloadTurns.length; turnIndex++) {
+          const turn = payloadTurns[turnIndex];
+          document.getElementById('dialogue-progress').hidden = false;
+          document.getElementById('dialogue-progress').textContent = `Generating line ${turnIndex + 1} of ${payloadTurns.length}…`;
+          const r = await ttsModel.generate(turn.text, { voice: turn.voice, speed });
+          sr = r.sampling_rate;
+          pieces.push(r.audio, new Float32Array(Math.round(sr * 0.22)));
+        }
+        const pcmAll = new Float32Array(pieces.reduce((total, part) => total + part.length, 0));
+        let offset = 0; pieces.forEach(part => { pcmAll.set(part, offset); offset += part.length; });
+        res = { pcm: pcmAll.buffer, sr };
+      }
 
-      const pcm = result.audio;
-      const sr  = result.sampling_rate;
-
-      setDownloadStatus('recording', 'Encoding to MP3…');
-      audioBlob = pcmToMp3(pcm, sr);
-      if (audioURL) URL.revokeObjectURL(audioURL);
-      audioURL = URL.createObjectURL(audioBlob);
+      const pcm = new Float32Array(res.pcm);
+      lastPCM = pcm; lastSR = res.sr;
+      // Clear any previous MP3 (must encode on Download)
+      if (audioURL) { URL.revokeObjectURL(audioURL); audioURL = null; }
+      audioBlob = null; encodeWaitingDownload = false;
+      if (previewURL) URL.revokeObjectURL(previewURL);
+      const wav = float32ToWavBlob(pcm, res.sr);
+      previewURL = URL.createObjectURL(wav);
       const ap = document.getElementById('audio-player');
-      ap.src = audioURL; ap.load();
-
-      document.getElementById('btn-download').style.display = 'flex';
+      ap.src = previewURL; ap.load();
       document.getElementById('btn-preview').style.display  = 'flex';
-      setDownloadStatus('done', 'MP3 ready ✓ — preview or download');
+      document.getElementById('btn-download').style.display = 'none';
+      // Let the browser paint the preview control before exposing the slower MP3 action.
+      await new Promise(requestAnimationFrame);
+      document.getElementById('btn-download').style.display = 'flex';
+      setDownloadStatus('done', 'Preview ready — click Download to encode MP3 (may take longer)');
+      document.getElementById('dialogue-progress').hidden = true;
     } catch (err) {
       console.error(err);
       setDownloadStatus('error', err.message);
+      document.getElementById('dialogue-progress').hidden = true;
     }
     btn.disabled = false; btn.classList.remove('recording');
   }
@@ -990,17 +1308,83 @@
     document.getElementById('btn-preview').textContent = I18N[currentLang].btnPreview;
   });
 
-  document.getElementById('btn-download').addEventListener('click', () => {
-    if (!audioBlob) return;
-    const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
-    const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
+  document.getElementById('btn-download').addEventListener('click', async () => {
+    if (!lastPCM) return;
+    // If we already have an MP3 blob, just download
+    if (audioBlob) {
+      const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
+      const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
+      return;
+    }
+
+    // Otherwise, request background encoding (worker if available)
+    setDownloadStatus('recording', 'Encoding to MP3…');
+    if (encodeWorkerAvailable && encodeWorker) {
+      try {
+        encodeWaitingDownload = true;
+      console.time('mp3-encode'); console.log('mp3-encode:start', performance.now());
+      // Transfer a copy to preserve lastPCM if needed; send copy for safety
+      const pcmCopy = new Float32Array(lastPCM);
+      encodeWorker.postMessage({ pcm: pcmCopy.buffer, sr: lastSR }, [pcmCopy.buffer]);
+    } catch (err) {
+      console.warn('Encode worker postMessage failed, falling back', err);
+      try {
+        console.time('mp3-encode'); console.log('mp3-encode:start (fallback main)', performance.now());
+        audioBlob = pcmToMp3(lastPCM, lastSR);
+        console.timeEnd('mp3-encode'); console.log('mp3-encode:done (fallback main)', performance.now());
+        if (audioURL) URL.revokeObjectURL(audioURL);
+        audioURL = URL.createObjectURL(audioBlob);
+        setDownloadStatus('done', 'MP3 ready ✓ — download starting');
+        const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
+        const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
+      } catch (encErr) {
+        setDownloadStatus('error', encErr.message || 'Encoding failed');
+      }
+    }
+    } else {
+    // Fallback: encode on main thread
+    try {
+      console.time('mp3-encode'); console.log('mp3-encode:start (main) ', performance.now());
+      audioBlob = pcmToMp3(lastPCM, lastSR);
+      console.timeEnd('mp3-encode'); console.log('mp3-encode:done (main) ', performance.now());
+      if (audioURL) URL.revokeObjectURL(audioURL);
+      audioURL = URL.createObjectURL(audioBlob);
+      setDownloadStatus('done', 'MP3 ready ✓ — download starting');
+      const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
+      const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
+    } catch (err) {
+      setDownloadStatus('error', err.message || 'Encoding failed');
+    }
+    }
   });
 
   /* ══════════════════════════════════════════════════
      INIT — apply saved preferences
   ══════════════════════════════════════════════════ */
   applyLang(currentLang);
-  switchTab(localStorage.getItem('activeTab') || 'listen');
+
+  // If opened via file:// show a visible warning with instructions to run a local HTTP server
+  if (location.protocol === 'file:') {
+    const warn = document.createElement('div');
+    warn.id = 'file-warning';
+    warn.style = 'position:fixed;left:12px;right:12px;top:12px;padding:12px;background:#fff3cd;border:1px solid #ffeeba;border-radius:8px;z-index:9999;font-size:0.95rem;';
+    warn.innerHTML = `This page was opened via file://. Web Workers and module imports require HTTP(S). To run locally, open a terminal in the project folder and run:<br><pre style="margin:8px 0;padding:8px;background:#fff;border-radius:6px">python -m http.server 8000
+# or (Windows PowerShell): py -m http.server 8000
+# or if you have node: npx http-server -c-1 .</pre>Then open <strong>http://localhost:8000/</strong>.`;
+    const btn = document.createElement('button'); btn.textContent = 'Dismiss'; btn.style='margin-left:8px';
+    btn.addEventListener('click', () => warn.remove());
+    warn.appendChild(btn);
+    document.body.appendChild(warn);
+  }
+
+  // Restore saved tab + mode (stored as 'tab|mode') or default to download+single
+  const saved = localStorage.getItem('activeTab');
+  if (saved) {
+    const parts = saved.split('|');
+    switchTab(parts[0] || 'download', parts[1] || 'single');
+  } else {
+    switchTab('download', 'single');
+  }
 </script>
 </body>
 </html>

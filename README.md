@@ -2,6 +2,31 @@
 
 Free text-to-speech tool for ESL teachers. Deployed on GitHub Pages.
 
+## Función de diálogos con dos voces
+
+La aplicación permite crear un audio MP3 de una conversación en inglés usando una voz diferente para cada participante. Todo se procesa en el navegador: el texto no se sube a un servidor y no se necesita una cuenta ni una clave API.
+
+### Cómo crear un diálogo
+
+1. Abre la pestaña **Download MP3 / Descargar MP3**.
+2. Selecciona el modo **Dialogue / Diálogo**.
+3. Escribe un turno por línea usando este formato:
+
+```text
+Speaker 1: Good morning! How are you?
+Speaker 2: I'm fine, thank you.
+Speaker 1: Are you ready for the lesson?
+Speaker 2: Yes, I'm ready.
+```
+
+También se acepta `Orador 1:` y `Orador 2:` cuando la interfaz está en español.
+
+4. Selecciona una voz para cada orador.
+5. Ajusta la velocidad si es necesario y pulsa **Generate Audio / Generar Audio**.
+6. Escucha la vista previa y descarga el MP3 para usarlo en clases, actividades de role-play, ejercicios de comprensión o presentaciones.
+
+El sistema genera cada intervención por separado, agrega una pausa breve entre turnos y las une en un único archivo MP3. Para obtener mejores resultados, usa frases cortas y mantén claramente el prefijo de cada línea.
+
 ---
 
 ## 🚀 Cómo desplegarlo en GitHub Pages (paso a paso)
