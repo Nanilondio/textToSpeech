@@ -1,7 +1,24 @@
 (() => {
   const STORAGE_KEY = 'lc_cookie_consent';
   const ADSENSE_CLIENT = 'ca-pub-7086938365759492';
-  const GTM_ID = 'GTM-KTXQJMMH';
+  const I18N = {
+    en: {
+      ariaLabel: 'Cookie consent',
+      title: 'Cookies for ads and measurement',
+      copy: 'We use cookies for AdSense and basic analytics so we can keep the site free. You can accept or continue without non-essential cookies. See our Privacy Policy for details.',
+      reject: 'Reject non-essential',
+      accept: 'Accept cookies',
+      privacy: 'Privacy Policy',
+    },
+    es: {
+      ariaLabel: 'Consentimiento de cookies',
+      title: 'Cookies para anuncios y medición',
+      copy: 'Usamos cookies para AdSense y analítica básica para mantener el sitio gratuito. Puedes aceptar o continuar sin cookies no esenciales. Consulta nuestra Política de Privacidad para más detalles.',
+      reject: 'Rechazar no esenciales',
+      accept: 'Aceptar cookies',
+      privacy: 'Política de Privacidad',
+    },
+  };
 
   const state = () => {
     try {
@@ -17,6 +34,18 @@
     } catch {
       // Ignore storage failures and keep the page usable.
     }
+  };
+
+  const currentLang = () => {
+    try {
+      const saved = localStorage.getItem('lang');
+      if (saved && I18N[saved]) return saved;
+    } catch {
+      // Ignore storage failures and fall back to the document language.
+    }
+
+    const docLang = (document.documentElement.lang || '').slice(0, 2).toLowerCase();
+    return I18N[docLang] ? docLang : 'en';
   };
 
   const injectStyle = () => {
@@ -129,10 +158,6 @@
     if (window.__lcMarketingLoaded) return;
     window.__lcMarketingLoaded = true;
 
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-
-    await loadScript(`https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(GTM_ID)}`);
     await loadScript(
       `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(ADSENSE_CLIENT)}`,
       { crossorigin: 'anonymous' }
@@ -169,27 +194,50 @@
     banner.id = 'lc-consent-banner';
     banner.className = 'lc-consent-banner';
     banner.innerHTML = `
-      <div class="lc-consent-card" role="dialog" aria-live="polite" aria-label="Cookie consent">
+      <div class="lc-consent-card" role="dialog" aria-live="polite">
         <div class="lc-consent-copy">
-          <strong>Cookies for ads and measurement</strong>
-          <p>We use cookies for AdSense and basic analytics so we can keep the site free. You can accept or continue without non-essential cookies. See our Privacy Policy for details.</p>
+          <strong></strong>
+          <p></p>
         </div>
         <div class="lc-consent-actions">
-          <button type="button" class="lc-consent-reject">Reject non-essential</button>
-          <button type="button" class="lc-consent-accept">Accept cookies</button>
-          <a class="lc-consent-link" href="privacy.html">Privacy Policy</a>
+          <button type="button" class="lc-consent-reject"></button>
+          <button type="button" class="lc-consent-accept"></button>
+          <a class="lc-consent-link" href="privacy.html"></a>
         </div>
       </div>
     `;
 
     document.body.appendChild(banner);
+    updateBannerLanguage();
     banner.querySelector('.lc-consent-accept').addEventListener('click', accept);
     banner.querySelector('.lc-consent-reject').addEventListener('click', reject);
+  };
+
+  const updateBannerLanguage = () => {
+    const banner = document.getElementById('lc-consent-banner');
+    if (!banner) return;
+
+    const t = I18N[currentLang()];
+    banner.querySelector('.lc-consent-card').setAttribute('aria-label', t.ariaLabel);
+    banner.querySelector('.lc-consent-copy strong').textContent = t.title;
+    banner.querySelector('.lc-consent-copy p').textContent = t.copy;
+    banner.querySelector('.lc-consent-reject').textContent = t.reject;
+    banner.querySelector('.lc-consent-accept').textContent = t.accept;
+    banner.querySelector('.lc-consent-link').textContent = t.privacy;
+  };
+
+  const bindLanguageUpdates = () => {
+    document.querySelectorAll('.lang-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        setTimeout(updateBannerLanguage, 0);
+      });
+    });
   };
 
   const init = async () => {
     injectStyle();
     buildBanner();
+    bindLanguageUpdates();
 
     const consent = state();
     if (consent === 'accepted') {
