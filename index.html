@@ -268,9 +268,6 @@
     }
     input[type=text]:focus { border-color: var(--accent); }
 
-    .mode-switch { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; }
-    .mode-btn { background: var(--surface2); color: var(--muted); border-color: var(--border); }
-    .mode-btn.active { background: rgba(88,166,255,0.14); color: var(--accent); border-color: var(--accent); }
     .dialogue-help { color: var(--muted); font-size: 0.8rem; margin: -0.7rem 0 0.8rem; }
     .dialogue-example { background: rgba(63,185,80,0.07); border: 1px solid rgba(63,185,80,0.2); border-radius: 8px; padding: 0.7rem 0.85rem; color: var(--muted); font-size: 0.8rem; margin-bottom: 1rem; }
     .dialogue-example strong { color: var(--accent-green); }
@@ -295,20 +292,6 @@
       padding: 0.6rem 1.2rem; border-radius: 6px; border: 1px solid transparent;
       cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 0.5rem;
     }
-
-    /* Listen tab buttons */
-    #btn-speak {
-      background: var(--accent); color: #0d1117; border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(88,166,255,0.3);
-    }
-    #btn-speak:hover:not(:disabled) { box-shadow: 0 0 30px rgba(88,166,255,0.5); transform: translateY(-1px); }
-    #btn-speak:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-    #btn-stop {
-      background: transparent; color: var(--muted); border-color: var(--border);
-      display: none;
-    }
-    #btn-stop:hover { color: var(--accent-warm); border-color: var(--accent-warm); }
 
     /* Download tab buttons */
     #btn-generate {
@@ -459,39 +442,6 @@
     <div class="tabs">
       <button class="tab-btn active" data-tab="download" data-mode="single" data-i18n="modeSingle">👤 Single voice</button>
       <button class="tab-btn" data-tab="download" data-mode="dialogue" data-i18n="modeDialogue">👥 Dialogue</button>
-    </div>
-
-    <!-- ══════════════════════════════════
-         TAB: QUICK LISTEN (Web Speech API)
-    ═══════════════════════════════════════ -->
-    <div id="panel-listen" class="tab-panel active">
-
-      <span class="section-label" data-i18n="labelText">Your text</span>
-      <textarea id="text" data-i18n-placeholder="placeholderText">The water cycle is the continuous movement of water through the environment. Water evaporates from oceans and lakes, rises into the atmosphere, forms clouds, and eventually falls back to Earth as precipitation.</textarea>
-
-      <div class="controls-grid">
-        <div class="control-group">
-          <span class="section-label" data-i18n="labelVoice">Voice</span>
-          <select id="speech-voice"></select>
-        </div>
-        <div class="control-group">
-          <div class="range-row">
-            <span class="section-label" data-i18n="labelSpeed">Speed</span>
-            <span class="range-val" id="speech-rate-val">0.85×</span>
-          </div>
-          <input type="range" id="speech-rate" min="0.5" max="1.5" step="0.05" value="0.85">
-        </div>
-      </div>
-
-      <div class="btn-row">
-        <button id="btn-speak" data-i18n="btnSpeak">▶ Speak</button>
-        <button id="btn-stop"  data-i18n="btnStop">⏹ Stop</button>
-      </div>
-
-      <div class="status-row">
-        <div class="dot" id="listen-dot"></div>
-        <span id="listen-status-text" data-i18n="statusListenReady">Ready — select a voice and click Speak</span>
-      </div>
     </div>
 
     <!-- ══════════════════════════════════
@@ -854,121 +804,10 @@ Speaker 2: I'm going to practice my English.</textarea>
     const description = document.getElementById('mode-description');
     if (description) description.textContent = I18N[currentLang][audioMode === 'dialogue' ? 'modeDialogueHelp' : 'modeSingleHelp'];
 
-    // Stop speech when switching away from listen/single
-    if (tabId !== 'listen') speechSynthesis.cancel();
   }
 
   document.querySelectorAll('.tab-btn').forEach(b =>
     b.addEventListener('click', () => switchTab(b.dataset.tab, b.dataset.mode)));
-
-  /* ══════════════════════════════════════════════════
-     QUICK LISTEN — Web Speech API
-  ══════════════════════════════════════════════════ */
-  function loadSpeechVoices() {
-    const voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
-    if (voices.length === 0) return; // still loading — wait for onvoiceschanged
-    const sel = document.getElementById('speech-voice');
-    sel.innerHTML = '';
-    voices.forEach(v => {
-      const o = document.createElement('option');
-      o.value = v.name;
-      o.textContent = `${v.name} (${v.lang})`;
-      sel.appendChild(o);
-    });
-  }
-
-  // onvoiceschanged (property assignment) is more reliable than addEventListener across browsers
-  speechSynthesis.onvoiceschanged = loadSpeechVoices;
-  // Also try immediately — works when voices are already cached (repeat visits, Firefox)
-  loadSpeechVoices();
-  // Fallback: if voiceschanged already fired before we attached, retry after a short delay
-  setTimeout(loadSpeechVoices, 200);
-
-  document.getElementById('speech-rate').addEventListener('input', e =>
-    document.getElementById('speech-rate-val').textContent =
-      parseFloat(e.target.value).toFixed(2) + '×');
-
-  function setListenStatus(state, msg) {
-    document.getElementById('listen-dot').className = 'dot ' + state;
-    document.getElementById('listen-status-text').textContent = msg;
-  }
-
-  const btnSpeak = document.getElementById('btn-speak');
-  const btnStop  = document.getElementById('btn-stop');
-  // Chrome fires onend prematurely when pause() is called — track pause state manually
-  let listenPaused = false;
-
-  btnSpeak.addEventListener('click', () => {
-    const text = document.getElementById('text').value.trim();
-    if (!text) return;
-    const t = I18N[currentLang];
-
-    // If voices still not loaded, show error in status
-    if (document.getElementById('speech-voice').options.length === 0) {
-      setListenStatus('error', t.noVoices);
-      return;
-    }
-
-    // Pause
-    if (speechSynthesis.speaking && !listenPaused) {
-      speechSynthesis.pause();
-      listenPaused = true;
-      btnSpeak.textContent = t.btnSpeak;
-      return;
-    }
-    // Resume
-    if (listenPaused) {
-      speechSynthesis.resume();
-      listenPaused = false;
-      btnSpeak.textContent = t.btnPause;
-      setListenStatus('recording', t.statusListenSpeaking);
-      return;
-    }
-
-    // New utterance — cancel first to clear any stuck state
-    listenPaused = false;
-    speechSynthesis.cancel();
-
-    const allVoices = speechSynthesis.getVoices();
-    const selName   = document.getElementById('speech-voice').value;
-    const voice     = allVoices.find(v => v.name === selName) || null;
-    const rate      = parseFloat(document.getElementById('speech-rate').value);
-
-    const utt = new SpeechSynthesisUtterance(text);
-    if (voice) utt.voice = voice;
-    utt.rate = rate;
-
-    utt.onstart = () => {
-      btnSpeak.textContent = t.btnPause;
-      btnStop.style.display = 'flex';
-      setListenStatus('recording', t.statusListenSpeaking);
-    };
-    utt.onend = () => {
-      if (listenPaused) return; // Chrome bug: onend fires on pause — ignore
-      listenPaused = false;
-      btnSpeak.textContent = t.btnSpeak;
-      btnStop.style.display = 'none';
-      setListenStatus('done', t.statusListenDone);
-    };
-    utt.onerror = ev => {
-      if (ev.error === 'interrupted') return;
-      listenPaused = false;
-      btnSpeak.textContent = t.btnSpeak;
-      btnStop.style.display = 'none';
-      setListenStatus('error', ev.error);
-    };
-
-    speechSynthesis.speak(utt);
-  });
-
-  btnStop.addEventListener('click', () => {
-    listenPaused = false;
-    speechSynthesis.cancel();
-    const t = I18N[currentLang];
-    btnSpeak.textContent = t.btnSpeak;
-    btnStop.style.display = 'none';
-    setListenStatus('', t.statusListenStopped);
-  });
 
   /* ══════════════════════════════════════════════════
      DOWNLOAD MP3 — Kokoro TTS
@@ -1381,7 +1220,10 @@ Speaker 2: I'm going to practice my English.</textarea>
   const saved = localStorage.getItem('activeTab');
   if (saved) {
     const parts = saved.split('|');
-    switchTab(parts[0] || 'download', parts[1] || 'single');
+    // Migrate the old Quick Listen preference to the Kokoro Single Voice view.
+    const tab = parts[0] === 'listen' ? 'download' : (parts[0] || 'download');
+    const mode = parts[0] === 'listen' ? 'single' : (parts[1] || 'single');
+    switchTab(tab, mode);
   } else {
     switchTab('download', 'single');
   }
