@@ -867,7 +867,6 @@ Speaker 2: I'm going to practice my English.</textarea>
     kokoroWorker = new Worker('./kokoro-worker.js', { type: 'module' });
     workerAvailable = true;
   } catch (err) {
-    console.warn('Failed to create kokoro worker, will use main-thread fallback', err);
     kokoroWorker = null; workerAvailable = false;
     workerReadyResolve();
   }
@@ -901,21 +900,18 @@ Speaker 2: I'm going to practice my English.</textarea>
   // this shared promise; it never starts a second model download.
   function preloadKokoro() {
     if (!workerAvailable || !kokoroWorker) return;
-    console.log('kokoro preload:start', performance.now());
     try {
       kokoroWorker.postMessage({ type: 'loadModel', modelId: MODEL_ID });
     } catch (e) {
-      console.warn('kokoroWorker preload failed', e);
       workerReadyResolve();
     }
   }
   preloadKokoro();
   if (kokoroWorker) {
-    kokoroWorker.onerror = (ev) => { console.error('Worker error', ev); };
+    kokoroWorker.onerror = () => {};
     kokoroWorker.addEventListener('message', ev => {
       const d = ev.data;
       if (d && d.type === 'loaded') {
-        console.log('kokoro worker: model loaded at', performance.now());
         workerReadyResolve();
       }
     });
@@ -928,7 +924,6 @@ Speaker 2: I'm going to practice my English.</textarea>
     encodeWorker = new Worker('./encode-worker.js');
     encodeWorkerAvailable = true;
   } catch (err) {
-    console.warn('Encode worker not available, will encode in main thread', err);
     encodeWorker = null; encodeWorkerAvailable = false;
   }
 
@@ -936,7 +931,6 @@ Speaker 2: I'm going to practice my English.</textarea>
     encodeWorker.onmessage = (ev) => {
       const d = ev.data;
       if (d.type === 'mp3') {
-    console.timeEnd('mp3-encode'); console.log('mp3-encode:done', performance.now());
     const mp3 = new Uint8Array(d.mp3);
     audioBlob = new Blob([mp3], { type: 'audio/mpeg' });
     if (audioURL) URL.revokeObjectURL(audioURL);
@@ -949,7 +943,6 @@ Speaker 2: I'm going to practice my English.</textarea>
       encodeWaitingDownload = false;
     }
   } else if (d.type === 'error') {
-    console.error('Encode worker error', d.message);
     setDownloadStatus('error', d.message || 'Encoding failed');
     encodeWaitingDownload = false;
   }
@@ -1044,22 +1037,16 @@ Speaker 2: I'm going to practice my English.</textarea>
       // If single voice: generate Kokoro preview (no Web Speech API). Start worker generation immediately and play when ready.
       if (audioMode === 'single') {
         setDownloadStatus('recording', 'Generating preview…');
-        console.time('preview-gen'); console.log('preview-gen:start', performance.now());
         try {
           // race worker with a timeout: if worker doesn't reply in 60s, fall back to main
           const workerPromise = workerReady.then(() => workerGenerate({ type: 'generate', text, voice: voiceId, speed }));
           const timeoutPromise = new Promise((_, rej) => setTimeout(() => rej(new Error('Worker timeout')), 60000));
           const res = await Promise.race([workerPromise, timeoutPromise]).catch(async (err) => {
-            console.warn('Worker failed or timed out:', err);
             // Fallback: try main-thread generation so user still gets audio
             try {
-              console.time('model-load');
               setDownloadStatus('recording', 'Fallback: generating in main thread…');
               if (!ttsModel) ttsModel = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
-              console.timeEnd('model-load');
-              console.time('preview-gen-fallback');
               const mainRes = await ttsModel.generate(text, { voice: voiceId, speed });
-              console.timeEnd('preview-gen-fallback');
               return { pcm: mainRes.audio.buffer, sr: mainRes.sampling_rate };
             } catch (mainErr) {
               throw mainErr;
@@ -1086,10 +1073,7 @@ Speaker 2: I'm going to practice my English.</textarea>
           document.getElementById('btn-download').style.display = 'flex';
           setDownloadStatus('done', 'Preview ready — click Download to encode MP3 (may take longer)');
         } catch (finalErr) {
-          console.error('Both worker and fallback generation failed', finalErr);
           setDownloadStatus('error', finalErr.message || String(finalErr));
-        } finally {
-          console.timeEnd('preview-gen');
         }
 
         // Re-enable generate button
@@ -1107,7 +1091,6 @@ Speaker 2: I'm going to practice my English.</textarea>
       try {
         res = await workerReady.then(() => workerGenerate({ type: 'generate_dialogue', turns: payloadTurns, speed }));
       } catch (workerErr) {
-        console.warn('Worker generate_dialogue failed, falling back to main thread:', workerErr);
         // Fallback: generate sequentially on main thread (preserve original behavior)
         if (!ttsModel) {
           setDownloadStatus('recording', 'Loading voice model (~86 MB, cached after first use)…');
@@ -1146,7 +1129,6 @@ Speaker 2: I'm going to practice my English.</textarea>
       setDownloadStatus('done', 'Preview ready — click Download to encode MP3 (may take longer)');
       document.getElementById('dialogue-progress').hidden = true;
     } catch (err) {
-      console.error(err);
       setDownloadStatus('error', err.message);
       document.getElementById('dialogue-progress').hidden = true;
     }
@@ -1180,16 +1162,12 @@ Speaker 2: I'm going to practice my English.</textarea>
     if (encodeWorkerAvailable && encodeWorker) {
       try {
         encodeWaitingDownload = true;
-      console.time('mp3-encode'); console.log('mp3-encode:start', performance.now());
       // Transfer a copy to preserve lastPCM if needed; send copy for safety
       const pcmCopy = new Float32Array(lastPCM);
       encodeWorker.postMessage({ pcm: pcmCopy.buffer, sr: lastSR }, [pcmCopy.buffer]);
     } catch (err) {
-      console.warn('Encode worker postMessage failed, falling back', err);
       try {
-        console.time('mp3-encode'); console.log('mp3-encode:start (fallback main)', performance.now());
         audioBlob = pcmToMp3(lastPCM, lastSR);
-        console.timeEnd('mp3-encode'); console.log('mp3-encode:done (fallback main)', performance.now());
         if (audioURL) URL.revokeObjectURL(audioURL);
         audioURL = URL.createObjectURL(audioBlob);
         setDownloadStatus('done', 'MP3 ready ✓ — download starting');
@@ -1202,9 +1180,7 @@ Speaker 2: I'm going to practice my English.</textarea>
     } else {
     // Fallback: encode on main thread
     try {
-      console.time('mp3-encode'); console.log('mp3-encode:start (main) ', performance.now());
       audioBlob = pcmToMp3(lastPCM, lastSR);
-      console.timeEnd('mp3-encode'); console.log('mp3-encode:done (main) ', performance.now());
       if (audioURL) URL.revokeObjectURL(audioURL);
       audioURL = URL.createObjectURL(audioBlob);
       setDownloadStatus('done', 'MP3 ready ✓ — download starting');
