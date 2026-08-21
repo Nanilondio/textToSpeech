@@ -1,0 +1,110 @@
+{
+  "slug": "weekend-plans",
+  "title": "Weekend Plans",
+  "level": "a2",
+  "topic": "weekend",
+  "topicName": "Weekend & Free Time",
+  "category": "listening-exercises",
+  "summary": "Two friends talk about their weekend plans: visiting a museum, watching a film, and meeting for coffee.",
+  "description": "A friendly elementary dialogue about free-time activities. The dialogue recycles the present continuous for plans (I'm going to / We're meeting) and time expressions for the weekend.",
+  "duration": "2 minutes",
+  "vocabulary": [
+    { "word": "free", "definition": "having no work or plans; available" },
+    { "word": "plan", "definition": "something you intend to do" },
+    { "word": "sounds good", "definition": "a friendly way to say 'that is a good idea'" },
+    { "word": "maybe", "definition": "used to show that something is possible but not certain" },
+    { "word": "meet up", "definition": "to come together at the same place, usually socially" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Hi, Sara. What are you doing this weekend?" },
+    { "speaker": "2", "text": "Not much. On Saturday morning, I am going to the museum with my brother." },
+    { "speaker": "1", "text": "That sounds nice. Are you going to the new photography exhibition?" },
+    { "speaker": "2", "text": "Yes, exactly. And in the evening, I am watching a film at home." },
+    { "speaker": "1", "text": "Sounds relaxing. What about Sunday?" },
+    { "speaker": "2", "text": "On Sunday, I am free in the afternoon. Do you want to meet up?" },
+    { "speaker": "1", "text": "Sure. We can have coffee around three." },
+    { "speaker": "2", "text": "Perfect. I will see you at the café on Sunday at three." }
+  ],
+  "questions": [
+    {
+      "q": "What is Sara doing on Saturday morning?",
+      "options": ["Watching a film", "Going to the museum", "Meeting for coffee"],
+      "answer": 1
+    },
+    {
+      "q": "When do the friends plan to meet?",
+      "options": ["Saturday afternoon", "Sunday morning", "Sunday afternoon"],
+      "answer": 2
+    },
+    {
+      "q": "What are they going to do together?",
+      "options": ["Visit a museum", "Watch a film", "Have coffee"],
+      "answer": 2
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "Sara is going to the museum with her sister.",
+      "answer": false,
+      "explanation": "Sara says she is going with her brother."
+    },
+    {
+      "statement": "They agree to meet at three o'clock.",
+      "answer": true,
+      "explanation": "Speaker 1 says 'We can have coffee around three.'"
+    }
+  ],
+  "teacherTips": [
+    "Recycle the present continuous for plans. After listening, ask 'What are you doing this weekend?' around the class.",
+    "Practise the expression 'sounds good / sounds nice / sounds relaxing' as natural responses to plans.",
+    "Extension: students write three sentences about their own weekend using 'I'm going to…' and share in pairs."
+  ],
+  "relatedExercises": ["daily-routine", "asking-for-directions"],
+  "es": {
+    "title": "Planes de fin de semana",
+    "summary": "Dos amigos hablan de sus planes para el fin de semana: visitar un museo, ver una película y quedar para tomar un café.",
+    "description": "Un diálogo elemental amable sobre actividades de tiempo libre. El diálogo recicla el presente continuo para planes (I'm going to / We're meeting) y expresiones de tiempo para el fin de semana.",
+    "topicName": "Fin de semana y tiempo libre",
+    "vocabulary": [
+      { "word": "free", "definition": "sin trabajo ni planes; disponible" },
+      { "word": "plan", "definition": "algo que piensas hacer" },
+      { "word": "sounds good", "definition": "una forma amable de decir 'es una buena idea'" },
+      { "word": "maybe", "definition": "se usa para mostrar que algo es posible pero no seguro" },
+      { "word": "meet up", "definition": "reunirse en el mismo lugar, normalmente en un contexto social" }
+    ],
+    "questions": [
+      {
+        "q": "¿Qué hace Sara el sábado por la mañana?",
+        "options": ["Ver una película", "Ir al museo", "Quedar para un café"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cuándo planean quedar los amigos?",
+        "options": ["El sábado por la tarde", "El domingo por la mañana", "El domingo por la tarde"],
+        "answer": 2
+      },
+      {
+        "q": "¿Qué van a hacer juntos?",
+        "options": ["Visitar un museo", "Ver una película", "Tomar un café"],
+        "answer": 2
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "Sara va al museo con su hermana.",
+        "answer": false,
+        "explanation": "Sara dice que va con su hermano."
+      },
+      {
+        "statement": "Acuerdan verse a las tres.",
+        "answer": true,
+        "explanation": "El interlocutor 1 dice 'We can have coffee around three'."
+      }
+    ],
+    "teacherTips": [
+      "Recicla el presente continuo para planes. Después de escuchar, pregunta 'What are you doing this weekend?' por la clase.",
+      "Practica la expresión 'sounds good / sounds nice / sounds relaxing' como respuestas naturales a planes.",
+      "Ampliación: los estudiantes escriben tres frases sobre su propio fin de semana usando 'I'm going to…' y las comparten por parejas."
+    ]
+  }
+}

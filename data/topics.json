@@ -1,0 +1,134 @@
+{
+  "topics": [
+    {
+      "id": "introductions",
+      "name": "Introductions & Greetings",
+      "description": "Meeting people for the first time, saying hello, exchanging basic personal information.",
+      "levels": ["a1"],
+      "es": {
+        "name": "Presentaciones y saludos",
+        "description": "Conocer gente por primera vez, saludar, intercambiar información personal básica."
+      }
+    },
+    {
+      "id": "family",
+      "name": "Family & People",
+      "description": "Talking about family members, describing people, relationships.",
+      "levels": ["a1"],
+      "es": {
+        "name": "Familia y personas",
+        "description": "Hablar de miembros de la familia, describir personas, relaciones."
+      }
+    },
+    {
+      "id": "daily-routine",
+      "name": "Daily Routine",
+      "description": "Mornings, workdays, free time, hobbies, simple daily activities.",
+      "levels": ["a1"],
+      "es": {
+        "name": "Rutina diaria",
+        "description": "Mañanas, días de trabajo, tiempo libre, aficiones, actividades diarias sencillas."
+      }
+    },
+    {
+      "id": "school",
+      "name": "School & Classes",
+      "description": "Classroom language, subjects, school activities, friends at school.",
+      "levels": ["a1"],
+      "es": {
+        "name": "Escuela y clases",
+        "description": "Lenguaje del aula, asignaturas, actividades escolares, amigos en la escuela."
+      }
+    },
+    {
+      "id": "shopping",
+      "name": "Shopping & Supermarket",
+      "description": "Asking for prices, paying, finding products at the supermarket.",
+      "levels": ["a1"],
+      "es": {
+        "name": "Compras y supermercado",
+        "description": "Pedir precios, pagar, encontrar productos en el supermercado."
+      }
+    },
+    {
+      "id": "restaurant",
+      "name": "Restaurants & Food",
+      "description": "Ordering food, asking about the menu, paying the bill.",
+      "levels": ["a2"],
+      "es": {
+        "name": "Restaurantes y comida",
+        "description": "Pedir comida, preguntar por el menú, pagar la cuenta."
+      }
+    },
+    {
+      "id": "travel",
+      "name": "Travel & Directions",
+      "description": "Asking for and giving directions, transport, tourist situations.",
+      "levels": ["a2"],
+      "es": {
+        "name": "Viajes y direcciones",
+        "description": "Pedir y dar indicaciones, transporte, situaciones turísticas."
+      }
+    },
+    {
+      "id": "appointments",
+      "name": "Appointments & Services",
+      "description": "Booking, rescheduling, calling a clinic or service provider.",
+      "levels": ["a2"],
+      "es": {
+        "name": "Citas y servicios",
+        "description": "Reservar, reprogramar, llamar a una clínica o proveedor de servicios."
+      }
+    },
+    {
+      "id": "weekend",
+      "name": "Weekend & Free Time",
+      "description": "Plans, invitations, what people do in their free time.",
+      "levels": ["a2"],
+      "es": {
+        "name": "Fin de semana y tiempo libre",
+        "description": "Planes, invitaciones, qué hacen las personas en su tiempo libre."
+      }
+    },
+    {
+      "id": "airport",
+      "name": "Airport & Flights",
+      "description": "Check-in, security, boarding, customs, layovers.",
+      "levels": ["a2"],
+      "es": {
+        "name": "Aeropuerto y vuelos",
+        "description": "Facturación, seguridad, embarque, aduanas, escalas."
+      }
+    },
+    {
+      "id": "work",
+      "name": "Work & Career",
+      "description": "Job interviews, workplace conversations, professional small talk.",
+      "levels": ["b1"],
+      "es": {
+        "name": "Trabajo y carrera",
+        "description": "Entrevistas de trabajo, conversaciones en el lugar de trabajo, charla profesional."
+      }
+    },
+    {
+      "id": "advice",
+      "name": "Advice & Opinions",
+      "description": "Giving and asking for advice, expressing opinions, debating politely.",
+      "levels": ["b1"],
+      "es": {
+        "name": "Consejos y opiniones",
+        "description": "Dar y pedir consejo, expresar opiniones, debatir con educación."
+      }
+    },
+    {
+      "id": "complaints",
+      "name": "Complaints & Customer Service",
+      "description": "Filing complaints, negotiating solutions, formal and informal tone.",
+      "levels": ["b1"],
+      "es": {
+        "name": "Quejas y atención al cliente",
+        "description": "Presentar quejas, negociar soluciones, tono formal e informal."
+      }
+    }
+  ]
+}

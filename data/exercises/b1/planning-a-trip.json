@@ -1,0 +1,112 @@
+{
+  "slug": "planning-a-trip",
+  "title": "Planning a Trip",
+  "level": "b1",
+  "topic": "travel",
+  "topicName": "Travel & Directions",
+  "category": "listening-exercises",
+  "summary": "Two friends discuss a two-week trip to Japan: itinerary, budget, and what to pack.",
+  "description": "An intermediate-level planning conversation. Learners hear modals of suggestion ('we could…', 'let's…'), money expressions, and travel vocabulary (itinerary, budget, accommodation).",
+  "duration": "3–4 minutes",
+  "vocabulary": [
+    { "word": "itinerary", "definition": "a detailed plan of a journey, including places and times" },
+    { "word": "budget", "definition": "the amount of money you can spend on something" },
+    { "word": "accommodation", "definition": "a place to stay, like a hotel or hostel" },
+    { "word": "book in advance", "definition": "to arrange something before you need it" },
+    { "word": "sightseeing", "definition": "visiting interesting places as a tourist" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "So, Emma, are you ready to plan our trip to Japan?" },
+    { "speaker": "2", "text": "Almost. We have two weeks and a budget of two thousand euros each." },
+    { "speaker": "1", "text": "Perfect. I think we should book accommodation in advance. Hotels fill up quickly." },
+    { "speaker": "2", "text": "Good idea. Maybe we can stay in small guesthouses to save money." },
+    { "speaker": "1", "text": "I agree. What about the itinerary? I would love to visit Kyoto." },
+    { "speaker": "2", "text": "Kyoto is a must. We could spend four days there, doing some sightseeing." },
+    { "speaker": "1", "text": "And we should keep a couple of free days for spontaneous plans." },
+    { "speaker": "2", "text": "Exactly. We could also take a day trip to Nara if we have time." },
+    { "speaker": "1", "text": "Sounds great. What about packing?" },
+    { "speaker": "2", "text": "Light clothes, comfortable shoes, and a small backpack for day trips." }
+  ],
+  "questions": [
+    {
+      "q": "How long is the trip?",
+      "options": ["One week", "Two weeks", "Three weeks"],
+      "answer": 1
+    },
+    {
+      "q": "How much is the budget per person?",
+      "options": ["One thousand euros", "Two thousand euros", "Three thousand euros"],
+      "answer": 1
+    },
+    {
+      "q": "Which city is a 'must' according to Emma?",
+      "options": ["Tokyo", "Osaka", "Kyoto"],
+      "answer": 2
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "They plan to book hotels at the last minute.",
+      "answer": false,
+      "explanation": "The speaker says 'we should book accommodation in advance.'"
+    },
+    {
+      "statement": "Emma suggests staying in small guesthouses.",
+      "answer": true,
+      "explanation": "Emma says 'Maybe we can stay in small guesthouses to save money.'"
+    }
+  ],
+  "teacherTips": [
+    "Pre-teach 'we could…' and 'let's…' as planning phrases. Recycle modal verbs of suggestion.",
+    "After listening, students plan a short trip in pairs using the same structure (where, how long, budget, must-see places).",
+    "Extension: present the plan to the class in a one-minute talk."
+  ],
+  "relatedExercises": ["at-the-airport", "giving-advice"],
+  "es": {
+    "title": "Planificar un viaje",
+    "summary": "Dos amigos hablan de un viaje de dos semanas a Japón: itinerario, presupuesto y qué meter en la maleta.",
+    "description": "Una conversación intermedia de planificación. Los estudiantes oyen modales de sugerencia ('we could…', 'let's…'), expresiones de dinero y vocabulario de viaje (itinerary, budget, accommodation).",
+    "topicName": "Viajes y direcciones",
+    "vocabulary": [
+      { "word": "itinerary", "definition": "un plan detallado de un viaje, con lugares y horarios" },
+      { "word": "budget", "definition": "la cantidad de dinero que puedes gastar en algo" },
+      { "word": "accommodation", "definition": "un lugar donde alojarse, como un hotel o un albergue" },
+      { "word": "book in advance", "definition": "reservar algo antes de que lo necesites" },
+      { "word": "sightseeing", "definition": "visitar lugares de interés como turista" }
+    ],
+    "questions": [
+      {
+        "q": "¿Cuánto dura el viaje?",
+        "options": ["Una semana", "Dos semanas", "Tres semanas"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cuánto es el presupuesto por persona?",
+        "options": ["Mil euros", "Dos mil euros", "Tres mil euros"],
+        "answer": 1
+      },
+      {
+        "q": "¿Qué ciudad es, según Emma, una visita obligada?",
+        "options": ["Tokio", "Osaka", "Kioto"],
+        "answer": 2
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "Planean reservar hoteles a última hora.",
+        "answer": false,
+        "explanation": "El interlocutor dice 'we should book accommodation in advance'."
+      },
+      {
+        "statement": "Emma sugiere alojarse en pequeños hostales.",
+        "answer": true,
+        "explanation": "Emma dice 'Maybe we can stay in small guesthouses to save money'."
+      }
+    ],
+    "teacherTips": [
+      "Enseña antes 'we could…' y 'let's…' como frases para planificar. Recicla los verbos modales de sugerencia.",
+      "Después de escuchar, los estudiantes planifican un viaje corto por parejas usando la misma estructura (dónde, cuánto tiempo, presupuesto, lugares imprescindibles).",
+      "Ampliación: presentan el plan a la clase en una exposición de un minuto."
+    ]
+  }
+}

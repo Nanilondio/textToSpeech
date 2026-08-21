@@ -1,0 +1,403 @@
+{
+  "site": "https://listeningclassroom.com",
+  "generatedAt": "2026-08-21T19:56:32.332Z",
+  "counts": {
+    "exercises": 15,
+    "guides": 5,
+    "levels": 4,
+    "topics": 13
+  },
+  "exercises": [
+    {
+      "slug": "at-school",
+      "title": "At School",
+      "titleEs": "En la escuela",
+      "level": "a1",
+      "topic": "school",
+      "topicName": "School & Classes",
+      "summary": "Two students talk about their favourite school subjects, teachers, and break-time activities."
+    },
+    {
+      "slug": "at-the-supermarket",
+      "title": "At the Supermarket",
+      "titleEs": "En el supermercado",
+      "level": "a1",
+      "topic": "shopping",
+      "topicName": "Shopping & Supermarket",
+      "summary": "A customer asks for help finding products at the supermarket and learns vocabulary for common food items."
+    },
+    {
+      "slug": "daily-routine",
+      "title": "Daily Routine",
+      "titleEs": "Rutina diaria",
+      "level": "a1",
+      "topic": "daily-routine",
+      "topicName": "Daily Routine",
+      "summary": "A teenager describes a typical weekday from waking up to going to bed, using present-simple time markers."
+    },
+    {
+      "slug": "introducing-yourself",
+      "title": "Introducing Yourself",
+      "titleEs": "Presentarse",
+      "level": "a1",
+      "topic": "introductions",
+      "topicName": "Introductions & Greetings",
+      "summary": "A short first-meeting conversation where two students introduce themselves and exchange basic personal information."
+    },
+    {
+      "slug": "my-family",
+      "title": "My Family",
+      "titleEs": "Mi familia",
+      "level": "a1",
+      "topic": "family",
+      "topicName": "Family & People",
+      "summary": "Two classmates talk about their families: how many brothers and sisters they have, and what their parents do."
+    },
+    {
+      "slug": "asking-for-directions",
+      "title": "Asking for Directions",
+      "titleEs": "Pedir indicaciones",
+      "level": "a2",
+      "topic": "travel",
+      "topicName": "Travel & Directions",
+      "summary": "A tourist asks a passer-by how to get to the train station and follows the instructions step by step."
+    },
+    {
+      "slug": "at-the-airport",
+      "title": "At the Airport",
+      "titleEs": "En el aeropuerto",
+      "level": "a2",
+      "topic": "airport",
+      "topicName": "Airport & Flights",
+      "summary": "A passenger checks in at the airport, asks about luggage, and finds the correct gate."
+    },
+    {
+      "slug": "at-the-restaurant",
+      "title": "At the Restaurant",
+      "titleEs": "En el restaurante",
+      "level": "a2",
+      "topic": "restaurant",
+      "topicName": "Restaurants & Food",
+      "summary": "A customer orders a meal, asks for the bill, and pays with a credit card."
+    },
+    {
+      "slug": "making-an-appointment",
+      "title": "Making an Appointment",
+      "titleEs": "Pedir una cita",
+      "level": "a2",
+      "topic": "appointments",
+      "topicName": "Appointments & Services",
+      "summary": "A patient calls a dental clinic to book an appointment and reschedules when the first slot is not possible."
+    },
+    {
+      "slug": "weekend-plans",
+      "title": "Weekend Plans",
+      "titleEs": "Planes de fin de semana",
+      "level": "a2",
+      "topic": "weekend",
+      "topicName": "Weekend & Free Time",
+      "summary": "Two friends talk about their weekend plans: visiting a museum, watching a film, and meeting for coffee."
+    },
+    {
+      "slug": "giving-advice",
+      "title": "Giving Advice",
+      "titleEs": "Dar consejo",
+      "level": "b1",
+      "topic": "advice",
+      "topicName": "Advice & Opinions",
+      "summary": "A friend asks for advice about moving to a new city for a job and gets practical suggestions."
+    },
+    {
+      "slug": "job-interview",
+      "title": "Job Interview",
+      "titleEs": "Entrevista de trabajo",
+      "level": "b1",
+      "topic": "work",
+      "topicName": "Work & Career",
+      "summary": "An interviewer asks a candidate about experience, strengths, and why they want the job."
+    },
+    {
+      "slug": "making-a-complaint",
+      "title": "Making a Complaint",
+      "titleEs": "Presentar una queja",
+      "level": "b1",
+      "topic": "complaints",
+      "topicName": "Complaints & Customer Service",
+      "summary": "A customer calls a hotel to complain about a noisy room and asks for a solution."
+    },
+    {
+      "slug": "planning-a-trip",
+      "title": "Planning a Trip",
+      "titleEs": "Planificar un viaje",
+      "level": "b1",
+      "topic": "travel",
+      "topicName": "Travel & Directions",
+      "summary": "Two friends discuss a two-week trip to Japan: itinerary, budget, and what to pack."
+    },
+    {
+      "slug": "travel-problems",
+      "title": "Travel Problems",
+      "titleEs": "Problemas de viaje",
+      "level": "b1",
+      "topic": "travel",
+      "topicName": "Travel & Directions",
+      "summary": "A traveller explains a missed connection at the airport and asks for help rebooking the next flight."
+    }
+  ],
+  "guides": [
+    {
+      "slug": "how-to-build-listening-activities-for-a1-and-a2-students",
+      "title": "How to Build Listening Activities for A1 and A2 Students",
+      "description": "A guide to designing listening activities that work with beginners, including text selection, pre-teaching, task types, and how to use two-voice dialogues.",
+      "readingTime": "6 minutes"
+    },
+    {
+      "slug": "how-to-create-dictation-activities",
+      "title": "How to Create Dictation Activities",
+      "description": "A practical guide to designing dictation activities for ESL classes, including classical, running, partial, and dictogloss variants, with tips on speed and feedback.",
+      "readingTime": "6 minutes"
+    },
+    {
+      "slug": "how-to-create-listening-exercises-for-esl-students",
+      "title": "How to Create Listening Exercises for ESL Students",
+      "description": "A practical workflow for designing clear, classroom-ready English listening exercises from any text or dialogue, including step-by-step instructions and common pitfalls.",
+      "readingTime": "8 minutes"
+    },
+    {
+      "slug": "how-to-practice-english-pronunciation-with-audio",
+      "title": "How to Practice English Pronunciation with Audio",
+      "description": "A practical guide to using audio tools and simple drills to improve English pronunciation in class or self-study, focused on stress, intonation, and connected speech.",
+      "readingTime": "7 minutes"
+    },
+    {
+      "slug": "how-to-use-text-to-speech-in-english-classes",
+      "title": "How to Use Text-to-Speech in English Classes",
+      "description": "When text-to-speech helps ESL teaching and when it does not, with practical classroom patterns for using neural voices for listening, pronunciation, and differentiation.",
+      "readingTime": "7 minutes"
+    }
+  ],
+  "levels": [
+    {
+      "id": "a1",
+      "code": "A1",
+      "name": "Beginner",
+      "nameLong": "A1 — Beginner",
+      "description": "Short, slow dialogues with basic vocabulary. Suitable for first-year English learners.",
+      "duration": "1–2 minutes",
+      "wordCount": "60–100 words",
+      "es": {
+        "name": "Principiante",
+        "nameLong": "A1 — Principiante",
+        "description": "Diálogos cortos y lentos con vocabulario básico. Adecuados para estudiantes de inglés de primer año.",
+        "duration": "1–2 minutos",
+        "wordCount": "60–100 palabras"
+      }
+    },
+    {
+      "id": "a2",
+      "code": "A2",
+      "name": "Elementary",
+      "nameLong": "A2 — Elementary",
+      "description": "Everyday conversations on familiar topics: travel, food, appointments, plans.",
+      "duration": "1–3 minutes",
+      "wordCount": "90–150 words",
+      "es": {
+        "name": "Elemental",
+        "nameLong": "A2 — Elemental",
+        "description": "Conversaciones cotidianas sobre temas familiares: viajes, comida, citas, planes.",
+        "duration": "1–3 minutos",
+        "wordCount": "90–150 palabras"
+      }
+    },
+    {
+      "id": "b1",
+      "code": "B1",
+      "name": "Intermediate",
+      "nameLong": "B1 — Intermediate",
+      "description": "Slightly longer dialogues that include opinions, advice, problem-solving, and informal workplace language.",
+      "duration": "2–4 minutes",
+      "wordCount": "150–220 words",
+      "es": {
+        "name": "Intermedio",
+        "nameLong": "B1 — Intermedio",
+        "description": "Diálogos un poco más largos con opiniones, consejos, resolución de problemas y lenguaje informal de trabajo.",
+        "duration": "2–4 minutos",
+        "wordCount": "150–220 palabras"
+      }
+    },
+    {
+      "id": "b2",
+      "code": "B2",
+      "name": "Upper-Intermediate",
+      "nameLong": "B2 — Upper-Intermediate",
+      "description": "Reserved for more advanced content (coming soon).",
+      "duration": "—",
+      "wordCount": "—",
+      "es": {
+        "name": "Intermedio alto",
+        "nameLong": "B2 — Intermedio alto",
+        "description": "Reservado para contenido más avanzado (próximamente).",
+        "duration": "—",
+        "wordCount": "—"
+      }
+    }
+  ],
+  "topics": [
+    {
+      "id": "introductions",
+      "name": "Introductions & Greetings",
+      "description": "Meeting people for the first time, saying hello, exchanging basic personal information.",
+      "levels": [
+        "a1"
+      ],
+      "es": {
+        "name": "Presentaciones y saludos",
+        "description": "Conocer gente por primera vez, saludar, intercambiar información personal básica."
+      }
+    },
+    {
+      "id": "family",
+      "name": "Family & People",
+      "description": "Talking about family members, describing people, relationships.",
+      "levels": [
+        "a1"
+      ],
+      "es": {
+        "name": "Familia y personas",
+        "description": "Hablar de miembros de la familia, describir personas, relaciones."
+      }
+    },
+    {
+      "id": "daily-routine",
+      "name": "Daily Routine",
+      "description": "Mornings, workdays, free time, hobbies, simple daily activities.",
+      "levels": [
+        "a1"
+      ],
+      "es": {
+        "name": "Rutina diaria",
+        "description": "Mañanas, días de trabajo, tiempo libre, aficiones, actividades diarias sencillas."
+      }
+    },
+    {
+      "id": "school",
+      "name": "School & Classes",
+      "description": "Classroom language, subjects, school activities, friends at school.",
+      "levels": [
+        "a1"
+      ],
+      "es": {
+        "name": "Escuela y clases",
+        "description": "Lenguaje del aula, asignaturas, actividades escolares, amigos en la escuela."
+      }
+    },
+    {
+      "id": "shopping",
+      "name": "Shopping & Supermarket",
+      "description": "Asking for prices, paying, finding products at the supermarket.",
+      "levels": [
+        "a1"
+      ],
+      "es": {
+        "name": "Compras y supermercado",
+        "description": "Pedir precios, pagar, encontrar productos en el supermercado."
+      }
+    },
+    {
+      "id": "restaurant",
+      "name": "Restaurants & Food",
+      "description": "Ordering food, asking about the menu, paying the bill.",
+      "levels": [
+        "a2"
+      ],
+      "es": {
+        "name": "Restaurantes y comida",
+        "description": "Pedir comida, preguntar por el menú, pagar la cuenta."
+      }
+    },
+    {
+      "id": "travel",
+      "name": "Travel & Directions",
+      "description": "Asking for and giving directions, transport, tourist situations.",
+      "levels": [
+        "a2"
+      ],
+      "es": {
+        "name": "Viajes y direcciones",
+        "description": "Pedir y dar indicaciones, transporte, situaciones turísticas."
+      }
+    },
+    {
+      "id": "appointments",
+      "name": "Appointments & Services",
+      "description": "Booking, rescheduling, calling a clinic or service provider.",
+      "levels": [
+        "a2"
+      ],
+      "es": {
+        "name": "Citas y servicios",
+        "description": "Reservar, reprogramar, llamar a una clínica o proveedor de servicios."
+      }
+    },
+    {
+      "id": "weekend",
+      "name": "Weekend & Free Time",
+      "description": "Plans, invitations, what people do in their free time.",
+      "levels": [
+        "a2"
+      ],
+      "es": {
+        "name": "Fin de semana y tiempo libre",
+        "description": "Planes, invitaciones, qué hacen las personas en su tiempo libre."
+      }
+    },
+    {
+      "id": "airport",
+      "name": "Airport & Flights",
+      "description": "Check-in, security, boarding, customs, layovers.",
+      "levels": [
+        "a2"
+      ],
+      "es": {
+        "name": "Aeropuerto y vuelos",
+        "description": "Facturación, seguridad, embarque, aduanas, escalas."
+      }
+    },
+    {
+      "id": "work",
+      "name": "Work & Career",
+      "description": "Job interviews, workplace conversations, professional small talk.",
+      "levels": [
+        "b1"
+      ],
+      "es": {
+        "name": "Trabajo y carrera",
+        "description": "Entrevistas de trabajo, conversaciones en el lugar de trabajo, charla profesional."
+      }
+    },
+    {
+      "id": "advice",
+      "name": "Advice & Opinions",
+      "description": "Giving and asking for advice, expressing opinions, debating politely.",
+      "levels": [
+        "b1"
+      ],
+      "es": {
+        "name": "Consejos y opiniones",
+        "description": "Dar y pedir consejo, expresar opiniones, debatir con educación."
+      }
+    },
+    {
+      "id": "complaints",
+      "name": "Complaints & Customer Service",
+      "description": "Filing complaints, negotiating solutions, formal and informal tone.",
+      "levels": [
+        "b1"
+      ],
+      "es": {
+        "name": "Quejas y atención al cliente",
+        "description": "Presentar quejas, negociar soluciones, tono formal e informal."
+      }
+    }
+  ]
+}

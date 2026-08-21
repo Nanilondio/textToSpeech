@@ -1,0 +1,68 @@
+{
+  "levels": [
+    {
+      "id": "a1",
+      "code": "A1",
+      "name": "Beginner",
+      "nameLong": "A1 — Beginner",
+      "description": "Short, slow dialogues with basic vocabulary. Suitable for first-year English learners.",
+      "duration": "1–2 minutes",
+      "wordCount": "60–100 words",
+      "es": {
+        "name": "Principiante",
+        "nameLong": "A1 — Principiante",
+        "description": "Diálogos cortos y lentos con vocabulario básico. Adecuados para estudiantes de inglés de primer año.",
+        "duration": "1–2 minutos",
+        "wordCount": "60–100 palabras"
+      }
+    },
+    {
+      "id": "a2",
+      "code": "A2",
+      "name": "Elementary",
+      "nameLong": "A2 — Elementary",
+      "description": "Everyday conversations on familiar topics: travel, food, appointments, plans.",
+      "duration": "1–3 minutes",
+      "wordCount": "90–150 words",
+      "es": {
+        "name": "Elemental",
+        "nameLong": "A2 — Elemental",
+        "description": "Conversaciones cotidianas sobre temas familiares: viajes, comida, citas, planes.",
+        "duration": "1–3 minutos",
+        "wordCount": "90–150 palabras"
+      }
+    },
+    {
+      "id": "b1",
+      "code": "B1",
+      "name": "Intermediate",
+      "nameLong": "B1 — Intermediate",
+      "description": "Slightly longer dialogues that include opinions, advice, problem-solving, and informal workplace language.",
+      "duration": "2–4 minutes",
+      "wordCount": "150–220 words",
+      "es": {
+        "name": "Intermedio",
+        "nameLong": "B1 — Intermedio",
+        "description": "Diálogos un poco más largos con opiniones, consejos, resolución de problemas y lenguaje informal de trabajo.",
+        "duration": "2–4 minutos",
+        "wordCount": "150–220 palabras"
+      }
+    },
+    {
+      "id": "b2",
+      "code": "B2",
+      "name": "Upper-Intermediate",
+      "nameLong": "B2 — Upper-Intermediate",
+      "description": "Reserved for more advanced content (coming soon).",
+      "duration": "—",
+      "wordCount": "—",
+      "es": {
+        "name": "Intermedio alto",
+        "nameLong": "B2 — Intermedio alto",
+        "description": "Reservado para contenido más avanzado (próximamente).",
+        "duration": "—",
+        "wordCount": "—"
+      }
+    }
+  ]
+}

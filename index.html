@@ -16,421 +16,64 @@
     gtag('js', new Date());
     gtag('config', 'G-E1D8VDYM6D');
   </script>
-  <!-- ═══════════════════════════════════════════
-       SEO ESSENTIALS
-  ════════════════════════════════════════════ -->
-  <meta charset="UTF-8">
-  <meta name="google-adsense-account" content="ca-pub-7086938365759492">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>English Dialogue Generator — Two Voice MP3 Audio for Teachers | ListeningClassroom</title>
-  <meta name="description" content="Create free English dialogue audio with two different voices. Choose voices for each speaker, generate a downloadable MP3, and make listening exercises for ESL classes.">
-  <meta name="keywords" content="English dialogue generator, two voice text to speech, dialogue audio generator, ESL listening exercises, English conversation audio, classroom MP3, text to speech for teachers, downloadable English audio">
-  <meta name="author" content="ListeningClassroom.com">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://listeningclassroom.com/">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <link rel="shortcut icon" href="favicon.svg">
-
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="English Dialogue Generator — Create Two-Voice MP3 Audio">
-  <meta property="og:description" content="Create classroom dialogue audio by assigning two different English voices to each speaker. Free, browser-based, and downloadable as MP3.">
-  <meta property="og:url" content="https://listeningclassroom.com/">
-  <meta property="og:image" content="https://listeningclassroom.com/logo.svg">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="English Dialogue Generator — Two-Voice MP3 Audio">
-  <meta name="twitter:description" content="Create free English conversation audio with two voices for ESL listening exercises and classroom presentations.">
-
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "ListeningClassroom.com",
-    "description": "Free English text-to-speech and dialogue generator for ESL teachers. Assign two voices to a conversation and download the result as an MP3 audio file.",
-    "url": "https://listeningclassroom.com/",
-    "applicationCategory": "EducationApplication",
-    "operatingSystem": "Any",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "audience": { "@type": "Audience", "audienceType": "Teachers, ESL educators" },
-    "featureList": ["Two-voice English dialogue generation", "Downloadable MP3 audio", "Adjustable speech speed", "Browser-based text to speech"]
-  }
-  </script>
-
-  <script defer src="consent.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg: #0d1117;
-      --surface: #161b22;
-      --surface2: #1c2128;
-      --border: #30363d;
-      --text: #e6edf3;
-      --muted: #7d8590;
-      --accent: #58a6ff;
-      --accent-warm: #f78166;
-      --accent-green: #3fb950;
-      --accent-yellow: #d29922;
-      --glow: rgba(88,166,255,0.15);
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
-    /* ── HEADER ── */
-    header {
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      background: rgba(13,17,23,0.92);
-      backdrop-filter: blur(12px);
-      z-index: 100;
-    }
-    .logo {
-      font-family: 'Fraunces', serif;
-      font-size: 1.2rem;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-    .logo span { color: var(--accent-warm); }
-    .header-right { display: flex; align-items: center; gap: 1.5rem; }
-    nav a {
-      color: var(--muted); font-size: 0.85rem; text-decoration: none;
-      margin-left: 1.5rem; transition: color 0.2s;
-    }
-    nav a:hover { color: var(--text); }
-
-    /* ── LANGUAGE SWITCHER ── */
-    .lang-switcher {
-      display: flex;
-      gap: 2px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 2px;
-    }
-    .lang-btn {
-      padding: 0.22rem 0.65rem;
-      background: transparent;
-      border: none;
-      border-radius: 4px;
-      color: var(--muted);
-      font-size: 0.78rem;
-      font-weight: 600;
-      font-family: 'DM Sans', sans-serif;
-      cursor: pointer;
-      transition: all 0.15s;
-      letter-spacing: 0.04em;
-    }
-    .lang-btn.active {
-      background: var(--accent);
-      color: #0d1117;
-    }
-    .lang-btn:hover:not(.active) { color: var(--text); }
-
-    /* ── HERO ── */
-    .hero {
-      text-align: center;
-      padding: 4rem 2rem 2rem;
-      max-width: 760px;
-      margin: 0 auto;
-    }
-    .hero-eyebrow {
-      font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em;
-      color: var(--accent); margin-bottom: 1rem;
-      display: inline-flex; align-items: center; gap: 0.4rem;
-    }
-    .hero-eyebrow::before, .hero-eyebrow::after {
-      content: ''; width: 24px; height: 1px; background: var(--accent); opacity: 0.5;
-    }
-    h1 {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      font-weight: 900;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      margin-bottom: 1rem;
-    }
-    h1 em { color: var(--accent-warm); font-style: normal; }
-    .hero p {
-      color: var(--muted); font-size: 1.05rem; max-width: 520px; margin: 0 auto 2rem;
-    }
-    .badges {
-      display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2.5rem;
-    }
-    .badge {
-      font-size: 0.75rem; padding: 4px 10px; border-radius: 20px;
-      border: 1px solid var(--border); color: var(--muted);
-    }
-    .badge.green { border-color: var(--accent-green); color: var(--accent-green); }
-    .badge.blue  { border-color: var(--accent); color: var(--accent); }
-    .badge.warm  { border-color: var(--accent-warm); color: var(--accent-warm); }
-
-    /* ── MAIN LAYOUT ── */
-    .layout {
-      display: grid;
-      grid-template-columns: 1fr 300px;
-      gap: 1.5rem;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1.5rem 4rem;
-    }
-    @media (max-width: 768px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { order: -1; }
-    }
-
-    /* ── TOOL CARD ── */
-    .tool-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 0 40px rgba(0,0,0,0.4);
-    }
-
-    .section-label {
-      font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--muted); margin-bottom: 0.6rem; display: block;
-    }
-
-    textarea {
-      width: 100%; min-height: 140px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 8px; padding: 0.9rem 1rem;
-      font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
-      color: var(--text); resize: vertical; outline: none; line-height: 1.7;
-      transition: border-color 0.2s;
-      margin-bottom: 1.4rem;
-    }
-    textarea:focus { border-color: var(--accent); }
-
-    /* ── TABS ── */
-    .tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 1.4rem;
-    }
-    .tab-btn {
-      padding: 0.55rem 1.1rem;
-      background: transparent;
-      border: none;
-      border-bottom: 2px solid transparent;
-      color: var(--muted);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.88rem;
-      font-weight: 500;
-      cursor: pointer;
-      margin-bottom: -1px;
-      transition: all 0.15s;
-      border-radius: 0;
-    }
-    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
-    .tab-btn:hover:not(.active) { color: var(--text); }
-
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* ── CONTROLS ── */
-    .controls-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1.2rem;
-    }
-    @media (max-width: 540px) { .controls-grid { grid-template-columns: 1fr; } }
-
-    .control-group { display: flex; flex-direction: column; gap: 0.4rem; }
-
-    select {
-      background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
-      padding: 0.5rem 0.7rem; font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
-      color: var(--text); outline: none; cursor: pointer; transition: border-color 0.2s;
-    }
-    select:focus { border-color: var(--accent); }
-
-    input[type=range] { width: 100%; accent-color: var(--accent); cursor: pointer; }
-    .range-row { display: flex; justify-content: space-between; align-items: center; }
-    .range-val { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
-
-    .filename-row { margin-bottom: 1.4rem; }
-    input[type=text] {
-      width: 100%; background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 6px; padding: 0.5rem 0.8rem;
-      font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
-      color: var(--text); outline: none; transition: border-color 0.2s;
-    }
-    input[type=text]:focus { border-color: var(--accent); }
-
-    .dialogue-help { color: var(--muted); font-size: 0.8rem; margin: -0.7rem 0 0.8rem; }
-    .dialogue-example { background: rgba(63,185,80,0.07); border: 1px solid rgba(63,185,80,0.2); border-radius: 8px; padding: 0.7rem 0.85rem; color: var(--muted); font-size: 0.8rem; margin-bottom: 1rem; }
-    .dialogue-example strong { color: var(--accent-green); }
-    .mode-description { color: var(--muted); font-size: 0.85rem; margin: -0.7rem 0 1.1rem; }
-    .dialogue-progress { color: var(--accent); font-size: 0.8rem; margin-top: 0.55rem; }
-    #dialogue-text { min-height: 190px; margin-bottom: 0.6rem; }
-    .dialogue-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-    @media (max-width: 540px) { .dialogue-controls { grid-template-columns: 1fr; } }
-
-    /* ── INFO BOX ── */
-    .info-box {
-      background: rgba(88,166,255,0.07); border: 1px solid rgba(88,166,255,0.2);
-      border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 1.4rem;
-      font-size: 0.82rem; color: var(--muted); line-height: 1.7;
-    }
-    .info-box strong { color: var(--accent); }
-
-    /* ── BUTTONS ── */
-    .btn-row { display: flex; gap: 0.75rem; flex-wrap: wrap; }
-    button {
-      font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.85rem;
-      padding: 0.6rem 1.2rem; border-radius: 6px; border: 1px solid transparent;
-      cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 0.5rem;
-    }
-
-    /* Download tab buttons */
-    #btn-generate {
-      background: var(--accent); color: #0d1117; border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(88,166,255,0.3);
-    }
-    #btn-generate:hover:not(:disabled) { box-shadow: 0 0 30px rgba(88,166,255,0.5); transform: translateY(-1px); }
-    #btn-generate:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-    #btn-generate.recording { background: var(--accent-warm); border-color: var(--accent-warm); box-shadow: 0 0 20px rgba(247,129,102,0.4); }
-
-    #btn-download {
-      background: var(--accent-green); color: #0d1117; border-color: var(--accent-green);
-      display: none; box-shadow: 0 0 16px rgba(63,185,80,0.3);
-    }
-    #btn-download:hover { transform: translateY(-1px); box-shadow: 0 0 24px rgba(63,185,80,0.5); }
-
-    #btn-preview {
-      background: transparent; color: var(--muted); border-color: var(--border);
-      display: none;
-    }
-    #btn-preview:hover { color: var(--text); border-color: var(--muted); }
-
-    /* ── STATUS ── */
-    .status-row {
-      display: flex; align-items: center; gap: 0.6rem;
-      margin-top: 1.2rem; font-size: 0.82rem; color: var(--muted); min-height: 1.5rem;
-    }
-    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
-    .dot.recording { background: var(--accent-warm); animation: pulse 0.7s infinite; }
-    .dot.done  { background: var(--accent-green); }
-    .dot.error { background: var(--accent-warm); }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.2} }
-
-    audio { display: none; }
-
-    /* ── SIDEBAR ── */
-    .sidebar { display: flex; flex-direction: column; gap: 1.5rem; }
-
-    .tips-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.4rem;
-    }
-    .tips-card h3 {
-      font-family: 'Fraunces', serif; font-size: 1rem; margin-bottom: 1rem; color: var(--text);
-    }
-    .tip-item {
-      display: flex; gap: 0.7rem; margin-bottom: 0.8rem;
-      font-size: 0.83rem; color: var(--muted); line-height: 1.5;
-    }
-    .tip-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
-
-    /* ── SEO CONTENT ── */
-    .content-section {
-      max-width: 1100px; margin: 0 auto; padding: 0 1.5rem 4rem;
-    }
-    .content-section h2 {
-      font-family: 'Fraunces', serif; font-size: 1.6rem;
-      color: var(--text); margin-bottom: 1rem; letter-spacing: -0.02em;
-    }
-    .content-section p {
-      color: var(--muted); font-size: 0.92rem; margin-bottom: 1rem; line-height: 1.8;
-    }
-    .use-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-    .use-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem 1.1rem;
-    }
-    .use-card h3 {
-      font-size: 0.98rem;
-      color: var(--text);
-      margin-bottom: 0.45rem;
-    }
-    .use-card p {
-      margin: 0;
-      font-size: 0.88rem;
-      line-height: 1.7;
-    }
-    .content-note {
-      background: rgba(88,166,255,0.08);
-      border: 1px solid rgba(88,166,255,0.18);
-      border-radius: 12px;
-      padding: 1rem 1.1rem;
-      color: var(--text);
-      font-size: 0.92rem;
-      margin-top: 1rem;
-    }
-    @media (max-width: 768px) {
-      .use-grid { grid-template-columns: 1fr; }
-    }
-    .faq { margin-top: 2rem; }
-    .faq-item { border-top: 1px solid var(--border); padding: 1.2rem 0; }
-    .faq-item h3 { font-size: 0.95rem; color: var(--text); margin-bottom: 0.5rem; }
-    .faq-item p { color: var(--muted); font-size: 0.88rem; line-height: 1.7; margin: 0; }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--border); padding: 2rem;
-      text-align: center; font-size: 0.8rem; color: var(--muted);
-    }
-    footer a { color: var(--muted); text-decoration: none; margin: 0 0.5rem; }
-    footer a:hover { color: var(--text); }
-  </style>
+<meta charset="UTF-8">
+<meta name="google-adsense-account" content="ca-pub-7086938365759492">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="index, follow">
+<title>ListeningClassroom — Free English Listening Audio & Dialogues for Teachers</title>
+<meta name="description" content="Generate English dialogue audio with two voices, plus free listening exercises organised by level (A1, A2, B1). Built for ESL teachers who need classroom-ready audio in seconds.">
+<meta name="keywords" content="English listening exercises, ESL listening, A1 listening, A2 listening, B1 listening, English dialogue generator, text to speech for teachers, classroom audio">
+<meta name="author" content="ListeningClassroom.com">
+<link rel="canonical" href="https://listeningclassroom.com/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="shortcut icon" href="/favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ListeningClassroom — Free English Listening Audio & Dialogues for Teachers">
+<meta property="og:description" content="Generate two-voice English dialogue audio and browse listening exercises organised by level. Free, browser-based, no sign-up.">
+<meta property="og:url" content="https://listeningclassroom.com/">
+<meta property="og:image" content="https://listeningclassroom.com/logo.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ListeningClassroom — Free English Listening Audio & Dialogues for Teachers">
+<meta name="twitter:description" content="Generate two-voice English dialogue audio and browse listening exercises organised by level. Free, browser-based, no sign-up.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script defer src="/consent.js"></script>
+<script defer src="/assets/js/site.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"ListeningClassroom","url":"https://listeningclassroom.com/","potentialAction":{"@type":"SearchAction","target":"https://listeningclassroom.com/resources/listening-exercises/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"ListeningClassroom — English Audio Generator","description":"Free browser-based English audio generator with two-voice dialogues. Built for ESL teachers and educators.","url":"https://listeningclassroom.com/generator/","applicationCategory":"EducationApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"audience":{"@type":"Audience","audienceType":"Teachers, ESL educators"},"featureList":["Two-voice English dialogue generation","Downloadable MP3 audio","Adjustable speech speed","Browser-based text to speech"]}</script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KTXQJMMH"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<!-- ── HEADER ── -->
-<header>
-  <a href="/" class="logo">Listening<span>Classroom</span></a>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site">
+  <a href="/" class="logo" aria-current="page">Listening<span>Classroom</span></a>
   <div class="header-right">
-    <nav>
-      <a href="#how-it-works" data-i18n="navHow">How it works</a>
-      <a href="#faq" data-i18n="navFaq">FAQ</a>
-      <a href="about.html" data-i18n="navAbout">About</a>
-      <a href="contact.html" data-i18n="navContact">Contact</a>
-    </nav>
+    <div class="lang-content lang-en">
+      <nav class="site-nav" aria-label="Main">
+        <a href="/resources/listening-exercises/">Exercises</a>
+        <a href="/guides/">Guides</a>
+        <a href="/levels/a1/">Levels</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#faq">FAQ</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </nav>
+    </div>
+    <div class="lang-content lang-es" hidden>
+      <nav class="site-nav" aria-label="Principal">
+        <a href="/resources/listening-exercises/">Ejercicios</a>
+        <a href="/guides/">Guías</a>
+        <a href="/levels/a1/">Niveles</a>
+        <a href="#how-it-works">Cómo funciona</a>
+        <a href="#faq">Preguntas</a>
+        <a href="/about.html">Acerca de</a>
+        <a href="/contact.html">Contacto</a>
+      </nav>
+    </div>
     <div class="lang-switcher">
       <button class="lang-btn active" data-lang="en">EN</button>
       <button class="lang-btn" data-lang="es">ES</button>
@@ -438,790 +81,406 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </header>
 
-<!-- ── HERO ── -->
-<section class="hero">
-  <span class="hero-eyebrow" data-i18n="eyebrow">For educators · No account required · Instant download</span>
-  <h1 data-i18n-html="h1">English Audio Generator — Create classroom audio quickly<br><em>Now supports two-voice dialogues</em></h1>
-  <p data-i18n="heroParagraph">A browser-based audio tool for teachers, tutors, and lesson designers who need listening material, pronunciation models, or narrated slides — without setup friction.</p>
-  <div class="badges">
-    <span class="badge green" data-i18n="badgeFree">✓ Free forever</span>
-    <span class="badge blue"  data-i18n="badgeVoices">✓ Multiple voices</span>
-    <span class="badge warm"  data-i18n="badgeDownload">✓ Downloadable audio file</span>
-    <span class="badge"       data-i18n="badgeOffline">✓ Works offline after load</span>
-  </div>
-</section>
+<main id="main">
 
-<!-- ── MAIN LAYOUT ── -->
-<main class="layout">
+<!-- ── ENGLISH ── -->
+<div class="lang-content lang-en">
 
-  <!-- TOOL -->
-  <article class="tool-card" id="tool">
-
-    <!-- ── Tabs ── -->
-    <div class="tabs">
-      <button class="tab-btn active" data-tab="download" data-mode="single" data-i18n="modeSingle">👤 Single voice</button>
-      <button class="tab-btn" data-tab="download" data-mode="dialogue" data-i18n="modeDialogue">👥 Dialogue</button>
+  <section class="hero">
+    <span class="eyebrow">For educators · No account required · Instant download</span>
+    <h1>Generate English listening audio<br><em>and teach with ready-made dialogues</em></h1>
+    <p class="lead">A free, browser-based audio tool plus a growing library of classroom-tested listening exercises for A1, A2 and B1 learners.</p>
+    <div class="badges">
+      <span class="badge green">✓ Free forever</span>
+      <span class="badge blue">✓ Multiple voices</span>
+      <span class="badge warm">✓ Downloadable audio file</span>
+      <span class="badge">✓ Works offline after load</span>
     </div>
-
-    <!-- ══════════════════════════════════
-         TAB: DOWNLOAD MP3 (Kokoro TTS)
-    ═══════════════════════════════════════ -->
-    <div id="panel-download" class="tab-panel">
-
-      <!-- mode-switch removed: top tabs select Single/Dialogue -->
-      <p class="mode-description" id="mode-description" data-i18n="modeSingleHelp">Use one voice for the whole text.</p>
-
-      <div class="shared-controls">
-        <div class="control-group">
-          <div class="range-row">
-            <span class="section-label" data-i18n="labelSpeed">Speed</span>
-            <span class="range-val" id="rate-val">0.85×</span>
-          </div>
-          <input type="range" id="rate" min="0.5" max="1.5" step="0.05" value="0.85">
-        </div>
-      </div>
-
-      <div id="single-audio-settings">
-      <span class="section-label" data-i18n="labelText">Your text</span>
-      <textarea id="download-text" data-i18n-placeholder="placeholderText">The water cycle is the continuous movement of water through the environment. Water evaporates from oceans and lakes, rises into the atmosphere, forms clouds, and eventually falls back to Earth as precipitation.</textarea>
-      <div class="controls-grid">
-        <div class="control-group">
-          <span class="section-label" data-i18n="labelVoice">Voice</span>
-          <select id="voice-select"></select>
-        </div>
-      </div>
-
-      <div class="filename-row">
-        <span class="section-label" data-i18n="labelFilename">File name (no extension)</span>
-        <input type="text" id="filename" value="audio_english" placeholder="e.g. lesson1_watercycle">
-      </div>
-      </div>
-
-      <div id="dialogue-settings" hidden>
-        <span class="section-label" data-i18n="labelDialogue">Dialogue script</span>
-        <p class="dialogue-help" data-i18n="dialogueHelp">Write one turn per line using Speaker 1: text and Speaker 2: text.</p>
-        <div class="dialogue-example" data-i18n-html="dialogueExample"><strong>Example:</strong><br>Speaker 1: Hello, how are you?<br>Speaker 2: I'm fine, thank you.</div>
-        <textarea id="dialogue-text" data-i18n-placeholder="dialoguePlaceholder">Speaker 1: Good morning! How are you today?
-Speaker 2: Good morning! I'm very well, thank you.
-Speaker 1: What are you going to do after class?
-Speaker 2: I'm going to practice my English.</textarea>
-        <div class="dialogue-controls">
-          <div class="control-group"><span class="section-label" data-i18n="speakerOne">Speaker 1 voice</span><select id="dialogue-voice-1"></select></div>
-          <div class="control-group"><span class="section-label" data-i18n="speakerTwo">Speaker 2 voice</span><select id="dialogue-voice-2"></select></div>
-        </div>
-      </div>
-
-      <div class="info-box" id="info-box" data-i18n-html="infoBox">
-        <strong>How it works:</strong> The voice model runs entirely in your browser — no servers, no API keys. The <strong>first use downloads the model (~86 MB)</strong> and caches it; after that it's instant. Requires internet only on first load.
-      </div>
-
-      <div class="btn-row">
-        <button id="btn-generate" data-i18n="btnGenerate">🎙 Generate Audio</button>
-        <button id="btn-preview"  data-i18n="btnPreview">▶ Preview</button>
-        <button id="btn-download" data-i18n="btnDownload">⬇ Download MP3</button>
-      </div>
-
-      <div class="status-row">
-        <div class="dot" id="dot"></div>
-        <span id="status-text" data-i18n="statusDownloadReady">Ready — enter your text and click Generate</span>
-      </div>
-      <div class="dialogue-progress" id="dialogue-progress" hidden></div>
-      <audio id="audio-player"></audio>
+    <div class="cta-row">
+      <a class="btn primary" href="/generator/">🎙 Open the Audio Generator</a>
+      <a class="btn secondary" href="/resources/listening-exercises/">Browse Exercises</a>
     </div>
+  </section>
 
-  </article>
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="tips-card">
-      <h3 data-i18n="tipsTitle">🎓 Teaching Tips</h3>
-      <div class="tip-item"><span class="tip-icon">🐢</span><span data-i18n-html="tip1"><strong>0.7×</strong> — Listening comprehension for beginners</span></div>
-      <div class="tip-item"><span class="tip-icon">🚶</span><span data-i18n-html="tip2"><strong>0.85×</strong> — Standard listening exercise</span></div>
-      <div class="tip-item"><span class="tip-icon">🏃</span><span data-i18n-html="tip3"><strong>1.0×</strong> — Dictation at native speed</span></div>
-      <div class="tip-item"><span class="tip-icon">💡</span><span data-i18n-html="tip4">Try <strong>Emma (British)</strong> for Cambridge exam prep</span></div>
-      <div class="tip-item"><span class="tip-icon">📊</span><span data-i18n="tip5">In PowerPoint: Insert → Audio → Audio on my PC</span></div>
+  <section class="section">
+    <h2>Why teachers use ListeningClassroom</h2>
+    <div class="home-grid">
+      <div class="home-card">
+        <span class="eyebrow">Two-voice dialogues</span>
+        <h3>Realistic classroom audio</h3>
+        <p>Assign a different voice to each speaker and download a single MP3 — no uploads, no sign-up, runs entirely in your browser.</p>
+        <a class="arrow" href="/generator/">Try the generator →</a>
+      </div>
+      <div class="home-card">
+        <span class="eyebrow">Listening exercises</span>
+        <h3>Open and play</h3>
+        <p>Each dialogue opens directly in the generator with one click. Adjust voice and speed, then download the MP3 for class.</p>
+        <a class="arrow" href="/resources/listening-exercises/">Browse all exercises →</a>
+      </div>
+      <div class="home-card">
+        <span class="eyebrow">Teaching guides</span>
+        <h3>Practical, not generic</h3>
+        <p>Short guides on building listening exercises, dictation activities and pronunciation drills — written for real classrooms.</p>
+        <a class="arrow" href="/guides/">Read the guides →</a>
+      </div>
     </div>
-  </aside>
-</main>
+  </section>
 
-<!-- ── SEO CONTENT ── -->
-<section class="content-section" id="how-it-works">
-
-  <!-- English content -->
-  <div class="lang-content lang-en">
+  <section class="section" id="how-it-works">
     <h2>How it works</h2>
-    <h2 class="seo-feature-heading">English dialogue audio for listening lessons</h2>
-    <p>Use Dialogue mode to turn a conversation script into a two-voice English MP3. Assign a different voice to Speaker 1 and Speaker 2, adjust the speed, and download one audio file ready for classroom activities, role-play practice, or PowerPoint.</p>
-    <p>ListeningClassroom.com uses a neural voice model that runs entirely in your browser — no servers, no uploads, no sign-up required. Your text never leaves your device. Click Generate Audio, wait a few seconds, then download the MP3 file directly to your computer.</p>
+    <h3 style="font-size: 1.2rem; color: var(--text); margin-top: 1.5rem;">English dialogue audio for listening lessons</h3>
+    <p>Use the Generator's Dialogue mode to turn a conversation script into a two-voice English MP3. Assign a different voice to Speaker 1 and Speaker 2, adjust the speed, and download one audio file ready for classroom activities, role-play practice, or PowerPoint.</p>
+    <p>ListeningClassroom.com uses a neural voice model that runs entirely in your browser — no servers, no uploads, no sign-up required. Your text never leaves your device. Click <em>Generate Audio</em>, wait a few seconds, then download the MP3 file directly to your computer.</p>
     <p>The downloaded file (MP3 format) is compatible with PowerPoint, Google Slides, and any media player or video editing software. It's perfect for creating listening exercises, dictation tracks, pronunciation models, and narrated presentations.</p>
-    <div class="faq" id="faq">
-      <h2>Frequently Asked Questions</h2>
-      <div class="faq-item">
-        <h3>Can I create an English dialogue with two voices?</h3>
-        <p>Yes. Choose Dialogue mode, write one speaker turn per line, select a voice for each speaker, and generate a single MP3 with both voices and short pauses between turns.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Is this tool completely free?</h3>
-        <p>Yes. The neural voice model runs locally in your browser with no API keys or subscriptions required. There are no hidden costs.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Which browsers are supported?</h3>
-        <p>Google Chrome and Microsoft Edge are recommended. The tool works in any modern browser that supports WebAssembly. Safari and Firefox also work, but Chrome gives the best performance.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Can I use the audio in PowerPoint?</h3>
-        <p>Yes. After downloading, go to Insert → Audio → Audio on my PC and select the MP3 file. MP3 is supported in all versions of PowerPoint.</p>
-      </div>
-      <div class="faq-item">
-        <h3>Is my text stored or sent anywhere?</h3>
-        <p>No. Everything happens locally in your browser. Your text is never sent to any server.</p>
-      </div>
+    <div class="content-note">
+      <strong>Practical note:</strong> the first MP3 generation downloads the voice model to your browser cache. After that, the site is much faster on repeat visits.
     </div>
-  </div>
+  </section>
 
-  <!-- Spanish content -->
-  <div class="lang-content lang-es" hidden>
-    <h2>Cómo funciona</h2>
-    <h2 class="seo-feature-heading">Audio de diálogos en inglés para clases</h2>
-    <p>Usa el modo Diálogo para convertir un guion en inglés en un MP3 con dos voces. Asigna una voz diferente al Orador 1 y al Orador 2, ajusta la velocidad y descarga un archivo listo para actividades de aula, práctica de roles o PowerPoint.</p>
-    <p>ListeningClassroom.com usa un modelo de voz neuronal que corre completamente en tu navegador — sin servidores, sin cargas, sin registro. Tu texto nunca sale de tu dispositivo. Haz clic en Generar Audio, espera unos segundos y descarga el archivo MP3 directamente a tu computadora.</p>
-    <p>El archivo descargado (formato MP3) es compatible con PowerPoint, Google Slides y cualquier reproductor de medios o software de edición de video. Es perfecto para crear ejercicios de escucha, pistas de dictado, modelos de pronunciación y presentaciones narradas.</p>
-    <div class="faq">
-      <h2>Preguntas Frecuentes</h2>
-      <div class="faq-item">
-        <h3>¿Puedo crear un diálogo en inglés con dos voces?</h3>
-        <p>Sí. Elige el modo Diálogo, escribe un turno por línea, selecciona una voz para cada orador y genera un único MP3 con ambas voces y pausas breves.</p>
-      </div>
-      <div class="faq-item">
-        <h3>¿Es esta herramienta completamente gratuita?</h3>
-        <p>Sí. El modelo de voz neuronal corre localmente en tu navegador sin necesidad de claves API ni suscripciones. No hay costos ocultos.</p>
-      </div>
-      <div class="faq-item">
-        <h3>¿Qué navegadores son compatibles?</h3>
-        <p>Se recomiendan Google Chrome y Microsoft Edge. La herramienta funciona en cualquier navegador moderno que soporte WebAssembly. Safari y Firefox también funcionan, pero Chrome ofrece el mejor rendimiento.</p>
-      </div>
-      <div class="faq-item">
-        <h3>¿Puedo usar el audio en PowerPoint?</h3>
-        <p>Sí. Después de descargar, ve a Insertar → Audio → Audio en mi PC y selecciona el archivo MP3. El formato MP3 es compatible con todas las versiones de PowerPoint.</p>
-      </div>
-      <div class="faq-item">
-        <h3>¿Mi texto se almacena o se envía a algún servidor?</h3>
-        <p>No. Todo ocurre localmente en tu navegador. Tu texto nunca se envía a ningún servidor.</p>
-      </div>
-    </div>
-  </div>
-
-</section>
-
-<section class="content-section" id="why-it-helps">
-  <div class="lang-content lang-en">
+  <section class="section" id="why-it-helps">
     <h2>Why people use it</h2>
     <p>The goal of ListeningClassroom.com is to remove friction from a very specific classroom task: getting clean English audio fast. Instead of juggling uploads, logins, or separate desktop software, you can paste text, choose a voice, and produce something usable in minutes.</p>
     <div class="use-grid">
-      <div class="use-card">
+      <div class="home-card">
         <h3>Listening exercises</h3>
         <p>Create short passages for comprehension tasks, gap-fill activities, and homework practice without leaving the browser.</p>
       </div>
-      <div class="use-card">
+      <div class="home-card">
         <h3>Pronunciation practice</h3>
         <p>Generate repeated examples at different speeds so learners can hear the same sentence more than once before they answer.</p>
       </div>
-      <div class="use-card">
+      <div class="home-card">
         <h3>Presentation narration</h3>
         <p>Download MP3 audio for slides, demos, and micro-lessons when you want consistent narration instead of live recording.</p>
       </div>
-      <div class="use-card">
+      <div class="home-card">
         <h3>Accessible lesson materials</h3>
         <p>Turn written instructions into audio so students can listen again later, especially in blended or asynchronous settings.</p>
       </div>
     </div>
-    <div class="content-note">
-      <strong>Practical note:</strong> the first MP3 generation downloads the voice model to your browser cache. After that, the site is much faster on repeat visits.
-    </div>
-  </div>
+  </section>
 
-  <div class="lang-content lang-es" hidden>
-    <h2>Por qué la usan</h2>
-    <p>El objetivo de ListeningClassroom.com es quitar fricción a una tarea muy concreta de aula: obtener audio en inglés de calidad rápidamente. En vez de depender de subidas, inicios de sesión o software de escritorio, puedes pegar el texto, elegir una voz y producir un recurso útil en minutos.</p>
-    <div class="use-grid">
-      <div class="use-card">
-        <h3>Ejercicios de escucha</h3>
-        <p>Crea pasajes breves para actividades de comprensión, ejercicios de completar espacios y práctica en casa sin salir del navegador.</p>
+  <section class="section">
+    <h2>Listening by level</h2>
+    <div class="home-grid">
+      <a class="home-card" href="/levels/a1/">
+        <span class="eyebrow">A1 · Beginner</span>
+        <h3>Short, slow dialogues</h3>
+        <p>First conversations: greetings, family, school, daily routine, shopping.</p>
+        <span class="arrow">See A1 exercises →</span>
+      </a>
+      <a class="home-card" href="/levels/a2/">
+        <span class="eyebrow">A2 · Elementary</span>
+        <h3>Everyday situations</h3>
+        <p>Restaurants, travel, appointments, weekend plans — natural speed, simple vocabulary.</p>
+        <span class="arrow">See A2 exercises →</span>
+      </a>
+      <a class="home-card" href="/levels/b1/">
+        <span class="eyebrow">B1 · Intermediate</span>
+        <h3>Opinions and problem-solving</h3>
+        <p>Job interviews, advice, complaints, travel problems and trip planning.</p>
+        <span class="arrow">See B1 exercises →</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Popular exercises</h2>
+    <div class="card-grid">
+      <a class="resource-card" href="/resources/listening-exercises/at-the-restaurant/">
+        <div class="meta"><span class="badge level-a2">A2</span><span class="badge topic">Restaurants &amp; Food</span></div>
+        <h3>At the Restaurant</h3>
+        <p>A customer orders a meal, asks for the bill, and pays with a credit card.</p>
+      </a>
+      <a class="resource-card" href="/resources/listening-exercises/job-interview/">
+        <div class="meta"><span class="badge level-b1">B1</span><span class="badge topic">Work &amp; Career</span></div>
+        <h3>Job Interview</h3>
+        <p>An interviewer asks a candidate about experience, strengths, and motivation.</p>
+      </a>
+      <a class="resource-card" href="/resources/listening-exercises/making-a-complaint/">
+        <div class="meta"><span class="badge level-b1">B1</span><span class="badge topic">Complaints</span></div>
+        <h3>Making a Complaint</h3>
+        <p>A customer calls a hotel to complain about a noisy room and asks for a solution.</p>
+      </a>
+      <a class="resource-card" href="/resources/listening-exercises/asking-for-directions/">
+        <div class="meta"><span class="badge level-a2">A2</span><span class="badge topic">Travel</span></div>
+        <h3>Asking for Directions</h3>
+        <p>A tourist asks how to get to the train station and follows the instructions step by step.</p>
+      </a>
+    </div>
+    <p style="margin-top: 1rem;"><a href="/resources/listening-exercises/">Browse all exercises →</a></p>
+  </section>
+
+  <section class="section">
+    <h2>Teaching guides</h2>
+    <div class="card-grid">
+      <a class="resource-card" href="/guides/how-to-create-listening-exercises-for-esl-students/">
+        <div class="meta"><span class="badge topic">Teaching method</span></div>
+        <h3>How to Create Listening Exercises for ESL Students</h3>
+        <p>A practical workflow for designing clear, classroom-ready listening activities from any text or dialogue.</p>
+      </a>
+      <a class="resource-card" href="/guides/how-to-use-text-to-speech-in-english-classes/">
+        <div class="meta"><span class="badge topic">Text-to-speech</span></div>
+        <h3>How to Use Text-to-Speech in English Classes</h3>
+        <p>When TTS helps ESL teaching and when it does not, with five classroom patterns that work.</p>
+      </a>
+      <a class="resource-card" href="/guides/how-to-create-dictation-activities/">
+        <div class="meta"><span class="badge topic">Dictation</span></div>
+        <h3>How to Create Dictation Activities</h3>
+        <p>The four dictation variants worth knowing, with tips on speed and feedback.</p>
+      </a>
+    </div>
+    <p style="margin-top: 1rem;"><a href="/guides/">See all guides →</a></p>
+  </section>
+
+  <section class="section" id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>Can I create an English dialogue with two voices?</summary>
+        <p>Yes. Choose Dialogue mode in the Generator, write one speaker turn per line, select a voice for each speaker, and generate a single MP3 with both voices and short pauses between turns.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is this tool completely free?</summary>
+        <p>Yes. The neural voice model runs locally in your browser with no API keys or subscriptions required. There are no hidden costs.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Which browsers are supported?</summary>
+        <p>Google Chrome and Microsoft Edge are recommended. The tool works in any modern browser that supports WebAssembly. Safari and Firefox also work, but Chrome gives the best performance.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Can I use the audio in PowerPoint?</summary>
+        <p>Yes. After downloading, go to Insert → Audio → Audio on my PC and select the MP3 file. MP3 is supported in all versions of PowerPoint.</p>
+      </details>
+      <details class="faq-item">
+        <summary>Is my text stored or sent anywhere?</summary>
+        <p>No. Everything happens locally in your browser. Your text is never sent to any server.</p>
+      </details>
+      <details class="faq-item">
+        <summary>What data does this site collect?</summary>
+        <p>Only what you explicitly allow via the cookie banner. By default the site uses no analytics or advertising cookies. If you accept non-essential cookies, we load Google Analytics and Google AdSense as described in our <a href="/privacy.html">Privacy Policy</a>.</p>
+      </details>
+    </div>
+  </section>
+
+  <div class="ad-slot" data-slot="homepage-bottom"><span class="ad-label">Advertisement</span></div>
+</div>
+
+<!-- ── ESPAÑOL ── -->
+<div class="lang-content lang-es" hidden>
+
+  <section class="hero">
+    <span class="eyebrow">Para docentes · Sin cuenta · Descarga instantánea</span>
+    <h1>Genera audio para clases de inglés<br><em>y enseña con diálogos listos para usar</em></h1>
+    <p class="lead">Una herramienta de audio gratuita en el navegador, más una biblioteca creciente de ejercicios de escucha probados en clase para estudiantes A1, A2 y B1.</p>
+    <div class="badges">
+      <span class="badge green">✓ Siempre gratis</span>
+      <span class="badge blue">✓ Múltiples voces</span>
+      <span class="badge warm">✓ Archivo de audio descargable</span>
+      <span class="badge">✓ Funciona offline tras la primera carga</span>
+    </div>
+    <div class="cta-row">
+      <a class="btn primary" href="/generator/">🎙 Abrir el generador de audio</a>
+      <a class="btn secondary" href="/resources/listening-exercises/">Explorar ejercicios</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Por qué los docentes usan ListeningClassroom</h2>
+    <div class="home-grid">
+      <div class="home-card">
+        <span class="eyebrow">Diálogos de dos voces</span>
+        <h3>Audio realista para el aula</h3>
+        <p>Asigna una voz distinta a cada interlocutor y descarga un único MP3: sin subidas, sin registro, todo funciona en tu navegador.</p>
+        <a class="arrow" href="/generator/">Probar el generador →</a>
       </div>
-      <div class="use-card">
-        <h3>Práctica de pronunciación</h3>
-        <p>Genera ejemplos repetidos a distintas velocidades para que los estudiantes escuchen la misma frase más de una vez antes de responder.</p>
+      <div class="home-card">
+        <span class="eyebrow">Ejercicios de escucha</span>
+        <h3>Abrir y reproducir</h3>
+        <p>Cada diálogo se abre directamente en el generador con un solo clic. Ajusta voz y velocidad, y descarga el MP3 para la clase.</p>
+        <a class="arrow" href="/resources/listening-exercises/">Ver todos los ejercicios →</a>
       </div>
-      <div class="use-card">
-        <h3>Narración de presentaciones</h3>
-        <p>Descarga audio MP3 para diapositivas, demos y microlecciones cuando prefieres una narración consistente en vez de grabarte en vivo.</p>
-      </div>
-      <div class="use-card">
-        <h3>Material accesible</h3>
-        <p>Convierte instrucciones escritas en audio para que el alumnado pueda volver a escucharlas luego, especialmente en entornos híbridos o asincrónicos.</p>
+      <div class="home-card">
+        <span class="eyebrow">Guías didácticas</span>
+        <h3>Prácticas, no genéricas</h3>
+        <p>Guías cortas sobre cómo crear ejercicios de escucha, actividades de dictado y práctica de pronunciación, escritas para aulas reales.</p>
+        <a class="arrow" href="/guides/">Leer las guías →</a>
       </div>
     </div>
+  </section>
+
+  <section class="section" id="how-it-works">
+    <h2>Cómo funciona</h2>
+    <h3 style="font-size: 1.2rem; color: var(--text); margin-top: 1.5rem;">Audio de diálogos en inglés para clases de escucha</h3>
+    <p>Usa el modo Diálogo del generador para convertir un guion en un MP3 en inglés con dos voces. Asigna una voz distinta al Orador 1 y al Orador 2, ajusta la velocidad y descarga un único archivo de audio listo para actividades en clase, práctica de role-play o PowerPoint.</p>
+    <p>ListeningClassroom.com usa un modelo de voz neuronal que se ejecuta completamente en tu navegador: sin servidores, sin subidas, sin registro. Tu texto nunca sale de tu dispositivo. Haz clic en <em>Generar Audio</em>, espera unos segundos y descarga el MP3 directamente en tu ordenador.</p>
+    <p>El archivo descargado (formato MP3) es compatible con PowerPoint, Google Slides y cualquier reproductor multimedia o software de edición de vídeo. Es perfecto para crear ejercicios de escucha, pistas de dictado, modelos de pronunciación y presentaciones narradas.</p>
     <div class="content-note">
       <strong>Nota práctica:</strong> la primera generación de MP3 descarga el modelo de voz en la caché del navegador. Después, el sitio funciona mucho más rápido en visitas repetidas.
     </div>
-  </div>
+  </section>
 
-</section>
+  <section class="section" id="why-it-helps">
+    <h2>Por qué se usa</h2>
+    <p>El objetivo de ListeningClassroom.com es eliminar la fricción de una tarea muy concreta del aula: conseguir audio en inglés limpio y rápido. En lugar de depender de subidas, inicios de sesión o software de escritorio, puedes pegar el texto, elegir una voz y producir algo útil en minutos.</p>
+    <div class="use-grid">
+      <div class="home-card">
+        <h3>Ejercicios de escucha</h3>
+        <p>Crea pasajes breves para tareas de comprensión, actividades para rellenar huecos y práctica en casa sin salir del navegador.</p>
+      </div>
+      <div class="home-card">
+        <h3>Práctica de pronunciación</h3>
+        <p>Genera ejemplos repetidos a distintas velocidades para que los estudiantes oigan la misma frase más de una vez antes de responder.</p>
+      </div>
+      <div class="home-card">
+        <h3>Narración de presentaciones</h3>
+        <p>Descarga audio MP3 para diapositivas, demos y microlecciones cuando prefieres una narración consistente en lugar de grabarte en directo.</p>
+      </div>
+      <div class="home-card">
+        <h3>Materiales accesibles</h3>
+        <p>Convierte instrucciones escritas en audio para que los estudiantes puedan volver a escucharlas más tarde, especialmente en entornos híbridos o asíncronos.</p>
+      </div>
+    </div>
+  </section>
 
-<!-- ── FOOTER ── -->
-<footer>
+  <section class="section">
+    <h2>Escucha por nivel</h2>
+    <div class="home-grid">
+      <a class="home-card" href="/levels/a1/">
+        <span class="eyebrow">A1 · Principiante</span>
+        <h3>Diálogos cortos y lentos</h3>
+        <p>Primeras conversaciones: saludos, familia, colegio, rutina diaria, compras.</p>
+        <span class="arrow">Ver ejercicios A1 →</span>
+      </a>
+      <a class="home-card" href="/levels/a2/">
+        <span class="eyebrow">A2 · Elemental</span>
+        <h3>Situaciones cotidianas</h3>
+        <p>Restaurantes, viajes, citas, planes de fin de semana: velocidad natural, vocabulario sencillo.</p>
+        <span class="arrow">Ver ejercicios A2 →</span>
+      </a>
+      <a class="home-card" href="/levels/b1/">
+        <span class="eyebrow">B1 · Intermedio</span>
+        <h3>Opiniones y resolución de problemas</h3>
+        <p>Entrevistas de trabajo, consejos, quejas, problemas de viaje y planificación.</p>
+        <span class="arrow">Ver ejercicios B1 →</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Ejercicios populares</h2>
+    <div class="card-grid">
+      <a class="resource-card" href="/resources/listening-exercises/at-the-restaurant/">
+        <div class="meta"><span class="badge level-a2">A2</span><span class="badge topic">Restaurantes y comida</span></div>
+        <h3>En el restaurante</h3>
+        <p>Un cliente pide una comida, pregunta por la cuenta y paga con tarjeta de crédito.</p>
+      </a>
+      <a class="resource-card" href="/resources/listening-exercises/job-interview/">
+        <div class="meta"><span class="badge level-b1">B1</span><span class="badge topic">Trabajo y carrera</span></div>
+        <h3>Entrevista de trabajo</h3>
+        <p>Un entrevistador pregunta a un candidato sobre su experiencia, sus puntos fuertes y su motivación.</p>
+      </a>
+      <a class="resource-card" href="/resources/listening-exercises/making-a-complaint/">
+        <div class="meta"><span class="badge level-b1">B1</span><span class="badge topic">Quejas</span></div>
+        <h3>Presentar una queja</h3>
+        <p>Un cliente llama a un hotel para quejarse de una habitación ruidosa y pide una solución.</p>
+      </a>
+      <a class="resource-card" href="/resources/listening-exercises/asking-for-directions/">
+        <div class="meta"><span class="badge level-a2">A2</span><span class="badge topic">Viajes</span></div>
+        <h3>Pedir indicaciones</h3>
+        <p>Un turista pregunta cómo llegar a la estación de tren y sigue las instrucciones paso a paso.</p>
+      </a>
+    </div>
+    <p style="margin-top: 1rem;"><a href="/resources/listening-exercises/">Ver todos los ejercicios →</a></p>
+  </section>
+
+  <section class="section">
+    <h2>Guías didácticas</h2>
+    <div class="card-grid">
+      <a class="resource-card" href="/guides/how-to-create-listening-exercises-for-esl-students/">
+        <div class="meta"><span class="badge topic">Método didáctico</span></div>
+        <h3>Cómo crear ejercicios de escucha para estudiantes de ESL</h3>
+        <p>Un flujo de trabajo práctico para diseñar actividades de escucha claras y listas para el aula a partir de cualquier texto o diálogo.</p>
+      </a>
+      <a class="resource-card" href="/guides/how-to-use-text-to-speech-in-english-classes/">
+        <div class="meta"><span class="badge topic">Texto a voz</span></div>
+        <h3>Cómo usar texto a voz en las clases de inglés</h3>
+        <p>Cuándo el TTS ayuda a la enseñanza de ESL y cuándo no, con cinco patrones de aula que funcionan.</p>
+      </a>
+      <a class="resource-card" href="/guides/how-to-create-dictation-activities/">
+        <div class="meta"><span class="badge topic">Dictado</span></div>
+        <h3>Cómo crear actividades de dictado</h3>
+        <p>Las cuatro variantes de dictado que vale la pena conocer, con consejos sobre velocidad y corrección.</p>
+      </a>
+    </div>
+    <p style="margin-top: 1rem;"><a href="/guides/">Ver todas las guías →</a></p>
+  </section>
+
+  <section class="section" id="faq">
+    <h2>Preguntas frecuentes</h2>
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>¿Puedo crear un diálogo en inglés con dos voces?</summary>
+        <p>Sí. Elige el modo Diálogo en el generador, escribe un turno por línea, selecciona una voz para cada orador y genera un único MP3 con ambas voces y pausas breves entre turnos.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Es esta herramienta completamente gratuita?</summary>
+        <p>Sí. El modelo de voz neuronal se ejecuta localmente en tu navegador sin necesidad de claves API ni suscripciones. No hay costos ocultos.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué navegadores son compatibles?</summary>
+        <p>Se recomiendan Google Chrome y Microsoft Edge. La herramienta funciona en cualquier navegador moderno compatible con WebAssembly. Safari y Firefox también funcionan, pero Chrome ofrece el mejor rendimiento.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Puedo usar el audio en PowerPoint?</summary>
+        <p>Sí. Después de descargar, ve a Insertar → Audio → Audio en mi PC y selecciona el archivo MP3. El formato MP3 es compatible con todas las versiones de PowerPoint.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Mi texto se almacena o se envía a algún servidor?</summary>
+        <p>No. Todo ocurre localmente en tu navegador. Tu texto nunca se envía a ningún servidor.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué datos recopila este sitio?</summary>
+        <p>Solo lo que permites explícitamente mediante el banner de cookies. Por defecto, el sitio no utiliza cookies de analítica ni de publicidad. Si aceptas las cookies no esenciales, cargamos Google Analytics y Google AdSense como se describe en nuestra <a href="/privacy.html">Política de Privacidad</a>.</p>
+      </details>
+    </div>
+  </section>
+
+  <div class="ad-slot" data-slot="homepage-bottom"><span class="ad-label">Publicidad</span></div>
+</div>
+
+</main>
+
+<footer class="site">
   <p>© 2026 ListeningClassroom.com · Free text-to-speech for educators</p>
-  <p style="margin-top:0.5rem">
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="terms.html">Terms of Use</a>
+  <p class="links">
+    <a href="/resources/listening-exercises/">Exercises</a> ·
+    <a href="/guides/">Guides</a> ·
+    <a href="/levels/a1/">Levels</a> ·
+    <a href="/generator/">Generator</a> ·
+    <a href="/about.html">About</a> ·
+    <a href="/contact.html">Contact</a> ·
+    <a href="/privacy.html">Privacy</a> ·
+    <a href="/terms.html">Terms</a>
   </p>
-  <p style="margin-top:0.75rem; font-size:0.7rem; opacity:0.4;">v1.9.5</p>
 </footer>
 
-<script type="module">
-  import { KokoroTTS } from 'https://cdn.jsdelivr.net/npm/kokoro-js/dist/kokoro.web.js';
-
-  /* ══════════════════════════════════════════════════
-     TRANSLATIONS
-  ══════════════════════════════════════════════════ */
-  const I18N = {
-    en: {
-      navHow: 'How it works', navFaq: 'FAQ', navAbout: 'About', navContact: 'Contact',
-      eyebrow: 'For educators · No account required · Instant download',
-      h1: 'English Audio Generator — Create classroom audio quickly<br><em>Now supports two-voice dialogues</em>',
-      heroParagraph: 'A browser-based audio tool for teachers, tutors, and lesson designers who need listening material, pronunciation models, or narrated slides — without setup friction.',
-      badgeFree: '✓ Free forever', badgeVoices: '✓ Multiple voices',
-      badgeDownload: '✓ Downloadable audio file', badgeOffline: '✓ Works offline after load',
-      labelText: 'Your text',
-      placeholderText: 'Paste or type any English paragraph here...',
-      tabListen: '🎧 Quick Listen', tabDownload: '⬇ Download MP3',
-      labelVoice: 'Voice', labelSpeed: 'Speed', labelFilename: 'File name (no extension)',
-      modeSingle: '👤 Single voice', modeDialogue: '👥 Dialogue', labelDialogue: 'Dialogue script',
-      modeSingleHelp: 'Use one voice for the whole text.', modeDialogueHelp: 'Give each person a voice and write their turns below.',
-      dialogueExample: '<strong>Example:</strong><br>Speaker 1: Hello, how are you?<br>Speaker 2: I\'m fine, thank you.',
-      dialogueHelp: 'Write one turn per line using Speaker 1: text and Speaker 2: text.',
-      dialoguePlaceholder: 'Speaker 1: Hello!\nSpeaker 2: Hi! How are you?', speakerOne: 'Speaker 1 voice', speakerTwo: 'Speaker 2 voice',
-      btnSpeak: '▶ Speak', btnPause: '⏸ Pause', btnStop: '⏹ Stop',
-      btnGenerate: '🎙 Generate Audio', btnPreview: '▶ Preview', btnDownload: '⬇ Download MP3',
-      statusListenReady: 'Ready — select a voice and click Speak',
-      statusListenSpeaking: 'Speaking…', statusListenDone: 'Done',
-      statusListenStopped: 'Stopped',
-      noVoices: 'No English voices found — try Chrome or Edge',
-      statusDownloadReady: 'Ready — enter your text and click Generate',
-      infoBox: '<strong>How it works:</strong> The voice model runs entirely in your browser — no servers, no API keys. The <strong>first use downloads the model (~86 MB)</strong> and caches it; after that it\'s instant. Requires internet only on first load.',
-      tipsTitle: '🎓 Teaching Tips',
-      tip1: '<strong>0.7×</strong> — Listening comprehension for beginners',
-      tip2: '<strong>0.85×</strong> — Standard listening exercise',
-      tip3: '<strong>1.0×</strong> — Dictation at native speed',
-      tip4: 'Try <strong>Emma (British)</strong> for Cambridge exam prep',
-      tip5: 'In PowerPoint: Insert → Audio → Audio on my PC',
-    },
-    es: {
-      navHow: 'Cómo funciona', navFaq: 'FAQ', navAbout: 'Acerca de', navContact: 'Contacto',
-      eyebrow: 'Para docentes · Sin cuenta · Descarga instantánea',
-      h1: 'Generador de audio — Crea audio para clases rápidamente<br><em>Ahora con soporte para diálogos de dos voces</em>',
-      heroParagraph: 'Una herramienta de audio en el navegador para docentes, tutores y diseñadores de clases que necesitan material de escucha, modelos de pronunciación o diapositivas narradas, sin complicaciones.',
-      badgeFree: '✓ Siempre gratis', badgeVoices: '✓ Múltiples voces',
-      badgeDownload: '✓ Archivo de audio descargable', badgeOffline: '✓ Funciona sin internet tras la primera carga',
-      labelText: 'Tu texto',
-      placeholderText: 'Pega o escribe aquí cualquier párrafo en inglés...',
-      tabListen: '🎧 Escuchar', tabDownload: '⬇ Descargar MP3',
-      labelVoice: 'Voz', labelSpeed: 'Velocidad', labelFilename: 'Nombre de archivo (sin extensión)',
-      modeSingle: '👤 Una voz', modeDialogue: '👥 Diálogo', labelDialogue: 'Guion del diálogo',
-      modeSingleHelp: 'Usa una voz para todo el texto.', modeDialogueHelp: 'Asigna una voz a cada persona y escribe sus turnos abajo.',
-      dialogueExample: '<strong>Ejemplo:</strong><br>Orador 1: Hola, ¿cómo estás?<br>Orador 2: Estoy bien, gracias.',
-      dialogueHelp: 'Escribe un turno por línea usando Orador 1: texto y Orador 2: texto.',
-      dialoguePlaceholder: 'Orador 1: ¡Hola!\nOrador 2: ¡Hola! ¿Cómo estás?', speakerOne: 'Voz del orador 1', speakerTwo: 'Voz del orador 2',
-      btnSpeak: '▶ Hablar', btnPause: '⏸ Pausar', btnStop: '⏹ Detener',
-      btnGenerate: '🎙 Generar Audio', btnPreview: '▶ Vista previa', btnDownload: '⬇ Descargar MP3',
-      statusListenReady: 'Listo — selecciona una voz y haz clic en Hablar',
-      statusListenSpeaking: 'Hablando…', statusListenDone: 'Listo',
-      statusListenStopped: 'Detenido',
-      noVoices: 'No se encontraron voces en inglés — intenta con Chrome o Edge',
-      statusDownloadReady: 'Listo — ingresa tu texto y haz clic en Generar',
-      infoBox: '<strong>Cómo funciona:</strong> El modelo de voz corre completamente en tu navegador — sin servidores, sin claves API. El <strong>primer uso descarga el modelo (~86 MB)</strong> y lo guarda en caché; luego es instantáneo. Solo requiere internet en la primera carga.',
-      tipsTitle: '🎓 Consejos para Docentes',
-      tip1: '<strong>0.7×</strong> — Comprensión auditiva para principiantes',
-      tip2: '<strong>0.85×</strong> — Ejercicio de escucha estándar',
-      tip3: '<strong>1.0×</strong> — Dictado a velocidad nativa',
-      tip4: 'Usa <strong>Emma (Británico)</strong> para preparación Cambridge',
-      tip5: 'En PowerPoint: Insertar → Audio → Audio en mi PC',
-    }
-  };
-
-  /* ══════════════════════════════════════════════════
-     LANGUAGE
-  ══════════════════════════════════════════════════ */
-  let currentLang = localStorage.getItem('lang') || 'en';
+<script>
+  // ── Language switcher ──
+  const saved = localStorage.getItem('lang') || 'en';
 
   function applyLang(lang) {
-    currentLang = lang;
     localStorage.setItem('lang', lang);
-    const t = I18N[lang];
-
-    // Language buttons
     document.querySelectorAll('.lang-btn').forEach(b =>
       b.classList.toggle('active', b.dataset.lang === lang));
-
-    // data-i18n → textContent
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const v = t[el.dataset.i18n];
-      if (v !== undefined) el.textContent = v;
-    });
-
-    // data-i18n-html → innerHTML
-    document.querySelectorAll('[data-i18n-html]').forEach(el => {
-      const v = t[el.dataset.i18nHtml];
-      if (v !== undefined) el.innerHTML = v;
-    });
-
-    // data-i18n-placeholder → placeholder attribute
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-      const v = t[el.dataset.i18nPlaceholder];
-      if (v !== undefined) el.placeholder = v;
-    });
-
-    // Long-form content blocks
     document.querySelectorAll('.lang-content').forEach(el =>
       el.hidden = !el.classList.contains('lang-' + lang));
-    const description = document.getElementById('mode-description');
-    if (description) description.textContent = I18N[lang][audioMode === 'dialogue' ? 'modeDialogueHelp' : 'modeSingleHelp'];
   }
 
   document.querySelectorAll('.lang-btn').forEach(b =>
     b.addEventListener('click', () => applyLang(b.dataset.lang)));
 
-  /* ══════════════════════════════════════════════════
-     TABS
-  ══════════════════════════════════════════════════ */
-  let audioMode = 'single';
-  function switchTab(tabId, mode) {
-    // If a mode is provided (single/dialogue), activate the matching tab button; otherwise match by tabId
-    document.querySelectorAll('.tab-btn').forEach(b => {
-      if (mode) b.classList.toggle('active', b.dataset.mode === mode);
-      else b.classList.toggle('active', b.dataset.tab === tabId);
-    });
-
-    document.querySelectorAll('.tab-panel').forEach(p =>
-      p.classList.toggle('active', p.id === 'panel-' + tabId));
-
-    localStorage.setItem('activeTab', tabId + (mode ? ('|' + mode) : ''));
-
-    // Determine audioMode: prefer explicit mode from tab button, else map legacy tab ids
-    const desiredMode = mode || (tabId === 'listen' ? 'single' : 'dialogue');
-    audioMode = desiredMode;
-
-    // Update single/dialogue settings visibility
-    document.querySelectorAll('.mode-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === audioMode));
-    const singleSettings = document.getElementById('single-audio-settings');
-    const dialogueSettings = document.getElementById('dialogue-settings');
-    if (singleSettings) singleSettings.hidden = audioMode !== 'single';
-    if (dialogueSettings) dialogueSettings.hidden = audioMode !== 'dialogue';
-
-    const description = document.getElementById('mode-description');
-    if (description) description.textContent = I18N[currentLang][audioMode === 'dialogue' ? 'modeDialogueHelp' : 'modeSingleHelp'];
-
-  }
-
-  document.querySelectorAll('.tab-btn').forEach(b =>
-    b.addEventListener('click', () => switchTab(b.dataset.tab, b.dataset.mode)));
-
-  /* ══════════════════════════════════════════════════
-     DOWNLOAD MP3 — Kokoro TTS
-  ══════════════════════════════════════════════════ */
-  let audioBlob = null, audioURL = null, previewURL = null, lastPCM = null, lastSR = null;
-  let ttsModel = null;
-  let encodeWaitingDownload = false;
-
-  const MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX';
-  const KOKORO_VOICES = [
-    { id: 'af_heart',  label: 'Heart — US Female (Natural)' },
-    { id: 'af_bella',  label: 'Bella — US Female (Warm)' },
-    { id: 'am_adam',   label: 'Adam — US Male' },
-    { id: 'bf_emma',   label: 'Emma — British Female' },
-    { id: 'bm_george', label: 'George — British Male' },
-  ];
-
-  (function initKokoroVoices() {
-    ['voice-select', 'dialogue-voice-1', 'dialogue-voice-2'].forEach((id, index) => {
-      const sel = document.getElementById(id);
-      KOKORO_VOICES.forEach(v => {
-        const o = document.createElement('option');
-        o.value = v.id; o.textContent = v.label;
-        sel.appendChild(o);
-      });
-      if (index === 1) sel.value = 'af_bella';
-      if (index === 2) sel.value = 'am_adam';
-    });
-  })();
-
-  // Create a Web Worker (module) for Kokoro generation to avoid blocking the UI
-  let kokoroWorker = null;
-  let workerAvailable = false;
-  let workerReadyResolve;
-  let workerReady = new Promise(resolve => { workerReadyResolve = resolve; });
-  try {
-    // Use local worker file to avoid cross-origin redirects/import issues
-    kokoroWorker = new Worker('./kokoro-worker.js', { type: 'module' });
-    workerAvailable = true;
-  } catch (err) {
-    kokoroWorker = null; workerAvailable = false;
-    workerReadyResolve();
-  }
-
-  // Helper to call worker and receive a single result via Promise
-  function workerGenerate(payload) {
-    return new Promise((resolve, reject) => {
-      if (!workerAvailable || !kokoroWorker) return reject(new Error('Worker not available'));
-      const onmsg = (ev) => {
-        const d = ev.data;
-        if (d.type === 'result') {
-          kokoroWorker.removeEventListener('message', onmsg);
-          resolve(d);
-        } else if (d.type === 'error') {
-          kokoroWorker.removeEventListener('message', onmsg);
-          reject(new Error(d.message || 'Worker error'));
-        } else if (d.type === 'progress') {
-          // forward progress to UI
-          document.getElementById('dialogue-progress').hidden = false;
-          document.getElementById('dialogue-progress').textContent = `Generating line ${d.index + 1} of ${d.total}…`;
-        }
-      };
-      kokoroWorker.addEventListener('message', onmsg);
-      try {
-        kokoroWorker.postMessage({ ...payload, modelId: MODEL_ID });
-      } catch (e) { kokoroWorker.removeEventListener('message', onmsg); reject(e); }
-    });
-  }
-
-  // Prefetch Kokoro as soon as the page initializes. Generation only waits for
-  // this shared promise; it never starts a second model download.
-  function preloadKokoro() {
-    if (!workerAvailable || !kokoroWorker) return;
-    try {
-      kokoroWorker.postMessage({ type: 'loadModel', modelId: MODEL_ID });
-    } catch (e) {
-      workerReadyResolve();
-    }
-  }
-  preloadKokoro();
-  if (kokoroWorker) {
-    kokoroWorker.onerror = () => {};
-    kokoroWorker.addEventListener('message', ev => {
-      const d = ev.data;
-      if (d && d.type === 'loaded') {
-        workerReadyResolve();
-      }
-    });
-  }
-
-  // Create encode worker (for MP3) to avoid blocking the UI during encoding
-  let encodeWorker = null;
-  let encodeWorkerAvailable = false;
-  try {
-    encodeWorker = new Worker('./encode-worker.js');
-    encodeWorkerAvailable = true;
-  } catch (err) {
-    encodeWorker = null; encodeWorkerAvailable = false;
-  }
-
-  if (encodeWorker) {
-    encodeWorker.onmessage = (ev) => {
-      const d = ev.data;
-      if (d.type === 'mp3') {
-    const mp3 = new Uint8Array(d.mp3);
-    audioBlob = new Blob([mp3], { type: 'audio/mpeg' });
-    if (audioURL) URL.revokeObjectURL(audioURL);
-    audioURL = URL.createObjectURL(audioBlob);
-    setDownloadStatus('done', 'MP3 ready ✓ — download starting');
-    // Trigger download immediately if we were encoding because user clicked Download
-    if (encodeWaitingDownload) {
-      const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
-      const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
-      encodeWaitingDownload = false;
-    }
-  } else if (d.type === 'error') {
-    setDownloadStatus('error', d.message || 'Encoding failed');
-    encodeWaitingDownload = false;
-  }
-    };
-  }
-
-  document.getElementById('rate').addEventListener('input', e =>
-    document.getElementById('rate-val').textContent =
-      parseFloat(e.target.value).toFixed(2) + '×');
-
-  function setDownloadStatus(state, msg) {
-    document.getElementById('dot').className = 'dot ' + state;
-    document.getElementById('status-text').textContent = msg;
-  }
-
-  function pcmToMp3(float32, sampleRate) {
-    const enc = new lamejs.Mp3Encoder(1, sampleRate, 128);
-    const out = [];
-    const block = 1152;
-    for (let i = 0; i < float32.length; i += block) {
-      const slice = float32.subarray(i, i + block);
-      const int16 = new Int16Array(slice.length);
-      for (let j = 0; j < slice.length; j++)
-        int16[j] = Math.max(-32768, Math.min(32767, slice[j] * 32767));
-      const buf = enc.encodeBuffer(int16);
-      if (buf.length > 0) out.push(new Uint8Array(buf));
-    }
-    const flush = enc.flush();
-    if (flush.length > 0) out.push(new Uint8Array(flush));
-    return new Blob(out, { type: 'audio/mpeg' });
-  }
-
-  function float32ToWavBlob(float32, sampleRate) {
-    // Convert Float32Array PCM to 16-bit WAV Blob
-    const numChannels = 1;
-    const bytesPerSample = 2;
-    const blockAlign = numChannels * bytesPerSample;
-    const byteRate = sampleRate * blockAlign;
-    const dataSize = float32.length * bytesPerSample;
-    const buffer = new ArrayBuffer(44 + dataSize);
-    const view = new DataView(buffer);
-
-    function writeString(view, offset, str) {
-      for (let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
-    }
-
-    writeString(view, 0, 'RIFF');
-    view.setUint32(4, 36 + dataSize, true);
-    writeString(view, 8, 'WAVE');
-    writeString(view, 12, 'fmt ');
-    view.setUint32(16, 16, true);
-    view.setUint16(20, 1, true);
-    view.setUint16(22, numChannels, true);
-    view.setUint32(24, sampleRate, true);
-    view.setUint32(28, byteRate, true);
-    view.setUint16(32, blockAlign, true);
-    view.setUint16(34, bytesPerSample * 8, true);
-    writeString(view, 36, 'data');
-    view.setUint32(40, dataSize, true);
-
-    let offset = 44;
-    for (let i = 0; i < float32.length; i++, offset += 2) {
-      let s = Math.max(-1, Math.min(1, float32[i]));
-      view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
-    }
-    return new Blob([view], { type: 'audio/wav' });
-  }
-
-  function parseDialogue(source) {
-    return source.split('\n').map(line => line.trim()).filter(Boolean).map((line, index) => {
-      const match = line.match(/^(?:speaker|orador)\s*([12])\s*:\s*(.+)$/i);
-      if (!match) throw new Error(`Line ${index + 1}: use Speaker 1: text or Speaker 2: text`);
-      return { speaker: match[1], text: match[2] };
-    });
-  }
-
-  async function generateAudio() {
-    const text = (audioMode === 'dialogue'
-      ? document.getElementById('dialogue-text').value.trim()
-      : document.getElementById('download-text').value.trim());
-    if (!text) { setDownloadStatus('error', I18N[currentLang].statusDownloadReady); return; }
-
-    const btn = document.getElementById('btn-generate');
-    btn.disabled = true; btn.classList.add('recording');
-    document.getElementById('btn-preview').style.display = 'none';
-    document.getElementById('btn-download').style.display = 'none';
-
-    const voiceId = document.getElementById('voice-select').value;
-    const speed   = parseFloat(document.getElementById('rate').value);
-
-    try {
-      // If single voice: generate Kokoro preview (no Web Speech API). Start worker generation immediately and play when ready.
-      if (audioMode === 'single') {
-        setDownloadStatus('recording', 'Generating preview…');
-        try {
-          // race worker with a timeout: if worker doesn't reply in 60s, fall back to main
-          const workerPromise = workerReady.then(() => workerGenerate({ type: 'generate', text, voice: voiceId, speed }));
-          const timeoutPromise = new Promise((_, rej) => setTimeout(() => rej(new Error('Worker timeout')), 60000));
-          const res = await Promise.race([workerPromise, timeoutPromise]).catch(async (err) => {
-            // Fallback: try main-thread generation so user still gets audio
-            try {
-              setDownloadStatus('recording', 'Fallback: generating in main thread…');
-              if (!ttsModel) ttsModel = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
-              const mainRes = await ttsModel.generate(text, { voice: voiceId, speed });
-              return { pcm: mainRes.audio.buffer, sr: mainRes.sampling_rate };
-            } catch (mainErr) {
-              throw mainErr;
-            }
-          });
-
-          // handle result (res may be from workerGenerate or fallback main)
-          const pcmBuf = res.pcm;
-          const sr = res.sr;
-          const pcm = new Float32Array(pcmBuf);
-          lastPCM = pcm; lastSR = sr;
-          // Clear any previous MP3 (must encode on Download)
-          if (audioURL) { URL.revokeObjectURL(audioURL); audioURL = null; }
-          audioBlob = null; encodeWaitingDownload = false;
-          if (previewURL) URL.revokeObjectURL(previewURL);
-          const wav = float32ToWavBlob(pcm, sr);
-          previewURL = URL.createObjectURL(wav);
-          const ap = document.getElementById('audio-player');
-          ap.src = previewURL; ap.load();
-          // Publish preview first. MP3 encoding is independent and starts only on Download.
-          document.getElementById('btn-preview').style.display  = 'flex';
-          document.getElementById('btn-download').style.display = 'none';
-          try { await ap.play(); document.getElementById('btn-preview').textContent = I18N[currentLang].btnPause; } catch(e) { /* autoplay may be blocked */ }
-          document.getElementById('btn-download').style.display = 'flex';
-          setDownloadStatus('done', 'Preview ready — click Download to encode MP3 (may take longer)');
-        } catch (finalErr) {
-          setDownloadStatus('error', finalErr.message || String(finalErr));
-        }
-
-        // Re-enable generate button
-        btn.disabled = false; btn.classList.remove('recording');
-        return;
-      }
-
-      // Dialogue: run generation inside worker to avoid blocking UI
-      setDownloadStatus('recording', 'Generating dialogue (background worker)…');
-      const turns = parseDialogue(document.getElementById('dialogue-text').value);
-      if (!turns.length) throw new Error('Add at least two dialogue lines.');
-      // Build turns payload with voice selections
-      const payloadTurns = turns.map(t => ({ speaker: t.speaker, text: t.text, voice: document.getElementById(`dialogue-voice-${t.speaker}`).value }));
-      let res = null;
-      try {
-        res = await workerReady.then(() => workerGenerate({ type: 'generate_dialogue', turns: payloadTurns, speed }));
-      } catch (workerErr) {
-        // Fallback: generate sequentially on main thread (preserve original behavior)
-        if (!ttsModel) {
-          setDownloadStatus('recording', 'Loading voice model (~86 MB, cached after first use)…');
-          ttsModel = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
-        }
-        const pieces = [];
-        let sr = 22050;
-        for (let turnIndex = 0; turnIndex < payloadTurns.length; turnIndex++) {
-          const turn = payloadTurns[turnIndex];
-          document.getElementById('dialogue-progress').hidden = false;
-          document.getElementById('dialogue-progress').textContent = `Generating line ${turnIndex + 1} of ${payloadTurns.length}…`;
-          const r = await ttsModel.generate(turn.text, { voice: turn.voice, speed });
-          sr = r.sampling_rate;
-          pieces.push(r.audio, new Float32Array(Math.round(sr * 0.22)));
-        }
-        const pcmAll = new Float32Array(pieces.reduce((total, part) => total + part.length, 0));
-        let offset = 0; pieces.forEach(part => { pcmAll.set(part, offset); offset += part.length; });
-        res = { pcm: pcmAll.buffer, sr };
-      }
-
-      const pcm = new Float32Array(res.pcm);
-      lastPCM = pcm; lastSR = res.sr;
-      // Clear any previous MP3 (must encode on Download)
-      if (audioURL) { URL.revokeObjectURL(audioURL); audioURL = null; }
-      audioBlob = null; encodeWaitingDownload = false;
-      if (previewURL) URL.revokeObjectURL(previewURL);
-      const wav = float32ToWavBlob(pcm, res.sr);
-      previewURL = URL.createObjectURL(wav);
-      const ap = document.getElementById('audio-player');
-      ap.src = previewURL; ap.load();
-      document.getElementById('btn-preview').style.display  = 'flex';
-      document.getElementById('btn-download').style.display = 'none';
-      // Let the browser paint the preview control before exposing the slower MP3 action.
-      await new Promise(requestAnimationFrame);
-      document.getElementById('btn-download').style.display = 'flex';
-      setDownloadStatus('done', 'Preview ready — click Download to encode MP3 (may take longer)');
-      document.getElementById('dialogue-progress').hidden = true;
-    } catch (err) {
-      setDownloadStatus('error', err.message);
-      document.getElementById('dialogue-progress').hidden = true;
-    }
-    btn.disabled = false; btn.classList.remove('recording');
-  }
-
-  document.getElementById('btn-generate').addEventListener('click', generateAudio);
-
-  const ap = document.getElementById('audio-player');
-  const bp = document.getElementById('btn-preview');
-  bp.addEventListener('click', () => {
-    const t = I18N[currentLang];
-    if (ap.paused) { if (ap.ended) ap.currentTime = 0; ap.play(); bp.textContent = t.btnPause; }
-    else { ap.pause(); bp.textContent = t.btnPreview; }
-  });
-  ap.addEventListener('ended', () => {
-    document.getElementById('btn-preview').textContent = I18N[currentLang].btnPreview;
-  });
-
-  document.getElementById('btn-download').addEventListener('click', async () => {
-    if (!lastPCM) return;
-    // If we already have an MP3 blob, just download
-    if (audioBlob) {
-      const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
-      const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
-      return;
-    }
-
-    // Otherwise, request background encoding (worker if available)
-    setDownloadStatus('recording', 'Encoding to MP3…');
-    if (encodeWorkerAvailable && encodeWorker) {
-      try {
-        encodeWaitingDownload = true;
-      // Transfer a copy to preserve lastPCM if needed; send copy for safety
-      const pcmCopy = new Float32Array(lastPCM);
-      encodeWorker.postMessage({ pcm: pcmCopy.buffer, sr: lastSR }, [pcmCopy.buffer]);
-    } catch (err) {
-      try {
-        audioBlob = pcmToMp3(lastPCM, lastSR);
-        if (audioURL) URL.revokeObjectURL(audioURL);
-        audioURL = URL.createObjectURL(audioBlob);
-        setDownloadStatus('done', 'MP3 ready ✓ — download starting');
-        const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
-        const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
-      } catch (encErr) {
-        setDownloadStatus('error', encErr.message || 'Encoding failed');
-      }
-    }
-    } else {
-    // Fallback: encode on main thread
-    try {
-      audioBlob = pcmToMp3(lastPCM, lastSR);
-      if (audioURL) URL.revokeObjectURL(audioURL);
-      audioURL = URL.createObjectURL(audioBlob);
-      setDownloadStatus('done', 'MP3 ready ✓ — download starting');
-      const name = (document.getElementById('filename').value.trim() || 'audio_english') + '.mp3';
-      const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
-    } catch (err) {
-      setDownloadStatus('error', err.message || 'Encoding failed');
-    }
-    }
-  });
-
-  /* ══════════════════════════════════════════════════
-     INIT — apply saved preferences
-  ══════════════════════════════════════════════════ */
-  applyLang(currentLang);
-
-  // If opened via file:// show a visible warning with instructions to run a local HTTP server
-  if (location.protocol === 'file:') {
-    const warn = document.createElement('div');
-    warn.id = 'file-warning';
-    warn.style = 'position:fixed;left:12px;right:12px;top:12px;padding:12px;background:#fff3cd;border:1px solid #ffeeba;border-radius:8px;z-index:9999;font-size:0.95rem;';
-    warn.innerHTML = `This page was opened via file://. Web Workers and module imports require HTTP(S). To run locally, open a terminal in the project folder and run:<br><pre style="margin:8px 0;padding:8px;background:#fff;border-radius:6px">python -m http.server 8000
-# or (Windows PowerShell): py -m http.server 8000
-# or if you have node: npx http-server -c-1 .</pre>Then open <strong>http://localhost:8000/</strong>.`;
-    const btn = document.createElement('button'); btn.textContent = 'Dismiss'; btn.style='margin-left:8px';
-    btn.addEventListener('click', () => warn.remove());
-    warn.appendChild(btn);
-    document.body.appendChild(warn);
-  }
-
-  // Restore saved tab + mode (stored as 'tab|mode') or default to download+single
-  const saved = localStorage.getItem('activeTab');
-  if (saved) {
-    const parts = saved.split('|');
-    // Migrate the old Quick Listen preference to the Kokoro Single Voice view.
-    const tab = parts[0] === 'listen' ? 'download' : (parts[0] || 'download');
-    const mode = parts[0] === 'listen' ? 'single' : (parts[1] || 'single');
-    switchTab(tab, mode);
-  } else {
-    switchTab('download', 'single');
-  }
+  applyLang(saved);
 </script>
 </body>
 </html>

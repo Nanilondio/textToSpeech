@@ -1,0 +1,112 @@
+{
+  "slug": "making-a-complaint",
+  "title": "Making a Complaint",
+  "level": "b1",
+  "topic": "complaints",
+  "topicName": "Complaints & Customer Service",
+  "category": "listening-exercises",
+  "summary": "A customer calls a hotel to complain about a noisy room and asks for a solution.",
+  "description": "An intermediate phone-conversation focused on polite-but-firm complaints and problem resolution. Vocabulary includes 'apologise', 'refund', 'compensation', and 'manager'.",
+  "duration": "3 minutes",
+  "vocabulary": [
+    { "word": "complaint", "definition": "a statement that you are unhappy about something" },
+    { "word": "apologise", "definition": "to say you are sorry for something you have done wrong" },
+    { "word": "refund", "definition": "money that is returned to you because you are not satisfied" },
+    { "word": "compensation", "definition": "something, usually money, given to make up for a problem" },
+    { "word": "resolve", "definition": "to find a solution to a problem" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Good evening. This is the Lake View Hotel. How can I help you?" },
+    { "speaker": "2", "text": "Good evening. I am calling to make a complaint about room 312." },
+    { "speaker": "1", "text": "I am very sorry to hear that. Can you tell me what happened?" },
+    { "speaker": "2", "text": "The room was extremely noisy because of construction work next door, even at midnight." },
+    { "speaker": "1", "text": "I sincerely apologise for that. That is not the experience we want for our guests." },
+    { "speaker": "2", "text": "I appreciate that. What kind of compensation can you offer?" },
+    { "speaker": "1", "text": "We can offer you a full refund for last night and a free dinner tonight." },
+    { "speaker": "2", "text": "That is fair. Can I also move to a quieter room for the rest of my stay?" },
+    { "speaker": "1", "text": "Of course. I will move you to a room on the top floor, away from the street." },
+    { "speaker": "2", "text": "Thank you. I am happy with this solution." }
+  ],
+  "questions": [
+    {
+      "q": "Why is the customer complaining?",
+      "options": ["The room was dirty", "The room was noisy", "The food was cold"],
+      "answer": 1
+    },
+    {
+      "q": "What compensation does the hotel offer?",
+      "options": ["A free breakfast", "A refund and a free dinner", "A discount on the next visit"],
+      "answer": 1
+    },
+    {
+      "q": "Where will the customer be moved?",
+      "options": ["To a room on the ground floor", "To a room on the top floor", "To another hotel"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "The construction work happened only during the day.",
+      "answer": false,
+      "explanation": "The customer says the noise was 'even at midnight,' so it was happening at night too."
+    },
+    {
+      "statement": "The hotel refuses to apologise.",
+      "answer": false,
+      "explanation": "The receptionist says 'I sincerely apologise for that.'"
+    }
+  ],
+  "teacherTips": [
+    "Pre-teach the contrast between polite and rude complaints. Use the dialogue as the polite model.",
+    "Drill formulaic phrases: 'I am calling to make a complaint…', 'I appreciate that…', 'I am happy with…'",
+    "After listening, students write a short formal complaint email about a real situation (school, café, gym)."
+  ],
+  "relatedExercises": ["travel-problems", "making-an-appointment"],
+  "es": {
+    "title": "Presentar una queja",
+    "summary": "Un cliente llama a un hotel para quejarse de una habitación ruidosa y pide una solución.",
+    "description": "Una conversación telefónica intermedia centrada en quejas educadas pero firmes y en la resolución de problemas. El vocabulario incluye 'apologise', 'refund', 'compensation' y 'manager'.",
+    "topicName": "Quejas y atención al cliente",
+    "vocabulary": [
+      { "word": "complaint", "definition": "una declaración de que no estás contento con algo" },
+      { "word": "apologise", "definition": "decir que sientes haber hecho algo mal" },
+      { "word": "refund", "definition": "dinero que se te devuelve porque no estás satisfecho" },
+      { "word": "compensation", "definition": "algo, normalmente dinero, que se da para compensar un problema" },
+      { "word": "resolve", "definition": "encontrar una solución a un problema" }
+    ],
+    "questions": [
+      {
+        "q": "¿Por qué se queja el cliente?",
+        "options": ["La habitación estaba sucia", "La habitación era ruidosa", "La comida estaba fría"],
+        "answer": 1
+      },
+      {
+        "q": "¿Qué compensación ofrece el hotel?",
+        "options": ["Un desayuno gratis", "Un reembolso y una cena gratis", "Un descuento en la próxima visita"],
+        "answer": 1
+      },
+      {
+        "q": "¿Adónde trasladarán al cliente?",
+        "options": ["A una habitación en la planta baja", "A una habitación en la última planta", "A otro hotel"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "Las obras solo ocurrían durante el día.",
+        "answer": false,
+        "explanation": "El cliente dice que el ruido era 'even at midnight', así que también ocurría por la noche."
+      },
+      {
+        "statement": "El hotel se niega a disculparse.",
+        "answer": false,
+        "explanation": "El recepcionista dice 'I sincerely apologise for that'."
+      }
+    ],
+    "teacherTips": [
+      "Enseña el contraste entre quejas educadas y groseras. Usa el diálogo como modelo educado.",
+      "Practica fórmulas fijas: 'I am calling to make a complaint…', 'I appreciate that…', 'I am happy with…'.",
+      "Después de escuchar, los estudiantes escriben un correo formal corto de queja sobre una situación real (escuela, cafetería, gimnasio)."
+    ]
+  }
+}

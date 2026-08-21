@@ -1,0 +1,112 @@
+{
+  "slug": "at-the-restaurant",
+  "title": "At the Restaurant",
+  "level": "a2",
+  "topic": "restaurant",
+  "topicName": "Restaurants & Food",
+  "category": "listening-exercises",
+  "summary": "A customer orders a meal, asks for the bill, and pays with a credit card.",
+  "description": "A classic restaurant scenario for elementary learners. Vocabulary covers menu items, polite requests, paying methods, and tipping etiquette.",
+  "duration": "2 minutes",
+  "vocabulary": [
+    { "word": "menu", "definition": "the list of food and drinks available in a restaurant" },
+    { "word": "main course", "definition": "the largest part of a meal, usually meat or fish with vegetables" },
+    { "word": "still water", "definition": "water without bubbles (not sparkling)" },
+    { "word": "the bill", "definition": "the printed list of what you have to pay in a restaurant" },
+    { "word": "credit card", "definition": "a small plastic card used to pay for things" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Good evening. Do you have a reservation?" },
+    { "speaker": "2", "text": "Yes, a table for two, under the name Smith." },
+    { "speaker": "1", "text": "Perfect. Here is your menu. Can I get you something to drink?" },
+    { "speaker": "2", "text": "Yes. A glass of red wine for me, and a still water, please." },
+    { "speaker": "1", "text": "And for your main course?" },
+    { "speaker": "2", "text": "I would like the grilled salmon with vegetables." },
+    { "speaker": "1", "text": "Excellent choice. I will be right back with your drinks." },
+    { "speaker": "2", "text": "Excuse me, can I have the bill, please?" },
+    { "speaker": "1", "text": "Of course. Would you like to pay by cash or card?" },
+    { "speaker": "2", "text": "Credit card, please." }
+  ],
+  "questions": [
+    {
+      "q": "How many people are at the table?",
+      "options": ["One", "Two", "Three"],
+      "answer": 1
+    },
+    {
+      "q": "What does the customer order to drink?",
+      "options": ["A glass of wine and still water", "Beer and juice", "Coffee and tea"],
+      "answer": 0
+    },
+    {
+      "q": "How does the customer pay?",
+      "options": ["Cash", "Credit card", "They don't say"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "The customer orders grilled chicken.",
+      "answer": false,
+      "explanation": "The customer orders grilled salmon."
+    },
+    {
+      "statement": "The customer has a reservation under the name Smith.",
+      "answer": true,
+      "explanation": "Speaker 2 says 'a table for two, under the name Smith.'"
+    }
+  ],
+  "teacherTips": [
+    "Pre-teach the difference between 'still water' and 'sparkling water' — a frequent confusion in real restaurants abroad.",
+    "Use this dialogue as a model for polite requests: 'Can I have…?', 'I would like…'",
+    "After listening, students design a one-page menu and role-play ordering from it."
+  ],
+  "relatedExercises": ["at-the-supermarket", "making-an-appointment"],
+  "es": {
+    "title": "En el restaurante",
+    "summary": "Un cliente pide una comida, pregunta por la cuenta y paga con tarjeta de crédito.",
+    "description": "Un escenario clásico de restaurante para estudiantes de nivel elemental. El vocabulario cubre platos del menú, peticiones corteses, formas de pago y etiqueta de propina.",
+    "topicName": "Restaurantes y comida",
+    "vocabulary": [
+      { "word": "menu", "definition": "la lista de comidas y bebidas disponibles en un restaurante" },
+      { "word": "main course", "definition": "la parte principal de una comida, normalmente carne o pescado con verduras" },
+      { "word": "still water", "definition": "agua sin gas (no con gas)" },
+      { "word": "the bill", "definition": "la lista impresa de lo que tienes que pagar en un restaurante" },
+      { "word": "credit card", "definition": "una tarjeta de plástico pequeña que se usa para pagar" }
+    ],
+    "questions": [
+      {
+        "q": "¿Cuántas personas hay en la mesa?",
+        "options": ["Una", "Dos", "Tres"],
+        "answer": 1
+      },
+      {
+        "q": "¿Qué pide el cliente para beber?",
+        "options": ["Una copa de vino y agua sin gas", "Cerveza y zumo", "Café y té"],
+        "answer": 0
+      },
+      {
+        "q": "¿Cómo paga el cliente?",
+        "options": ["Efectivo", "Tarjeta de crédito", "No lo dice"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "El cliente pide pollo a la parrilla.",
+        "answer": false,
+        "explanation": "El cliente pide salmón a la parrilla."
+      },
+      {
+        "statement": "El cliente tiene una reserva a nombre de Smith.",
+        "answer": true,
+        "explanation": "El interlocutor 2 dice 'a table for two, under the name Smith'."
+      }
+    ],
+    "teacherTips": [
+      "Enseña antes la diferencia entre 'still water' y 'sparkling water', una confusión frecuente en restaurantes reales en el extranjero.",
+      "Usa este diálogo como modelo de peticiones corteses: 'Can I have…?', 'I would like…'.",
+      "Después de escuchar, los estudiantes diseñan una página de menú y hacen el role-play pidiendo desde ella."
+    ]
+  }
+}

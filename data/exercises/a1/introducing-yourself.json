@@ -1,0 +1,109 @@
+{
+  "slug": "introducing-yourself",
+  "title": "Introducing Yourself",
+  "level": "a1",
+  "topic": "introductions",
+  "topicName": "Introductions & Greetings",
+  "category": "listening-exercises",
+  "summary": "A short first-meeting conversation where two students introduce themselves and exchange basic personal information.",
+  "description": "A simple first-meeting dialogue for beginners. Students hear two people introduce themselves, ask each other's name, where they are from, and what they study. Perfect as a first listening exercise of the year.",
+  "duration": "1 minute",
+  "vocabulary": [
+    { "word": "name", "definition": "the word someone is called" },
+    { "word": "from", "definition": "the place where someone lives or was born" },
+    { "word": "student", "definition": "a person who is studying at a school or university" },
+    { "word": "nice to meet you", "definition": "a polite phrase used when meeting someone for the first time" },
+    { "word": "too", "definition": "also; in the same way" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Hi! My name is Anna. What is your name?" },
+    { "speaker": "2", "text": "Hello, Anna. My name is Ben. Nice to meet you." },
+    { "speaker": "1", "text": "Nice to meet you too, Ben. Where are you from?" },
+    { "speaker": "2", "text": "I am from Canada. And you?" },
+    { "speaker": "1", "text": "I am from Spain. Are you a student?" },
+    { "speaker": "2", "text": "Yes, I am a student. I study English." },
+    { "speaker": "1", "text": "Great! I study English too." }
+  ],
+  "questions": [
+    {
+      "q": "What is the girl's name?",
+      "options": ["Anna", "Ben", "Spain"],
+      "answer": 0
+    },
+    {
+      "q": "Where is Ben from?",
+      "options": ["Spain", "Canada", "England"],
+      "answer": 1
+    },
+    {
+      "q": "What do they both study?",
+      "options": ["Spanish", "French", "English"],
+      "answer": 2
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "Ben is from Spain.",
+      "answer": false,
+      "explanation": "Ben is from Canada. Anna is from Spain."
+    },
+    {
+      "statement": "Anna and Ben are both students.",
+      "answer": true,
+      "explanation": "Both speakers say they are students."
+    }
+  ],
+  "teacherTips": [
+    "Play the dialogue at 0.75× speed the first time so students can catch every word.",
+    "Before listening, drill the question forms 'What is…?' and 'Where are…?' so learners recognise them in context.",
+    "After listening, ask students to introduce themselves to a partner using the same structure."
+  ],
+  "relatedExercises": ["my-family", "daily-routine"],
+  "es": {
+    "title": "Presentarse",
+    "summary": "Una conversación corta de primer encuentro en la que dos estudiantes se presentan e intercambian información personal básica.",
+    "description": "Un diálogo sencillo de primer encuentro para principiantes. Los estudiantes oyen a dos personas presentarse, preguntar el nombre, de dónde son y qué estudian. Perfecto como primer ejercicio de escucha del año.",
+    "topicName": "Presentaciones y saludos",
+    "vocabulary": [
+      { "word": "name", "definition": "la palabra por la que se llama a alguien" },
+      { "word": "from", "definition": "el lugar donde alguien vive o nació" },
+      { "word": "student", "definition": "una persona que estudia en una escuela o universidad" },
+      { "word": "nice to meet you", "definition": "frase de cortesía al conocer a alguien por primera vez" },
+      { "word": "too", "definition": "también; del mismo modo" }
+    ],
+    "questions": [
+      {
+        "q": "¿Cómo se llama la chica?",
+        "options": ["Anna", "Ben", "Spain"],
+        "answer": 0
+      },
+      {
+        "q": "¿De dónde es Ben?",
+        "options": ["España", "Canadá", "Inglaterra"],
+        "answer": 1
+      },
+      {
+        "q": "¿Qué estudian los dos?",
+        "options": ["Español", "Francés", "Inglés"],
+        "answer": 2
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "Ben es de España.",
+        "answer": false,
+        "explanation": "Ben es de Canadá. Anna es de España."
+      },
+      {
+        "statement": "Anna y Ben son estudiantes.",
+        "answer": true,
+        "explanation": "Los dos interlocutores dicen que son estudiantes."
+      }
+    ],
+    "teacherTips": [
+      "Reproduce el diálogo a velocidad 0.75× la primera vez para que los estudiantes capten cada palabra.",
+      "Antes de escuchar, practica las estructuras interrogativas 'What is…?' y 'Where are…?' para que los estudiantes las reconozcan en contexto.",
+      "Después de escuchar, pide a los estudiantes que se presenten a un compañero usando la misma estructura."
+    ]
+  }
+}

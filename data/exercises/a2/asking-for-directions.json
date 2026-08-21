@@ -1,0 +1,112 @@
+{
+  "slug": "asking-for-directions",
+  "title": "Asking for Directions",
+  "level": "a2",
+  "topic": "travel",
+  "topicName": "Travel & Directions",
+  "category": "listening-exercises",
+  "summary": "A tourist asks a passer-by how to get to the train station and follows the instructions step by step.",
+  "description": "A short elementary dialogue focusing on prepositions of place (next to, opposite, on the corner of) and basic imperative forms for giving directions.",
+  "duration": "2 minutes",
+  "vocabulary": [
+    { "word": "turn left", "definition": "go in the direction of your left side" },
+    { "word": "turn right", "definition": "go in the direction of your right side" },
+    { "word": "straight ahead", "definition": "continue in the same direction, without turning" },
+    { "word": "on the corner of", "definition": "where two streets meet" },
+    { "word": "opposite", "definition": "on the other side of the street, facing it" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Excuse me, can you help me? I am looking for the train station." },
+    { "speaker": "2", "text": "Of course. The station is not far from here." },
+    { "speaker": "1", "text": "Great. How do I get there?" },
+    { "speaker": "2", "text": "Go straight ahead for two blocks. Then turn left at the traffic lights." },
+    { "speaker": "1", "text": "Left at the traffic lights. Okay." },
+    { "speaker": "2", "text": "Walk past the bank and turn right on the corner of King Street." },
+    { "speaker": "1", "text": "Right on King Street. Is the station opposite the park?" },
+    { "speaker": "2", "text": "Yes, exactly. It is a big building with a clock on top." },
+    { "speaker": "1", "text": "Thank you so much!" },
+    { "speaker": "2", "text": "You are welcome. Have a good day." }
+  ],
+  "questions": [
+    {
+      "q": "Where does the tourist want to go?",
+      "options": ["The bank", "The train station", "The park"],
+      "answer": 1
+    },
+    {
+      "q": "What does the tourist do at the traffic lights?",
+      "options": ["Turns right", "Turns left", "Goes straight"],
+      "answer": 1
+    },
+    {
+      "q": "What is opposite the park?",
+      "options": ["The bank", "King Street", "The train station"],
+      "answer": 2
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "The station is far from where the tourist is.",
+      "answer": false,
+      "explanation": "The passer-by says 'The station is not far from here.'"
+    },
+    {
+      "statement": "The tourist turns right on King Street.",
+      "answer": true,
+      "explanation": "The passer-by says 'turn right on the corner of King Street.'"
+    }
+  ],
+  "teacherTips": [
+    "Draw a simple map of three streets on the board before listening. Students follow the route with their finger as they listen.",
+    "Teach the difference between 'turn left' and 'turn right' with a quick TPR activity before pressing play.",
+    "Extension: students write their own directions between two places in their town and swap with a partner."
+  ],
+  "relatedExercises": ["at-the-airport", "weekend-plans"],
+  "es": {
+    "title": "Pedir indicaciones",
+    "summary": "Un turista pregunta a un transeúnte cómo llegar a la estación de tren y sigue las instrucciones paso a paso.",
+    "description": "Un diálogo elemental centrado en preposiciones de lugar (next to, opposite, on the corner of) y la forma imperativa básica para dar indicaciones.",
+    "topicName": "Viajes y direcciones",
+    "vocabulary": [
+      { "word": "turn left", "definition": "ir en la dirección de tu lado izquierdo" },
+      { "word": "turn right", "definition": "ir en la dirección de tu lado derecho" },
+      { "word": "straight ahead", "definition": "continuar en la misma dirección, sin girar" },
+      { "word": "on the corner of", "definition": "donde se encuentran dos calles" },
+      { "word": "opposite", "definition": "al otro lado de la calle, frente a ella" }
+    ],
+    "questions": [
+      {
+        "q": "¿Adónde quiere ir el turista?",
+        "options": ["Al banco", "A la estación de tren", "Al parque"],
+        "answer": 1
+      },
+      {
+        "q": "¿Qué hace el turista en el semáforo?",
+        "options": ["Gira a la derecha", "Gira a la izquierda", "Sigue recto"],
+        "answer": 1
+      },
+      {
+        "q": "¿Qué hay frente al parque?",
+        "options": ["El banco", "King Street", "La estación de tren"],
+        "answer": 2
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "La estación está lejos del turista.",
+        "answer": false,
+        "explanation": "El transeúnte dice 'The station is not far from here'."
+      },
+      {
+        "statement": "El turista gira a la derecha en King Street.",
+        "answer": true,
+        "explanation": "El transeúnte dice 'turn right on the corner of King Street'."
+      }
+    ],
+    "teacherTips": [
+      "Dibuja un mapa sencillo de tres calles en la pizarra antes de escuchar. Los estudiantes siguen la ruta con el dedo mientras escuchan.",
+      "Enseña la diferencia entre 'turn left' y 'turn right' con una actividad TPR rápida antes de reproducir el audio.",
+      "Ampliación: los estudiantes escriben sus propias indicaciones entre dos lugares de su ciudad y las intercambian con un compañero."
+    ]
+  }
+}

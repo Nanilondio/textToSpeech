@@ -1,0 +1,110 @@
+{
+  "slug": "daily-routine",
+  "title": "Daily Routine",
+  "level": "a1",
+  "topic": "daily-routine",
+  "topicName": "Daily Routine",
+  "category": "listening-exercises",
+  "summary": "A teenager describes a typical weekday from waking up to going to bed, using present-simple time markers.",
+  "description": "A beginner-friendly monologue with short conversational interjections. Learners hear sequencing words (then, after that, in the evening) and time expressions (at seven o'clock, at half past eight).",
+  "duration": "1–2 minutes",
+  "vocabulary": [
+    { "word": "wake up", "definition": "to stop sleeping and open your eyes" },
+    { "word": "have breakfast", "definition": "to eat the first meal of the day" },
+    { "word": "usually", "definition": "something you do most days" },
+    { "word": "after", "definition": "later than something; following it in time" },
+    { "word": "go to bed", "definition": "to lie down to sleep at night" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "So, Tom, what time do you usually wake up?" },
+    { "speaker": "2", "text": "I wake up at seven o'clock on weekdays." },
+    { "speaker": "1", "text": "And what do you do first?" },
+    { "speaker": "2", "text": "I have breakfast with my family. Then I brush my teeth." },
+    { "speaker": "1", "text": "When do you go to school?" },
+    { "speaker": "2", "text": "I go to school at half past eight. I take the bus." },
+    { "speaker": "1", "text": "And after school?" },
+    { "speaker": "2", "text": "After school, I do my homework and then I have dinner. I go to bed at ten." }
+  ],
+  "questions": [
+    {
+      "q": "When does Tom wake up on weekdays?",
+      "options": ["At six o'clock", "At seven o'clock", "At eight o'clock"],
+      "answer": 1
+    },
+    {
+      "q": "How does Tom go to school?",
+      "options": ["On foot", "By bus", "By car"],
+      "answer": 1
+    },
+    {
+      "q": "What does Tom do first in the morning?",
+      "options": ["Brushes his teeth", "Has breakfast", "Takes the bus"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "Tom wakes up at seven on weekends too.",
+      "answer": false,
+      "explanation": "Tom says he wakes up at seven 'on weekdays'."
+    },
+    {
+      "statement": "Tom does his homework before dinner.",
+      "answer": true,
+      "explanation": "He says 'After school, I do my homework and then I have dinner.'"
+    }
+  ],
+  "teacherTips": [
+    "Drill the time expressions (at seven o'clock, at half past eight) before listening.",
+    "Have students fill in a daily-routine chart while listening — first column for Tom, second column for themselves.",
+    "Use this as a follow-up writing prompt: 'Write five sentences about your daily routine.'"
+  ],
+  "relatedExercises": ["at-school", "introducing-yourself"],
+  "es": {
+    "title": "Rutina diaria",
+    "summary": "Un adolescente describe un día laborable típico, desde que se despierta hasta que se acuesta, usando marcadores temporales en presente simple.",
+    "description": "Un monólogo apto para principiantes con breves intervenciones conversacionales. Los estudiantes oyen palabras de secuenciación (then, after that, in the evening) y expresiones de tiempo (at seven o'clock, at half past eight).",
+    "topicName": "Rutina diaria",
+    "vocabulary": [
+      { "word": "wake up", "definition": "dejar de dormir y abrir los ojos" },
+      { "word": "have breakfast", "definition": "comer la primera comida del día" },
+      { "word": "usually", "definition": "algo que haces casi todos los días" },
+      { "word": "after", "definition": "más tarde que algo; siguiéndolo en el tiempo" },
+      { "word": "go to bed", "definition": "tumbarse para dormir por la noche" }
+    ],
+    "questions": [
+      {
+        "q": "¿A qué hora se despierta Tom los días laborables?",
+        "options": ["A las seis", "A las siete", "A las ocho"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cómo va Tom al colegio?",
+        "options": ["A pie", "En autobús", "En coche"],
+        "answer": 1
+      },
+      {
+        "q": "¿Qué hace Tom primero por la mañana?",
+        "options": ["Se lava los dientes", "Desayuna", "Toma el autobús"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "Tom se despierta a las siete también los fines de semana.",
+        "answer": false,
+        "explanation": "Tom dice que se despierta a las siete 'on weekdays' (los días laborables)."
+      },
+      {
+        "statement": "Tom hace los deberes antes de cenar.",
+        "answer": true,
+        "explanation": "Dice 'After school, I do my homework and then I have dinner'."
+      }
+    ],
+    "teacherTips": [
+      "Practica antes las expresiones de tiempo (at seven o'clock, at half past eight).",
+      "Pide a los estudiantes que completen una tabla de rutina mientras escuchan — primera columna para Tom, segunda para ellos mismos.",
+      "Usa esto como ejercicio de escritura: 'Escribe cinco frases sobre tu rutina diaria'."
+    ]
+  }
+}

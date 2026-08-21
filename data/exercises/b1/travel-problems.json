@@ -1,0 +1,111 @@
+{
+  "slug": "travel-problems",
+  "title": "Travel Problems",
+  "level": "b1",
+  "topic": "travel",
+  "topicName": "Travel & Directions",
+  "category": "listening-exercises",
+  "summary": "A traveller explains a missed connection at the airport and asks for help rebooking the next flight.",
+  "description": "An intermediate conversation at an airline counter. Focuses on polite complaints, conditional language ('if…then…'), and useful travel vocabulary (layover, connection, rebook).",
+  "duration": "3 minutes",
+  "vocabulary": [
+    { "word": "delayed", "definition": "arriving or happening later than planned" },
+    { "word": "connection", "definition": "a flight that you take after another to continue your journey" },
+    { "word": "miss", "definition": "to arrive too late for something, like a flight or a bus" },
+    { "word": "rebook", "definition": "to arrange a new ticket or reservation" },
+    { "word": "layover", "definition": "a short stay between flights, usually in another city" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Good afternoon. How can I help you?" },
+    { "speaker": "2", "text": "Good afternoon. My flight from Madrid was delayed, and I missed my connection." },
+    { "speaker": "1", "text": "I am sorry to hear that. May I see your boarding pass?" },
+    { "speaker": "2", "text": "Here you are. I was supposed to fly to Boston at four, but my layover was only forty minutes." },
+    { "speaker": "1", "text": "I see. The next flight to Boston leaves at eight this evening. Would you like to rebook?" },
+    { "speaker": "2", "text": "If there is a seat available, yes, please. Otherwise, I will need a hotel for the night." },
+    { "speaker": "1", "text": "There is a seat. I will put you on the eight o'clock flight. You will still make your meeting tomorrow morning." },
+    { "speaker": "2", "text": "That is great. Thank you very much for your help." },
+    { "speaker": "1", "text": "You are welcome. Here is your new boarding pass. Safe travels." }
+  ],
+  "questions": [
+    {
+      "q": "Why did the traveller miss the connection?",
+      "options": ["The gate was closed", "The first flight was delayed", "They arrived late at the airport"],
+      "answer": 1
+    },
+    {
+      "q": "What was the length of the original layover?",
+      "options": ["Twenty minutes", "Forty minutes", "One hour"],
+      "answer": 1
+    },
+    {
+      "q": "What does the airline offer?",
+      "options": ["A new flight at eight p.m.", "A hotel for the night", "A full refund"],
+      "answer": 0
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "The traveller is flying to Boston.",
+      "answer": true,
+      "explanation": "The traveller says 'I was supposed to fly to Boston at four.'"
+    },
+    {
+      "statement": "The traveller will have to spend the night in a hotel.",
+      "answer": false,
+      "explanation": "The agent finds a seat on the eight o'clock flight, so the traveller will still make the meeting the next morning."
+    }
+  ],
+  "teacherTips": [
+    "Pre-teach the conditional structure 'If there is… then I will…' — a key phrase for real-life problem-solving.",
+    "After listening, students discuss in pairs: 'Have you ever missed a flight? What did you do?'",
+    "Extension: learners role-play a complaint at a hotel reception or a shop using the same polite structures."
+  ],
+  "relatedExercises": ["at-the-airport", "making-a-complaint"],
+  "es": {
+    "title": "Problemas de viaje",
+    "summary": "Un viajero explica una conexión perdida en el aeropuerto y pide ayuda para reservar el siguiente vuelo.",
+    "description": "Una conversación intermedia en el mostrador de una aerolínea. Se centra en quejas educadas, lenguaje condicional ('if…then…') y vocabulario útil de viaje (layover, connection, rebook).",
+    "topicName": "Viajes y direcciones",
+    "vocabulary": [
+      { "word": "delayed", "definition": "que llega o sucede más tarde de lo planeado" },
+      { "word": "connection", "definition": "un vuelo que tomas después de otro para continuar el viaje" },
+      { "word": "miss", "definition": "llegar demasiado tarde para algo, como un vuelo o un autobús" },
+      { "word": "rebook", "definition": "conseguir un nuevo billete o reserva" },
+      { "word": "layover", "definition": "una estancia corta entre vuelos, normalmente en otra ciudad" }
+    ],
+    "questions": [
+      {
+        "q": "¿Por qué perdió la conexión el viajero?",
+        "options": ["La puerta estaba cerrada", "El primer vuelo se retrasó", "Llegó tarde al aeropuerto"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cuánto duraba la escala original?",
+        "options": ["Veinte minutos", "Cuarenta minutos", "Una hora"],
+        "answer": 1
+      },
+      {
+        "q": "¿Qué ofrece la aerolínea?",
+        "options": ["Un nuevo vuelo a las ocho de la tarde", "Un hotel para la noche", "Un reembolso completo"],
+        "answer": 0
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "El viajero vuela a Boston.",
+        "answer": true,
+        "explanation": "El viajero dice 'I was supposed to fly to Boston at four'."
+      },
+      {
+        "statement": "El viajero tendrá que pasar la noche en un hotel.",
+        "answer": false,
+        "explanation": "El agente encuentra un asiento en el vuelo de las ocho, así que el viajero llegará a tiempo a la reunión de la mañana siguiente."
+      }
+    ],
+    "teacherTips": [
+      "Enseña antes la estructura condicional 'If there is… then I will…', una frase clave para resolver problemas de la vida real.",
+      "Después de escuchar, los estudiantes discuten por parejas: '¿Alguna vez perdiste un vuelo? ¿Qué hiciste?'.",
+      "Ampliación: los estudiantes hacen un role-play de queja en la recepción de un hotel o en una tienda usando las mismas estructuras educadas."
+    ]
+  }
+}

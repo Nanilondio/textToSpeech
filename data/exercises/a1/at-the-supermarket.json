@@ -1,0 +1,110 @@
+{
+  "slug": "at-the-supermarket",
+  "title": "At the Supermarket",
+  "level": "a1",
+  "topic": "shopping",
+  "topicName": "Shopping & Supermarket",
+  "category": "listening-exercises",
+  "summary": "A customer asks for help finding products at the supermarket and learns vocabulary for common food items.",
+  "description": "A short shopping scenario between a customer and a shop assistant. Focuses on countable/uncountable nouns (a bottle of, a kilo of) and polite requests.",
+  "duration": "1–2 minutes",
+  "vocabulary": [
+    { "word": "aisle", "definition": "the long passage between the shelves in a supermarket" },
+    { "word": "a bottle of", "definition": "the container and the liquid inside it, for example water" },
+    { "word": "a kilo of", "definition": "a unit of weight equal to one thousand grams" },
+    { "word": "checkout", "definition": "the place in a store where you pay" },
+    { "word": "how much", "definition": "used to ask about price" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Excuse me. Where can I find the milk?" },
+    { "speaker": "2", "text": "The milk is in aisle three, on the right." },
+    { "speaker": "1", "text": "Thank you. And the apples?" },
+    { "speaker": "2", "text": "The apples are next to the milk. Do you need a bag?" },
+    { "speaker": "1", "text": "Yes, please. I also want a bottle of water." },
+    { "speaker": "2", "text": "The water is in aisle one. Anything else?" },
+    { "speaker": "1", "text": "Yes. A kilo of rice, please." },
+    { "speaker": "2", "text": "Rice is in aisle five. The checkout is at the end of the aisle." }
+  ],
+  "questions": [
+    {
+      "q": "Where is the milk?",
+      "options": ["Aisle one", "Aisle three", "Aisle five"],
+      "answer": 1
+    },
+    {
+      "q": "What does the customer buy a kilo of?",
+      "options": ["Apples", "Rice", "Water"],
+      "answer": 1
+    },
+    {
+      "q": "Where is the checkout?",
+      "options": ["Next to the milk", "At the end of the aisle", "In aisle one"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "The water is in aisle three.",
+      "answer": false,
+      "explanation": "The shop assistant says the water is in aisle one."
+    },
+    {
+      "statement": "The customer asks for a bag.",
+      "answer": true,
+      "explanation": "The customer says 'Do you need a bag? — Yes, please.'"
+    }
+  ],
+  "teacherTips": [
+    "Bring (or print) small pictures of common food items before the listening activity.",
+    "Practise 'Excuse me' and 'Thank you' as fixed classroom phrases for student–student role plays.",
+    "After listening, learners design a simple shopping list and role-play the dialogue in pairs."
+  ],
+  "relatedExercises": ["at-the-restaurant", "asking-for-directions"],
+  "es": {
+    "title": "En el supermercado",
+    "summary": "Un cliente pide ayuda para encontrar productos en el supermercado y aprende vocabulario de alimentos comunes.",
+    "description": "Una situación corta de compras entre un cliente y un dependiente. Se centra en sustantivos contables/incontables (a bottle of, a kilo of) y peticiones corteses.",
+    "topicName": "Compras y supermercado",
+    "vocabulary": [
+      { "word": "aisle", "definition": "el pasillo largo entre las estanterías de un supermercado" },
+      { "word": "a bottle of", "definition": "el envase y el líquido que contiene, por ejemplo agua" },
+      { "word": "a kilo of", "definition": "una unidad de peso equivalente a mil gramos" },
+      { "word": "checkout", "definition": "el lugar de la tienda donde se paga" },
+      { "word": "how much", "definition": "se usa para preguntar por el precio" }
+    ],
+    "questions": [
+      {
+        "q": "¿Dónde está la leche?",
+        "options": ["Pasillo uno", "Pasillo tres", "Pasillo cinco"],
+        "answer": 1
+      },
+      {
+        "q": "¿De qué compra el cliente un kilo?",
+        "options": ["Manzanas", "Arroz", "Agua"],
+        "answer": 1
+      },
+      {
+        "q": "¿Dónde está la caja?",
+        "options": ["Al lado de la leche", "Al final del pasillo", "En el pasillo uno"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "El agua está en el pasillo tres.",
+        "answer": false,
+        "explanation": "El dependiente dice que el agua está en el pasillo uno."
+      },
+      {
+        "statement": "El cliente pide una bolsa.",
+        "answer": true,
+        "explanation": "El cliente dice 'Do you need a bag? — Yes, please'."
+      }
+    ],
+    "teacherTips": [
+      "Lleva (o imprime) imágenes pequeñas de alimentos comunes antes de la actividad de escucha.",
+      "Practica 'Excuse me' y 'Thank you' como frases fijas de aula para role-plays entre estudiantes.",
+      "Después de escuchar, los estudiantes diseñan una lista de la compra sencilla y hacen el role-play por parejas."
+    ]
+  }
+}

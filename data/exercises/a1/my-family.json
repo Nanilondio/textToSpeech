@@ -1,0 +1,109 @@
+{
+  "slug": "my-family",
+  "title": "My Family",
+  "level": "a1",
+  "topic": "family",
+  "topicName": "Family & People",
+  "category": "listening-exercises",
+  "summary": "Two classmates talk about their families: how many brothers and sisters they have, and what their parents do.",
+  "description": "A short beginner dialogue where two students describe their families. The vocabulary focuses on family members and basic present-simple verbs (have, work, live).",
+  "duration": "1–2 minutes",
+  "vocabulary": [
+    { "word": "brother", "definition": "a boy who has the same parents as you" },
+    { "word": "sister", "definition": "a girl who has the same parents as you" },
+    { "word": "parents", "definition": "your mother and father together" },
+    { "word": "live", "definition": "the place where your home is" },
+    { "word": "with", "definition": "together with someone" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Do you have a big family, Maria?" },
+    { "speaker": "2", "text": "Yes, I do. I have two brothers and one sister." },
+    { "speaker": "1", "text": "Wow! Do your brothers go to school?" },
+    { "speaker": "2", "text": "Yes. My brother Tom is ten, and my brother Sam is seven. My sister is five." },
+    { "speaker": "1", "text": "That's nice. I have one brother. His name is Peter." },
+    { "speaker": "2", "text": "How old is Peter?" },
+    { "speaker": "1", "text": "He is twelve. We live with our parents in a small town." }
+  ],
+  "questions": [
+    {
+      "q": "How many brothers does Maria have?",
+      "options": ["One", "Two", "Three"],
+      "answer": 1
+    },
+    {
+      "q": "How old is Maria's sister?",
+      "options": ["Five", "Seven", "Ten"],
+      "answer": 0
+    },
+    {
+      "q": "Who is Peter?",
+      "options": ["Maria's brother", "The speaker's brother", "Maria's father"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "Maria has one brother and one sister.",
+      "answer": false,
+      "explanation": "Maria has two brothers and one sister."
+    },
+    {
+      "statement": "The speaker lives with his parents.",
+      "answer": true,
+      "explanation": "At the end of the dialogue the speaker says 'We live with our parents.'"
+    }
+  ],
+  "teacherTips": [
+    "Pre-teach the question 'How old is…?' — students often confuse 'How old are you?' with 'How many years do you have?'",
+    "After listening, ask learners to draw a simple family tree and describe it to a partner.",
+    "Use this dialogue as a model for the present simple affirmative and 'have got' structures."
+  ],
+  "relatedExercises": ["introducing-yourself", "daily-routine"],
+  "es": {
+    "title": "Mi familia",
+    "summary": "Dos compañeros hablan de sus familias: cuántos hermanos tienen y a qué se dedican sus padres.",
+    "description": "Un diálogo breve para principiantes en el que dos estudiantes describen a sus familias. El vocabulario se centra en miembros de la familia y verbos básicos en presente simple (have, work, live).",
+    "topicName": "Familia y personas",
+    "vocabulary": [
+      { "word": "brother", "definition": "un chico que tiene los mismos padres que tú" },
+      { "word": "sister", "definition": "una chica que tiene los mismos padres que tú" },
+      { "word": "parents", "definition": "tu madre y tu padre juntos" },
+      { "word": "live", "definition": "el lugar donde está tu casa" },
+      { "word": "with", "definition": "junto con alguien" }
+    ],
+    "questions": [
+      {
+        "q": "¿Cuántos hermanos tiene Maria?",
+        "options": ["Uno", "Dos", "Tres"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cuántos años tiene la hermana de Maria?",
+        "options": ["Cinco", "Siete", "Diez"],
+        "answer": 0
+      },
+      {
+        "q": "¿Quién es Peter?",
+        "options": ["El hermano de Maria", "El hermano del interlocutor", "El padre de Maria"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "Maria tiene un hermano y una hermana.",
+        "answer": false,
+        "explanation": "Maria tiene dos hermanos y una hermana."
+      },
+      {
+        "statement": "El interlocutor vive con sus padres.",
+        "answer": true,
+        "explanation": "Al final del diálogo el interlocutor dice 'We live with our parents'."
+      }
+    ],
+    "teacherTips": [
+      "Enseña primero la pregunta 'How old is…?' — los estudiantes suelen confundir 'How old are you?' con 'How many years do you have?'.",
+      "Después de escuchar, pide a los estudiantes que dibujen un árbol familiar sencillo y lo describan a un compañero.",
+      "Usa este diálogo como modelo del presente simple afirmativo y de las estructuras con 'have got'."
+    ]
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "slug": "at-the-airport",
+  "title": "At the Airport",
+  "level": "a2",
+  "topic": "airport",
+  "topicName": "Airport & Flights",
+  "category": "listening-exercises",
+  "summary": "A passenger checks in at the airport, asks about luggage, and finds the correct gate.",
+  "description": "An elementary travel scenario covering check-in vocabulary: boarding pass, hand luggage, gate, departure time, and a short security question.",
+  "duration": "2 minutes",
+  "vocabulary": [
+    { "word": "check-in desk", "definition": "the counter at an airport where you register for your flight" },
+    { "word": "boarding pass", "definition": "the card that lets you get on the plane" },
+    { "word": "hand luggage", "definition": "the small bag you carry with you on the plane" },
+    { "word": "departure", "definition": "the act of leaving, especially on a flight" },
+    { "word": "gate", "definition": "the door at an airport where you get on the plane" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Good morning. May I see your passport, please?" },
+    { "speaker": "2", "text": "Here you are. I am flying to Berlin." },
+    { "speaker": "1", "text": "Thank you. Do you have any luggage to check in?" },
+    { "speaker": "2", "text": "Yes, one suitcase. And I have this small bag as hand luggage." },
+    { "speaker": "1", "text": "Perfect. Please put the suitcase on the scale." },
+    { "speaker": "2", "text": "Sure. What is the departure time?" },
+    { "speaker": "1", "text": "Your flight leaves at eleven thirty from gate B twelve." },
+    { "speaker": "2", "text": "And what time do I need to be at the gate?" },
+    { "speaker": "1", "text": "Please be at the gate at least thirty minutes before departure." }
+  ],
+  "questions": [
+    {
+      "q": "Where is the passenger flying to?",
+      "options": ["London", "Berlin", "Paris"],
+      "answer": 1
+    },
+    {
+      "q": "How many suitcases does the passenger check in?",
+      "options": ["None", "One", "Two"],
+      "answer": 1
+    },
+    {
+      "q": "What is the gate number?",
+      "options": ["B ten", "B twelve", "B twenty"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "The passenger only has hand luggage.",
+      "answer": false,
+      "explanation": "The passenger checks in one suitcase and also has a hand-luggage bag."
+    },
+    {
+      "statement": "The flight leaves at eleven thirty.",
+      "answer": true,
+      "explanation": "The agent says 'Your flight leaves at eleven thirty from gate B twelve.'"
+    }
+  ],
+  "teacherTips": [
+    "Before listening, show a real boarding pass or print a sample so students recognise key fields (gate, seat, boarding time).",
+    "Practise 'May I see your passport, please?' and similar polite airport phrases as a fixed exchange.",
+    "Extension: students design their own airport role-play with check-in, security, and the gate."
+  ],
+  "relatedExercises": ["asking-for-directions", "planning-a-trip"],
+  "es": {
+    "title": "En el aeropuerto",
+    "summary": "Un pasajero hace el check-in en el aeropuerto, pregunta por el equipaje y encuentra la puerta de embarque correcta.",
+    "description": "Un escenario de viaje elemental con vocabulario de facturación: boarding pass, hand luggage, gate, departure time, y una breve pregunta de seguridad.",
+    "topicName": "Aeropuerto y vuelos",
+    "vocabulary": [
+      { "word": "check-in desk", "definition": "el mostrador del aeropuerto donde te registras para tu vuelo" },
+      { "word": "boarding pass", "definition": "la tarjeta que te permite subir al avión" },
+      { "word": "hand luggage", "definition": "la bolsa pequeña que llevas contigo en el avión" },
+      { "word": "departure", "definition": "el acto de irse, especialmente en un vuelo" },
+      { "word": "gate", "definition": "la puerta del aeropuerto donde subes al avión" }
+    ],
+    "questions": [
+      {
+        "q": "¿Adónde vuela el pasajero?",
+        "options": ["Londres", "Berlín", "París"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cuántas maletas factura el pasajero?",
+        "options": ["Ninguna", "Una", "Dos"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cuál es el número de puerta?",
+        "options": ["B diez", "B doce", "B veinte"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "El pasajero solo lleva equipaje de mano.",
+        "answer": false,
+        "explanation": "El pasajero factura una maleta y también lleva una bolsa de mano."
+      },
+      {
+        "statement": "El vuelo sale a las once y media.",
+        "answer": true,
+        "explanation": "El agente dice 'Your flight leaves at eleven thirty from gate B twelve'."
+      }
+    ],
+    "teacherTips": [
+      "Antes de escuchar, muestra una tarjeta de embarque real o imprime una de ejemplo para que los estudiantes reconozcan los campos clave (gate, seat, boarding time).",
+      "Practica 'May I see your passport, please?' y frases similares del aeropuerto como intercambio fijo.",
+      "Ampliación: los estudiantes diseñan su propio role-play de aeropuerto con facturación, seguridad y puerta de embarque."
+    ]
+  }
+}

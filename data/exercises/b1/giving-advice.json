@@ -1,0 +1,111 @@
+{
+  "slug": "giving-advice",
+  "title": "Giving Advice",
+  "level": "b1",
+  "topic": "advice",
+  "topicName": "Advice & Opinions",
+  "category": "listening-exercises",
+  "summary": "A friend asks for advice about moving to a new city for a job and gets practical suggestions.",
+  "description": "An intermediate conversation focused on advice structures ('You should…', 'Why don't you…', 'Have you thought about…?'). The dialogue models a friendly, supportive tone.",
+  "duration": "3 minutes",
+  "vocabulary": [
+    { "word": "advice", "definition": "an opinion you give someone about what they should do" },
+    { "word": "suggest", "definition": "to mention an idea or plan that someone might consider" },
+    { "word": "consider", "definition": "to think carefully about something before deciding" },
+    { "word": "afford", "definition": "to have enough money to pay for something" },
+    { "word": "rent", "definition": "money you pay to use a room, flat or house that belongs to someone else" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "I need some advice, Mark. I am thinking about moving to Edinburgh for a new job." },
+    { "speaker": "2", "text": "That sounds exciting. Have you considered the cost of living there?" },
+    { "speaker": "1", "text": "Not really. Rents are higher than in my city, but I think I can afford it." },
+    { "speaker": "2", "text": "Good. You should also look for a flat near public transport. Traffic can be heavy." },
+    { "speaker": "1", "text": "That is a good idea. What about meeting new people?" },
+    { "speaker": "2", "text": "Why don't you join a club or a class? It is the easiest way to make friends." },
+    { "speaker": "1", "text": "I never thought about that. Any other suggestions?" },
+    { "speaker": "2", "text": "Yes. Save money for the first three months. Moving is always more expensive than you expect." },
+    { "speaker": "1", "text": "Thanks, Mark. I feel much better about the decision now." }
+  ],
+  "questions": [
+    {
+      "q": "Why is the speaker thinking about moving?",
+      "options": ["For a new job", "To study English", "To be with family"],
+      "answer": 0
+    },
+    {
+      "q": "What does Mark suggest about transport?",
+      "options": ["Buy a car", "Live near public transport", "Walk everywhere"],
+      "answer": 1
+    },
+    {
+      "q": "What is one suggestion for meeting people?",
+      "options": ["Stay home", "Join a club", "Travel every weekend"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "Mark says Edinburgh is more expensive than the speaker's city.",
+      "answer": true,
+      "explanation": "Mark says 'Rents are higher than in my city,' which the speaker accepts."
+    },
+    {
+      "statement": "Mark recommends spending all the savings before moving.",
+      "answer": false,
+      "explanation": "Mark says the opposite: 'Save money for the first three months.'"
+    }
+  ],
+  "teacherTips": [
+    "Drill the three advice structures from the dialogue: 'You should…', 'Why don't you…?', 'Have you considered…?'",
+    "After listening, learners ask each other for advice on a real-life decision using the same structures.",
+    "Optional writing follow-up: a short paragraph giving advice to a friend who is moving abroad."
+  ],
+  "relatedExercises": ["job-interview", "planning-a-trip"],
+  "es": {
+    "title": "Dar consejo",
+    "summary": "Un amigo pide consejo sobre mudarse a una nueva ciudad por trabajo y recibe sugerencias prácticas.",
+    "description": "Una conversación intermedia centrada en estructuras de consejo ('You should…', 'Why don't you…', 'Have you thought about…?'). El diálogo modela un tono amable y de apoyo.",
+    "topicName": "Consejos y opiniones",
+    "vocabulary": [
+      { "word": "advice", "definition": "una opinión que le das a alguien sobre lo que debería hacer" },
+      { "word": "suggest", "definition": "mencionar una idea o plan que alguien podría considerar" },
+      { "word": "consider", "definition": "pensar cuidadosamente sobre algo antes de decidir" },
+      { "word": "afford", "definition": "tener suficiente dinero para pagar algo" },
+      { "word": "rent", "definition": "dinero que pagas por usar una habitación, piso o casa que pertenece a otra persona" }
+    ],
+    "questions": [
+      {
+        "q": "¿Por qué está pensando en mudarse el interlocutor?",
+        "options": ["Por un trabajo nuevo", "Para estudiar inglés", "Para estar con la familia"],
+        "answer": 0
+      },
+      {
+        "q": "¿Qué sugiere Mark sobre el transporte?",
+        "options": ["Comprar un coche", "Vivir cerca de transporte público", "Ir andando a todas partes"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cuál es una sugerencia para conocer gente?",
+        "options": ["Quedarse en casa", "Apuntarse a un club", "Viajar cada fin de semana"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "Mark dice que Edimburgo es más caro que la ciudad del interlocutor.",
+        "answer": true,
+        "explanation": "Mark dice 'Rents are higher than in my city', y el interlocutor lo acepta."
+      },
+      {
+        "statement": "Mark recomienda gastarse todos los ahorros antes de mudarse.",
+        "answer": false,
+        "explanation": "Mark dice lo contrario: 'Save money for the first three months'."
+      }
+    ],
+    "teacherTips": [
+      "Practica las tres estructuras de consejo del diálogo: 'You should…', 'Why don't you…?', 'Have you considered…?'.",
+      "Después de escuchar, los estudiantes se piden consejo mutuamente sobre una decisión de la vida real usando las mismas estructuras.",
+      "Ampliación opcional de escritura: un párrafo corto dando consejo a un amigo que se muda al extranjero."
+    ]
+  }
+}

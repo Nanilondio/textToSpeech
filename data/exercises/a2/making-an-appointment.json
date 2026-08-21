@@ -1,0 +1,111 @@
+{
+  "slug": "making-an-appointment",
+  "title": "Making an Appointment",
+  "level": "a2",
+  "topic": "appointments",
+  "topicName": "Appointments & Services",
+  "category": "listening-exercises",
+  "summary": "A patient calls a dental clinic to book an appointment and reschedules when the first slot is not possible.",
+  "description": "An elementary phone-conversation dialogue. Learners hear days of the week, times of day, and useful phrases for confirming, refusing, and rescheduling appointments.",
+  "duration": "2 minutes",
+  "vocabulary": [
+    { "word": "appointment", "definition": "an arranged time to meet someone, usually for a service" },
+    { "word": "available", "definition": "free to do something at a particular time" },
+    { "word": "schedule", "definition": "a plan of times when things will happen" },
+    { "word": "reschedule", "definition": "to arrange a new time for something" },
+    { "word": "confirm", "definition": "to say that something is definitely true or arranged" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Good morning, City Dental Clinic. How can I help you?" },
+    { "speaker": "2", "text": "Hello, I would like to make an appointment with Doctor Lee." },
+    { "speaker": "1", "text": "Sure. Are you available this Thursday afternoon?" },
+    { "speaker": "2", "text": "I am afraid not. I work on Thursday afternoons." },
+    { "speaker": "1", "text": "No problem. What about Friday morning at ten?" },
+    { "speaker": "2", "text": "Friday at ten is perfect. Is the clinic easy to find?" },
+    { "speaker": "1", "text": "Yes, we are on Park Avenue, next to the post office." },
+    { "speaker": "2", "text": "Great. Can I confirm the appointment for Friday at ten?" },
+    { "speaker": "1", "text": "Yes, confirmed. We will see you on Friday." }
+  ],
+  "questions": [
+    {
+      "q": "Who does the caller want to see?",
+      "options": ["Doctor Lee", "Doctor Park", "The receptionist"],
+      "answer": 0
+    },
+    {
+      "q": "Why can't the caller come on Thursday?",
+      "options": ["They are travelling", "They work on Thursdays", "They are sick"],
+      "answer": 1
+    },
+    {
+      "q": "Where is the clinic?",
+      "options": ["On King Street", "On Park Avenue", "On Main Road"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "The appointment is for Friday morning.",
+      "answer": true,
+      "explanation": "The caller and the receptionist agree on Friday at ten."
+    },
+    {
+      "statement": "The clinic is next to the bank.",
+      "answer": false,
+      "explanation": "The receptionist says the clinic is 'next to the post office.'"
+    }
+  ],
+  "teacherTips": [
+    "Drill 'I am afraid not' and 'That works for me' as fixed phrases for politely accepting or refusing offers.",
+    "Practise the phone opening: 'Good morning, [company]. How can I help you?'",
+    "Follow-up writing activity: students write a short email confirming an appointment."
+  ],
+  "relatedExercises": ["at-the-restaurant", "at-the-airport"],
+  "es": {
+    "title": "Pedir una cita",
+    "summary": "Un paciente llama a una clínica dental para concertar una cita y la reprograma cuando el primer horario no es posible.",
+    "description": "Un diálogo elemental por teléfono. Los estudiantes oyen días de la semana, partes del día y frases útiles para confirmar, rechazar y reprogramar citas.",
+    "topicName": "Citas y servicios",
+    "vocabulary": [
+      { "word": "appointment", "definition": "un horario acordado para encontrarse con alguien, normalmente para un servicio" },
+      { "word": "available", "definition": "libre para hacer algo en un momento concreto" },
+      { "word": "schedule", "definition": "un plan de horarios en los que sucederán cosas" },
+      { "word": "reschedule", "definition": "establecer un nuevo horario para algo" },
+      { "word": "confirm", "definition": "decir que algo es definitivamente cierto o está acordado" }
+    ],
+    "questions": [
+      {
+        "q": "¿A quién quiere ver el llamante?",
+        "options": ["Doctor Lee", "Doctor Park", "Al recepcionista"],
+        "answer": 0
+      },
+      {
+        "q": "¿Por qué no puede venir el jueves?",
+        "options": ["Está de viaje", "Trabaja los jueves", "Está enfermo"],
+        "answer": 1
+      },
+      {
+        "q": "¿Dónde está la clínica?",
+        "options": ["En King Street", "En Park Avenue", "En Main Road"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "La cita es el viernes por la mañana.",
+        "answer": true,
+        "explanation": "El llamante y la recepcionista acuerdan el viernes a las diez."
+      },
+      {
+        "statement": "La clínica está al lado del banco.",
+        "answer": false,
+        "explanation": "La recepcionista dice que la clínica está 'next to the post office'."
+      }
+    ],
+    "teacherTips": [
+      "Practica 'I am afraid not' y 'That works for me' como frases fijas para aceptar o rechazar ofertas con educación.",
+      "Practica la apertura por teléfono: 'Good morning, [company]. How can I help you?'.",
+      "Actividad de escritura de seguimiento: los estudiantes escriben un correo corto confirmando una cita."
+    ]
+  }
+}

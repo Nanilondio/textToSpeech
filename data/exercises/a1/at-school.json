@@ -1,0 +1,110 @@
+{
+  "slug": "at-school",
+  "title": "At School",
+  "level": "a1",
+  "topic": "school",
+  "topicName": "School & Classes",
+  "category": "listening-exercises",
+  "summary": "Two students talk about their favourite school subjects, teachers, and break-time activities.",
+  "description": "A short classroom-themed dialogue that recycles school vocabulary: subjects, teachers, classrooms, break, lunch. Useful as the first lesson of a new school year.",
+  "duration": "1–2 minutes",
+  "vocabulary": [
+    { "word": "subject", "definition": "a topic you study at school, like math or history" },
+    { "word": "favourite", "definition": "the one you like most" },
+    { "word": "teacher", "definition": "the adult who teaches you at school" },
+    { "word": "break", "definition": "a short time between lessons when you can relax" },
+    { "word": "classroom", "definition": "the room where you have lessons" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "What is your favourite subject, Lily?" },
+    { "speaker": "2", "text": "I like art. My art teacher is very nice. What about you?" },
+    { "speaker": "1", "text": "I really like science. The teacher is funny." },
+    { "speaker": "2", "text": "Where is your classroom?" },
+    { "speaker": "1", "text": "It is on the second floor. And yours?" },
+    { "speaker": "2", "text": "Mine is on the first floor, next to the library." },
+    { "speaker": "1", "text": "Do you have a long break?" },
+    { "speaker": "2", "text": "Yes, we have a fifteen-minute break at ten o'clock." }
+  ],
+  "questions": [
+    {
+      "q": "What is Lily's favourite subject?",
+      "options": ["Science", "Art", "Math"],
+      "answer": 1
+    },
+    {
+      "q": "Where is the speaker's classroom?",
+      "options": ["On the first floor", "On the second floor", "Next to the library"],
+      "answer": 1
+    },
+    {
+      "q": "How long is the break?",
+      "options": ["Ten minutes", "Fifteen minutes", "Twenty minutes"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "Lily likes science.",
+      "answer": false,
+      "explanation": "Lily says she likes art. The speaker likes science."
+    },
+    {
+      "statement": "The break is at ten o'clock.",
+      "answer": true,
+      "explanation": "Lily says 'we have a fifteen-minute break at ten o'clock.'"
+    }
+  ],
+  "teacherTips": [
+    "Pre-teach the names of school subjects with flashcards before listening.",
+    "After listening, students rank the subjects mentioned from 'most useful' to 'most fun' in pairs.",
+    "Extension: learners ask and answer 'What is your favourite subject?' around the class."
+  ],
+  "relatedExercises": ["daily-routine", "my-family"],
+  "es": {
+    "title": "En la escuela",
+    "summary": "Dos estudiantes hablan de sus asignaturas favoritas, sus profesores y las actividades del recreo.",
+    "description": "Un diálogo corto sobre el colegio que recicla vocabulario escolar: asignaturas, profesores, aulas, recreo, almuerzo. Útil como primera clase de un nuevo curso.",
+    "topicName": "Escuela y clases",
+    "vocabulary": [
+      { "word": "subject", "definition": "un tema que estudias en la escuela, como matemáticas o historia" },
+      { "word": "favourite", "definition": "el que más te gusta" },
+      { "word": "teacher", "definition": "el adulto que te enseña en la escuela" },
+      { "word": "break", "definition": "un tiempo corto entre clases para descansar" },
+      { "word": "classroom", "definition": "la sala donde tienes las clases" }
+    ],
+    "questions": [
+      {
+        "q": "¿Cuál es la asignatura favorita de Lily?",
+        "options": ["Ciencias", "Arte", "Matemáticas"],
+        "answer": 1
+      },
+      {
+        "q": "¿Dónde está el aula del interlocutor?",
+        "options": ["En la primera planta", "En la segunda planta", "Al lado de la biblioteca"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cuánto dura el recreo?",
+        "options": ["Diez minutos", "Quince minutos", "Veinte minutos"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "A Lily le gustan las ciencias.",
+        "answer": false,
+        "explanation": "Lily dice que le gusta el arte. Al interlocutor le gustan las ciencias."
+      },
+      {
+        "statement": "El recreo es a las diez.",
+        "answer": true,
+        "explanation": "Lily dice 'we have a fifteen-minute break at ten o'clock'."
+      }
+    ],
+    "teacherTips": [
+      "Enseña antes los nombres de las asignaturas con tarjetas.",
+      "Después de escuchar, los estudiantes ordenan las asignaturas mencionadas de 'más útil' a 'más divertida' por parejas.",
+      "Ampliación: los estudiantes preguntan y responden 'What is your favourite subject?' por la clase."
+    ]
+  }
+}

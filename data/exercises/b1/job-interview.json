@@ -1,0 +1,113 @@
+{
+  "slug": "job-interview",
+  "title": "Job Interview",
+  "level": "b1",
+  "topic": "work",
+  "topicName": "Work & Career",
+  "category": "listening-exercises",
+  "summary": "An interviewer asks a candidate about experience, strengths, and why they want the job.",
+  "description": "A short intermediate-level interview simulation. Useful vocabulary includes 'strengths and weaknesses', 'relevant experience', and 'teamwork'. The interview ends with a polite close.",
+  "duration": "3 minutes",
+  "vocabulary": [
+    { "word": "candidate", "definition": "a person who is being considered for a job" },
+    { "word": "experience", "definition": "knowledge or skill you get from doing a job" },
+    { "word": "strengths", "definition": "the things you are good at" },
+    { "word": "teamwork", "definition": "the ability to work well with other people" },
+    { "word": "available", "definition": "able to start doing something, for example a new job" }
+  ],
+  "dialogue": [
+    { "speaker": "1", "text": "Good morning. Please, have a seat. So, tell me a little about yourself." },
+    { "speaker": "2", "text": "Good morning. My name is Daniel. I have five years of experience in marketing." },
+    { "speaker": "1", "text": "Great. What would you say are your main strengths?" },
+    { "speaker": "2", "text": "I am organised, I work well under pressure, and I enjoy teamwork." },
+    { "speaker": "1", "text": "And your weaknesses?" },
+    { "speaker": "2", "text": "Sometimes I am too detail-oriented, but I am learning to prioritise better." },
+    { "speaker": "1", "text": "Why do you want to work for our company?" },
+    { "speaker": "2", "text": "I admire your focus on sustainability, and I would love to grow in this field." },
+    { "speaker": "1", "text": "When would you be available to start?" },
+    { "speaker": "2", "text": "I can start in two weeks, after giving notice at my current job." },
+    { "speaker": "1", "text": "Thank you, Daniel. We will contact you by the end of the week." }
+  ],
+  "questions": [
+    {
+      "q": "How many years of experience does Daniel have?",
+      "options": ["Three", "Five", "Seven"],
+      "answer": 1
+    },
+    {
+      "q": "What is one of Daniel's strengths?",
+      "options": ["Working under pressure", "Being disorganised", "Working alone"],
+      "answer": 0
+    },
+    {
+      "q": "When can Daniel start?",
+      "options": ["Next week", "In two weeks", "Next month"],
+      "answer": 1
+    }
+  ],
+  "trueFalse": [
+    {
+      "statement": "Daniel has ten years of marketing experience.",
+      "answer": false,
+      "explanation": "Daniel says he has five years of experience in marketing."
+    },
+    {
+      "statement": "Daniel admires the company's focus on sustainability.",
+      "answer": true,
+      "explanation": "Daniel explicitly says 'I admire your focus on sustainability.'"
+    }
+  ],
+  "teacherTips": [
+    "Pre-teach formulaic interview phrases: 'I would say', 'I am good at…', 'My weakness is…'",
+    "After listening, students write five bullet points about themselves following the same structure.",
+    "Run a mock interview in pairs using the same questions, then swap roles."
+  ],
+  "relatedExercises": ["travel-problems", "giving-advice"],
+  "es": {
+    "title": "Entrevista de trabajo",
+    "summary": "Un entrevistador pregunta a un candidato sobre su experiencia, sus puntos fuertes y por qué quiere el puesto.",
+    "description": "Una breve simulación de entrevista de nivel intermedio. El vocabulario útil incluye 'strengths and weaknesses', 'relevant experience' y 'teamwork'. La entrevista termina con un cierre educado.",
+    "topicName": "Trabajo y carrera",
+    "vocabulary": [
+      { "word": "candidate", "definition": "una persona que está siendo considerada para un trabajo" },
+      { "word": "experience", "definition": "conocimiento o habilidad que obtienes al hacer un trabajo" },
+      { "word": "strengths", "definition": "las cosas en las que eres bueno" },
+      { "word": "teamwork", "definition": "la capacidad de trabajar bien con otras personas" },
+      { "word": "available", "definition": "capaz de empezar a hacer algo, por ejemplo un trabajo nuevo" }
+    ],
+    "questions": [
+      {
+        "q": "¿Cuántos años de experiencia tiene Daniel?",
+        "options": ["Tres", "Cinco", "Siete"],
+        "answer": 1
+      },
+      {
+        "q": "¿Cuál es uno de los puntos fuertes de Daniel?",
+        "options": ["Trabajar bajo presión", "Ser desorganizado", "Trabajar solo"],
+        "answer": 0
+      },
+      {
+        "q": "¿Cuándo puede empezar Daniel?",
+        "options": ["La próxima semana", "En dos semanas", "El mes que viene"],
+        "answer": 1
+      }
+    ],
+    "trueFalse": [
+      {
+        "statement": "Daniel tiene diez años de experiencia en marketing.",
+        "answer": false,
+        "explanation": "Daniel dice que tiene cinco años de experiencia en marketing."
+      },
+      {
+        "statement": "Daniel admira el enfoque de sostenibilidad de la empresa.",
+        "answer": true,
+        "explanation": "Daniel dice explícitamente 'I admire your focus on sustainability'."
+      }
+    ],
+    "teacherTips": [
+      "Enseña antes fórmulas de entrevista: 'I would say', 'I am good at…', 'My weakness is…'.",
+      "Después de escuchar, los estudiantes escriben cinco puntos sobre sí mismos siguiendo la misma estructura.",
+      "Haz una entrevista simulada por parejas usando las mismas preguntas y luego intercambiad los papeles."
+    ]
+  }
+}
