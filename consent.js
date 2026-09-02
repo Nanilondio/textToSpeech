@@ -1,11 +1,13 @@
 (() => {
   const STORAGE_KEY = 'lc_cookie_consent';
   const ADSENSE_CLIENT = 'ca-pub-7086938365759492';
+  const GA4_ID = 'G-E1D8VDYM6D';
+  const GTM_ID = 'GTM-KTXQJMMH';
   const I18N = {
     en: {
       ariaLabel: 'Cookie consent',
       title: 'Cookies for ads and measurement',
-      copy: 'We use cookies for AdSense and basic analytics so we can keep the site free. You can accept or continue without non-essential cookies. See our Privacy Policy for details.',
+      copy: 'This site only loads Google Tag Manager, Google Analytics and Google AdSense after you accept non-essential cookies. You can keep using the tool without accepting. See our Privacy Policy for details.',
       reject: 'Reject non-essential',
       accept: 'Accept cookies',
       privacy: 'Privacy Policy',
@@ -13,7 +15,7 @@
     es: {
       ariaLabel: 'Consentimiento de cookies',
       title: 'Cookies para anuncios y medición',
-      copy: 'Usamos cookies para AdSense y analítica básica para mantener el sitio gratuito. Puedes aceptar o continuar sin cookies no esenciales. Consulta nuestra Política de Privacidad para más detalles.',
+      copy: 'Este sitio solo carga Google Tag Manager, Google Analytics y Google AdSense después de que aceptes las cookies no esenciales. Puedes seguir usando la herramienta sin aceptarlas. Consulta nuestra Política de Privacidad para más detalles.',
       reject: 'Rechazar no esenciales',
       accept: 'Aceptar cookies',
       privacy: 'Política de Privacidad',
@@ -157,6 +159,23 @@
   const loadMarketingScripts = async () => {
     if (window.__lcMarketingLoaded) return;
     window.__lcMarketingLoaded = true;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+
+    await loadScript(
+      `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(GTM_ID)}`,
+      { 'data-lc-consent': 'accepted' }
+    );
+
+    await loadScript(
+      `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA4_ID)}`
+    );
+    window.gtag = window.gtag || function () {
+      window.dataLayer.push(arguments);
+    };
+    window.gtag('js', new Date());
+    window.gtag('config', GA4_ID);
 
     await loadScript(
       `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${encodeURIComponent(ADSENSE_CLIENT)}`,

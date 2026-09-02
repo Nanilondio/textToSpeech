@@ -239,29 +239,14 @@ const TOGGLE_JS = `
 </script>
 `;
 
-function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical, jsonLd = [], extraHead = '' }) {
+function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical, jsonLd = [], extraHead = '', robots = 'index, follow' }) {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-KTXQJMMH');</script>
-  <!-- End Google Tag Manager -->
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-E1D8VDYM6D"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-E1D8VDYM6D');
-  </script>
 <meta charset="UTF-8">
 <meta name="google-adsense-account" content="ca-pub-7086938365759492">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="${htmlEscape(robots)}">
 <title>${htmlEscape(titleEn)}</title>
 <meta name="description" content="${htmlEscape(descriptionEn)}">
 <link rel="canonical" href="${htmlEscape(canonical)}">
@@ -283,11 +268,7 @@ function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical,
 ${jsonLd.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join('\n')}
 ${extraHead}
 </head>
-<body>
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KTXQJMMH"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->`;
+<body>`;
 }
 
 function renderHeader(current = '') {
@@ -645,6 +626,7 @@ function renderLevelBlock(levelMeta, exercises, lang) {
 
 function renderLevel(levelMeta, exercises) {
   const url = `${SITE}/levels/${levelMeta.id}/`;
+  const hasExercises = exercises.some(e => e.level === levelMeta.id);
   const titleEn = `${levelMeta.code} English Listening Exercises — Free Dialogues`;
   const titleEs = `Ejercicios de escucha ${levelMeta.code} — Diálogos gratis`;
   const descriptionEn = `Free ${levelMeta.code} English listening exercises. ${levelMeta.description} Open any dialogue in the audio generator and download as MP3.`;
@@ -658,6 +640,7 @@ function renderLevel(levelMeta, exercises) {
       { name: 'Listening Exercises', url: SITE + '/resources/listening-exercises/' },
       { name: levelMeta.code, url },
     ])],
+    robots: hasExercises ? 'index, follow' : 'noindex, follow',
   }) + pageWrap({
     current: 'levels',
     bodyEn: renderLevelBlock(levelMeta, exercises, 'en'),
@@ -804,8 +787,8 @@ function renderGuideIndexBlock(guides, lang) {
   const homeCrumb = lang === 'es' ? 'Inicio' : 'Home';
   const titleH1 = lang === 'es' ? 'Guías didácticas de escucha para ESL' : 'ESL Listening Teaching Guides';
   const lead = lang === 'es'
-    ? 'Guías prácticas, probadas en el aula, para usar audio y texto a voz en la enseñanza del inglés. Escritas para docentes que quieren métodos claros, no artículos SEO genéricos.'
-    : 'Practical, classroom-tested guides for using audio and text-to-speech in English language teaching. Built for teachers who want clear methods, not generic SEO articles.';
+    ? 'Guías prácticas para usar audio y texto a voz en la enseñanza del inglés. Pensadas para docentes que quieren métodos claros, no artículos genéricos.'
+    : 'Practical guides for using audio and text-to-speech in English language teaching. Built for teachers who want clear methods, not generic SEO articles.';
 
   return `
 <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -883,6 +866,10 @@ async function main() {
   const urls = new Set();
   urls.add(`${SITE}/`);
   urls.add(`${SITE}/generator/`);
+  urls.add(`${SITE}/about.html`);
+  urls.add(`${SITE}/contact.html`);
+  urls.add(`${SITE}/privacy.html`);
+  urls.add(`${SITE}/terms.html`);
 
   // Resource index
   const idxPath = path.join(ROOT, 'resources/listening-exercises/index.html');
@@ -900,7 +887,10 @@ async function main() {
   for (const lvl of levels.levels) {
     const p = path.join(ROOT, 'levels', lvl.id, 'index.html');
     await writeIfChanged(p, renderLevel(lvl, exercises));
-    urls.add(`${SITE}/levels/${lvl.id}/`);
+    // Only add to sitemap if there are exercises at this level.
+    if (exercises.some(e => e.level === lvl.id)) {
+      urls.add(`${SITE}/levels/${lvl.id}/`);
+    }
   }
 
   // Each topic (only those with exercises)

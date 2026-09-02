@@ -1,9 +1,8 @@
 # 🎙 ListeningClassroom
 
 A free, browser-based English audio generator with a growing library of
-classroom-tested listening exercises and teaching guides. Built for ESL
-teachers. Deployed on GitHub Pages. **No backend, no database, no
-recurring cost.**
+listening exercises and teaching guides for ESL teachers. Deployed on
+GitHub Pages. **No backend, no database, no recurring cost.**
 
 The site is **100% static**: HTML, CSS, JavaScript, JSON, and Markdown.
 A small Node.js script (run only in CI / locally during development)
@@ -342,9 +341,10 @@ The slots are hidden by default. To enable them:
 
 1. Add the AdSense `<script>` tag to the `<head>` of `index.html`,
    `generator/index.html`, and any other page.
-2. In `assets/js/site.js`, set:
+2. In `assets/js/site.js`, set the publisher ID configured for this site
+   (`ca-pub-7086938365759492`):
    ```html
-   <script>window.LC_ADSENSE = { enabled: true, client: 'ca-pub-XXXXX' };</script>
+   <script>window.LC_ADSENSE = { enabled: true, client: 'ca-pub-7086938365759492' };</script>
    ```
 3. Mark the slots you want to show with `class="ad-slot enabled"`.
 
