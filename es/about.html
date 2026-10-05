@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google-adsense-account" content="ca-pub-7086938365759492">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Acerca de ListeningClassroom — Proyecto independiente</title>
+  <meta name="description" content="Conoce ListeningClassroom, un proyecto independiente con una herramienta de texto a voz y recursos de escucha en inglés.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://listeningclassroom.com/es/about.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Acerca de ListeningClassroom — Proyecto independiente">
+  <meta property="og:description" content="Conoce ListeningClassroom, un proyecto independiente con una herramienta de texto a voz y recursos de escucha en inglés.">
+  <meta property="og:url" content="https://listeningclassroom.com/es/about.html">
+  <meta property="og:image" content="https://listeningclassroom.com/logo.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Acerca de ListeningClassroom — Proyecto independiente">
+  <meta name="twitter:description" content="Conoce ListeningClassroom, un proyecto independiente con una herramienta de texto a voz y recursos de escucha en inglés.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
+
+  <script defer src="/consent.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/site.css">
+
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #7d8590;
+      --accent: #58a6ff;
+      --accent-warm: #f78166;
+      --accent-green: #3fb950;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      line-height: 1.7;
+    }
+
+    /* ── HEADER ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: rgba(13,17,23,0.92);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+    }
+    .logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+    .logo span { color: var(--accent-warm); }
+    .header-right { display: flex; align-items: center; gap: 1.5rem; }
+    nav { display: flex; align-items: center; flex-wrap: wrap; gap: 0.95rem 1.5rem; }
+    nav a {
+      color: var(--muted); font-size: 0.85rem; text-decoration: none;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
+
+    /* ── LANGUAGE SWITCHER ── */
+    .lang-switcher {
+      display: flex;
+      gap: 2px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+    }
+    .lang-btn {
+      padding: 0.22rem 0.65rem;
+      background: transparent;
+      border: none;
+      border-radius: 4px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.04em;
+    }
+    .lang-btn.active { background: var(--accent); color: #0d1117; }
+    .lang-btn:hover:not(.active) { color: var(--text); }
+    @media (max-width: 700px) {
+      header {
+        align-items: flex-start;
+        gap: 0.85rem;
+        padding: 0.85rem 1rem;
+      }
+      .header-right {
+        align-items: flex-end;
+        flex-direction: column-reverse;
+        gap: 0.7rem;
+      }
+      nav {
+        justify-content: flex-end;
+        gap: 0.45rem 0.9rem;
+      }
+      nav a { font-size: 0.78rem; }
+    }
+
+    /* ── CONTENT ── */
+    .page-wrapper {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .page-eyebrow {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    h1 em { color: var(--accent-warm); font-style: normal; }
+
+    .last-updated {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .policy-section {
+      margin-bottom: 2.2rem;
+    }
+
+    h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    h2 .section-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 0.93rem;
+      margin-bottom: 0.75rem;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0.75rem 0;
+    }
+    ul li {
+      color: var(--muted);
+      font-size: 0.93rem;
+      padding: 0.35rem 0 0.35rem 1.2rem;
+      position: relative;
+    }
+    ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.75rem;
+      top: 0.45rem;
+    }
+    ul li strong { color: var(--text); }
+
+    .highlight-box {
+      background: rgba(88,166,255,0.07);
+      border: 1px solid rgba(88,166,255,0.2);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      margin: 0.75rem 0;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+    .highlight-box strong { color: var(--accent); }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; }
+
+    .cta-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.4rem 1.6rem;
+      margin-top: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .cta-card p { margin: 0; font-size: 0.88rem; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 0.55rem 1.2rem;
+      border-radius: 6px;
+      text-decoration: none;
+      align-self: flex-start;
+      transition: opacity 0.15s;
+    }
+    .cta-btn:hover { opacity: 0.85; text-decoration: none; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; margin: 0 0.5rem; }
+    footer a:hover { color: var(--text); }
+  </style>
+<link rel="alternate" hreflang="en" href="https://listeningclassroom.com/about.html"><link rel="alternate" hreflang="es" href="https://listeningclassroom.com/es/about.html"><link rel="alternate" hreflang="x-default" href="https://listeningclassroom.com/about.html">
+</head>
+<body>
+<!-- ── HEADER ── -->
+<header class="site">
+  <a href="/es/" class="logo">Listening<span>Classroom</span></a>
+  <div class="header-right">
+    <nav class="site-nav" aria-label="Principal"><a href="/es/resources/listening-exercises/">Ejercicios</a>
+      <a href="/es/guides/">Guías</a>
+      <a href="/es/levels/a1/">Niveles</a>
+      <a href="/es/#how-it-works">Cómo funciona</a>
+      <a href="/es/#faq">Preguntas</a>
+      <a href="/es/about.html" aria-current="page">Acerca de</a>
+      <a href="/es/contact.html">Contacto</a></nav>
+    <div class="lang-switcher"><a class="lang-btn" href="https://listeningclassroom.com/about.html" lang="en">EN</a><a class="lang-btn active" href="https://listeningclassroom.com/es/about.html" lang="es" aria-current="page">ES</a></div>
+  </div>
+</header>
+
+<!-- ── ENGLISH VERSION ── -->
+
+<div class="page-wrapper">
+
+  <p class="page-eyebrow">Acerca de este proyecto</p>
+  <h1>Acerca de <em>ListeningClassroom</em></h1>
+    <p class="last-updated">Un proyecto independiente · Texto a voz en inglés y ejercicios de escucha gratuitos</p>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">🎯</span> Qué es ListeningClassroom</h2>
+    <p>ListeningClassroom es un proyecto web independiente creado para facilitar la creación y el uso de actividades de escucha en inglés. Combina una herramienta de audio gratuita en el navegador con una biblioteca de ejercicios y guías didácticas.</p>
+    <p>El proyecto nació de una necesidad concreta: generar audio de escucha en inglés descargable para clases, sin depender de software complicado, cuentas de pago ni suscripciones. Se mantiene como un proyecto personal, no como una empresa, institución ni producto comercial.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">👩‍🏫</span> Para Quién Es</h2>
+    <p>ListeningClassroom está pensado para personas que preparan materiales de escucha en inglés, en particular:</p>
+    <ul>
+      <li><strong>Profesores de inglés como lengua extranjera (ESL/EFL)</strong> que crean ejercicios de escucha para sus estudiantes.</li>
+      <li><strong>Tutores de idiomas</strong> que necesitan modelos de pronunciación y ejemplos de lectura en voz alta.</li>
+      <li><strong>Desarrolladores de currículum</strong> que crean contenido de audio para plataformas de e-learning.</li>
+      <li><strong>Docentes</strong> que necesitan audio MP3 para PowerPoint, Google Slides u otros materiales.</li>
+    </ul>
+    <p>Los ejercicios y guías están escritos para distintos niveles (A1, A2, B1). No forman parte de ningún programa académico acreditado y el proyecto no está afiliado a ninguna institución concreta.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">⚙️</span> Cómo Funciona la Herramienta</h2>
+    <p>El generador utiliza un modelo neuronal de texto a voz llamado <strong>Kokoro TTS</strong>, que se ejecuta completamente en tu navegador mediante WebAssembly. En la práctica esto significa:</p>
+    <ul>
+      <li>Tu texto <strong>nunca se envía a ningún servidor</strong>; la generación ocurre localmente en tu dispositivo.</li>
+      <li>El modelo de voz puede quedar guardado en la caché del navegador después de descargarse. El uso posterior sin conexión depende del navegador y de su caché.</li>
+      <li>No se necesitan cuentas, claves API ni suscripciones. La herramienta es gratuita en la actualidad.</li>
+    </ul>
+    <div class="highlight-box">
+      El modo <strong>Escuchar</strong> usa la API de síntesis de voz nativa del navegador para reproducción instantánea. El modo <strong>Descargar MP3</strong> usa el modelo neuronal Kokoro para generar y exportar un archivo MP3.
+    </div>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">🔒</span> Privacidad por Defecto</h2>
+    <p>La herramienta está diseñada con la privacidad como base, ya que puede usarse para preparar materiales destinados a estudiantes:</p>
+    <ul>
+      <li>Ningún texto que ingreses se almacena ni se envía a un servidor.</li>
+      <li>No se recopilan cuentas de usuario ni datos personales.</li>
+      <li>Los archivos de audio se generan localmente y se descargan directamente a tu computadora.</li>
+    </ul>
+    <p>Para más detalles, consulta nuestra <a href="privacy.html">Política de Privacidad</a>.</p>
+  </div>
+
+  <div class="policy-section">
+    <h2><span class="section-icon">💬</span> Contacto</h2>
+    <p>¿Tienes sugerencias, un error que reportar o una solicitud de función? Puedes contactar con el proyecto desde la página de contacto.</p>
+    <div class="cta-card">
+      <p>Normalmente respondemos en un par de días laborables.</p>
+      <a href="contact.html" class="cta-btn">Ir a la página de contacto →</a>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ── FOOTER ── -->
+<footer class="site">
+  <p>© 2026 ListeningClassroom.com · Herramienta de texto a voz y recursos de escucha en inglés</p>
+  <p class="links">
+    <a href="/es/resources/listening-exercises/">Ejercicios</a> ·
+    <a href="/es/guides/">Guías</a> ·
+    <a href="/es/levels/a1/">Niveles</a> ·
+    <a href="/es/generator/">Generador</a> ·
+    <a href="/es/about.html">Acerca de</a> ·
+    <a href="/es/contact.html">Contacto</a> ·
+    <a href="/es/privacy.html">Privacidad</a> ·
+    <a href="/es/terms.html">Términos</a>
+  </p>
+</footer>
+
+<script>
+  // ── Language switcher ──
+  const saved = localStorage.getItem('lang') || 'en';
+
+  function applyLang(lang) {
+    localStorage.setItem('lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.lang === lang));
+    document.querySelectorAll('.lang-content').forEach(el =>
+      el.hidden = !el.classList.contains('lang-' + lang));
+  }
+
+  document.querySelectorAll('.lang-btn').forEach(b =>
+    b.addEventListener('click', () => applyLang(b.dataset.lang)));
+
+  applyLang(saved);
+</script>
+</body>
+</html>

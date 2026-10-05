@@ -40,7 +40,6 @@
     "description": "Free English text-to-speech and dialogue generator for ESL teachers. Assign two voices to a conversation and download the result as an MP3 audio file.",
     "url": "https://listeningclassroom.com/generator/",
     "applicationCategory": "EducationApplication",
-    "operatingSystem": "Any",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "audience": { "@type": "Audience", "audienceType": "Teachers, ESL educators" },
     "featureList": ["Two-voice English dialogue generation", "Downloadable MP3 audio", "Adjustable speech speed", "Browser-based text to speech"]
@@ -48,7 +47,6 @@
   </script>
 
   <script defer src="/consent.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -431,7 +429,7 @@
     <span class="badge green" data-i18n="badgeFree">✓ Free to use</span>
     <span class="badge blue"  data-i18n="badgeVoices">✓ Multiple voices</span>
     <span class="badge warm"  data-i18n="badgeDownload">✓ Downloadable audio file</span>
-    <span class="badge"       data-i18n="badgeOffline">✓ Works offline after load</span>
+    <span class="badge"       data-i18n="badgeOffline">✓ May work offline after caching</span>
   </div>
 </section>
 
@@ -537,7 +535,7 @@ Speaker 2: I'm going to practice my English.</textarea>
     <h2 class="seo-feature-heading">English dialogue audio for listening lessons</h2>
     <p>Use Dialogue mode to turn a conversation script into a two-voice English MP3. Assign a different voice to Speaker 1 and Speaker 2, adjust the speed, and download one audio file ready for classroom activities, role-play practice, or PowerPoint.</p>
     <p>ListeningClassroom.com uses a neural voice model that runs entirely in your browser — no servers, no uploads, no sign-up required. Your text never leaves your device. Click Generate Audio, wait a few seconds, then download the MP3 file directly to your computer.</p>
-    <p>The downloaded file (MP3 format) is compatible with PowerPoint, Google Slides, and any media player or video editing software. It's perfect for creating listening exercises, dictation tracks, pronunciation models, and narrated presentations.</p>
+    <p>The downloaded file is an MP3 that can be inserted into PowerPoint presentations, Google Slides, media players, and many video-editing applications. It can be used for listening exercises, dictation tracks, pronunciation practice, and narrated presentations.</p>
     <div class="faq" id="faq">
       <h2>Frequently Asked Questions</h2>
       <div class="faq-item">
@@ -550,11 +548,11 @@ Speaker 2: I'm going to practice my English.</textarea>
       </div>
       <div class="faq-item">
         <h3>Which browsers are supported?</h3>
-        <p>Google Chrome and Microsoft Edge are recommended. The tool works in any modern browser that supports WebAssembly. Safari and Firefox also work, but Chrome gives the best performance.</p>
+        <p>Recent browsers with WebAssembly support are required. Chrome and Edge are the main browsers tested for the generator; Safari and Firefox may also work, but performance can vary by device and browser.</p>
       </div>
       <div class="faq-item">
         <h3>Can I use the audio in PowerPoint?</h3>
-        <p>Yes. After downloading, go to Insert → Audio → Audio on my PC and select the MP3 file. MP3 is supported in all versions of PowerPoint.</p>
+        <p>Yes. After downloading, use PowerPoint's Insert → Audio option and select the MP3 file. The exact menu wording can vary by PowerPoint version.</p>
       </div>
       <div class="faq-item">
         <h3>Is my text stored or sent anywhere?</h3>
@@ -569,7 +567,7 @@ Speaker 2: I'm going to practice my English.</textarea>
     <h2 class="seo-feature-heading">Audio de diálogos en inglés para clases</h2>
     <p>Usa el modo Diálogo para convertir un guion en inglés en un MP3 con dos voces. Asigna una voz diferente al Orador 1 y al Orador 2, ajusta la velocidad y descarga un archivo listo para actividades de aula, práctica de roles o PowerPoint.</p>
     <p>ListeningClassroom.com usa un modelo de voz neuronal que corre completamente en tu navegador — sin servidores, sin cargas, sin registro. Tu texto nunca sale de tu dispositivo. Haz clic en Generar Audio, espera unos segundos y descarga el archivo MP3 directamente a tu computadora.</p>
-    <p>El archivo descargado (formato MP3) es compatible con PowerPoint, Google Slides y cualquier reproductor de medios o software de edición de video. Es perfecto para crear ejercicios de escucha, pistas de dictado, modelos de pronunciación y presentaciones narradas.</p>
+    <p>El archivo descargado es un MP3 que se puede insertar en presentaciones de PowerPoint, Google Slides, reproductores multimedia y muchas aplicaciones de edición de vídeo. Puede utilizarse para ejercicios de escucha, dictados, práctica de pronunciación y presentaciones narradas.</p>
     <div class="faq">
       <h2>Preguntas Frecuentes</h2>
       <div class="faq-item">
@@ -586,7 +584,7 @@ Speaker 2: I'm going to practice my English.</textarea>
       </div>
       <div class="faq-item">
         <h3>¿Puedo usar el audio en PowerPoint?</h3>
-        <p>Sí. Después de descargar, ve a Insertar → Audio → Audio en mi PC y selecciona el archivo MP3. El formato MP3 es compatible con todas las versiones de PowerPoint.</p>
+        <p>Sí. Después de descargar, usa la opción Insertar → Audio de PowerPoint y selecciona el archivo MP3. El texto exacto de los menús puede variar según la versión de PowerPoint.</p>
       </div>
       <div class="faq-item">
         <h3>¿Mi texto se almacena o se envía a algún servidor?</h3>
@@ -668,7 +666,11 @@ Speaker 2: I'm going to practice my English.</textarea>
 </footer>
 
 <script type="module">
-  import { KokoroTTS } from 'https://cdn.jsdelivr.net/npm/kokoro-js/dist/kokoro.web.js';
+  let KokoroTTS = null;
+  async function loadKokoroLibrary() {
+    if (!KokoroTTS) ({ KokoroTTS } = await import('/vendor/kokoro/kokoro.web.js'));
+    return KokoroTTS;
+  }
 
   /* ══════════════════════════════════════════════════
      TRANSLATIONS
@@ -681,7 +683,7 @@ Speaker 2: I'm going to practice my English.</textarea>
       h1: 'English Audio Generator — Create classroom audio quickly<br><em>Now supports two-voice dialogues</em>',
       heroParagraph: 'A browser-based audio tool for teachers, tutors, and lesson designers who need listening material, pronunciation models, or narrated slides — without setup friction.',
       badgeFree: '✓ Free to use', badgeVoices: '✓ Multiple voices',
-      badgeDownload: '✓ Downloadable audio file', badgeOffline: '✓ Works offline after load',
+      badgeDownload: '✓ Downloadable audio file', badgeOffline: '✓ May work offline after caching',
       labelText: 'Your text',
       placeholderText: 'Paste or type any English paragraph here...',
       tabListen: '🎧 Quick Listen', tabDownload: '⬇ Download MP3',
@@ -698,12 +700,14 @@ Speaker 2: I'm going to practice my English.</textarea>
       statusListenStopped: 'Stopped',
       noVoices: 'No English voices found — try Chrome or Edge',
       statusDownloadReady: 'Ready — enter your text and click Generate',
+      statusModelLoading: 'Loading the voice model in your browser…',
+      statusEncodeError: 'MP3 encoding could not start. Please retry.',
       infoBox: '<strong>How it works:</strong> The voice model runs entirely in your browser — no servers, no API keys. The <strong>first use downloads the model (~86 MB)</strong> and caches it; after that it\'s instant. Requires internet only on first load.',
       tipsTitle: '🎓 Teaching Tips',
       tip1: '<strong>0.7×</strong> — Listening comprehension for beginners',
       tip2: '<strong>0.85×</strong> — Standard listening exercise',
       tip3: '<strong>1.0×</strong> — Dictation at native speed',
-      tip4: 'Try <strong>Emma (British)</strong> for Cambridge exam prep',
+      tip4: 'Try <strong>Emma (British)</strong> for British English listening practice',
       tip5: 'In PowerPoint: Insert → Audio → Audio on my PC',
     },
     es: {
@@ -713,7 +717,7 @@ Speaker 2: I'm going to practice my English.</textarea>
       h1: 'Generador de audio — Crea audio para clases rápidamente<br><em>Ahora con soporte para diálogos de dos voces</em>',
       heroParagraph: 'Una herramienta de audio en el navegador para docentes, tutores y diseñadores de clases que necesitan material de escucha, modelos de pronunciación o diapositivas narradas, sin complicaciones.',
       badgeFree: '✓ Gratis', badgeVoices: '✓ Múltiples voces',
-      badgeDownload: '✓ Archivo de audio descargable', badgeOffline: '✓ Funciona sin internet tras la primera carga',
+      badgeDownload: '✓ Archivo de audio descargable', badgeOffline: '✓ Puede funcionar sin conexión tras guardarse en caché',
       labelText: 'Tu texto',
       placeholderText: 'Pega o escribe aquí cualquier párrafo en inglés...',
       tabListen: '🎧 Escuchar', tabDownload: '⬇ Descargar MP3',
@@ -730,12 +734,14 @@ Speaker 2: I'm going to practice my English.</textarea>
       statusListenStopped: 'Detenido',
       noVoices: 'No se encontraron voces en inglés — intenta con Chrome o Edge',
       statusDownloadReady: 'Listo — ingresa tu texto y haz clic en Generar',
+      statusModelLoading: 'Cargando el modelo de voz en tu navegador…',
+      statusEncodeError: 'No se pudo iniciar la codificación MP3. Inténtalo de nuevo.',
       infoBox: '<strong>Cómo funciona:</strong> El modelo de voz corre completamente en tu navegador — sin servidores, sin claves API. El <strong>primer uso descarga el modelo (~86 MB)</strong> y lo guarda en caché; luego es instantáneo. Solo requiere internet en la primera carga.',
       tipsTitle: '🎓 Consejos para Docentes',
       tip1: '<strong>0.7×</strong> — Comprensión auditiva para principiantes',
       tip2: '<strong>0.85×</strong> — Ejercicio de escucha estándar',
       tip3: '<strong>1.0×</strong> — Dictado a velocidad nativa',
-      tip4: 'Usa <strong>Emma (Británico)</strong> para preparación Cambridge',
+      tip4: 'Usa <strong>Emma (británica)</strong> para practicar la escucha de inglés británico',
       tip5: 'En PowerPoint: Insertar → Audio → Audio en mi PC',
     }
   };
@@ -822,6 +828,7 @@ Speaker 2: I'm going to practice my English.</textarea>
   ══════════════════════════════════════════════════ */
   let audioBlob = null, audioURL = null, previewURL = null, lastPCM = null, lastSR = null;
   let ttsModel = null;
+  let lamejsLoaded = false;
   let encodeWaitingDownload = false;
 
   const MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX';
@@ -850,15 +857,8 @@ Speaker 2: I'm going to practice my English.</textarea>
   let kokoroWorker = null;
   let workerAvailable = false;
   let workerReadyResolve;
-  let workerReady = new Promise(resolve => { workerReadyResolve = resolve; });
-  try {
-    // Use local worker file to avoid cross-origin redirects/import issues
-    kokoroWorker = new Worker('/kokoro-worker.js', { type: 'module' });
-    workerAvailable = true;
-  } catch (err) {
-    kokoroWorker = null; workerAvailable = false;
-    workerReadyResolve();
-  }
+  let workerReady = Promise.resolve();
+  let workerLoadRequested = false;
 
   // Helper to call worker and receive a single result via Promise
   function workerGenerate(payload) {
@@ -885,39 +885,46 @@ Speaker 2: I'm going to practice my English.</textarea>
     });
   }
 
-  // Prefetch Kokoro as soon as the page initializes. Generation only waits for
-  // this shared promise; it never starts a second model download.
+  // Load the model only after the user requests audio generation.
   function preloadKokoro() {
-    if (!workerAvailable || !kokoroWorker) return;
+    if (workerLoadRequested) return workerReady;
+    workerLoadRequested = true;
+    workerReady = new Promise(resolve => { workerReadyResolve = resolve; });
     try {
+      kokoroWorker = new Worker('/kokoro-worker.js', { type: 'module' });
+      workerAvailable = true;
+      kokoroWorker.onerror = () => {
+        workerAvailable = false;
+        workerReadyResolve();
+      };
+      const onModelReady = event => {
+        const data = event.data;
+        if (data?.type !== 'loaded' && data?.type !== 'error') return;
+        kokoroWorker.removeEventListener('message', onModelReady);
+        if (data.type === 'error') workerAvailable = false;
+        workerReadyResolve();
+      };
+      kokoroWorker.addEventListener('message', onModelReady);
       kokoroWorker.postMessage({ type: 'loadModel', modelId: MODEL_ID });
     } catch (e) {
+      kokoroWorker = null;
+      workerAvailable = false;
       workerReadyResolve();
     }
-  }
-  preloadKokoro();
-  if (kokoroWorker) {
-    kokoroWorker.onerror = () => {};
-    kokoroWorker.addEventListener('message', ev => {
-      const d = ev.data;
-      if (d && d.type === 'loaded') {
-        workerReadyResolve();
-      }
-    });
+    return workerReady;
   }
 
-  // Create encode worker (for MP3) to avoid blocking the UI during encoding
+  // Defer loading the encoder and its dependency until the user downloads MP3.
   let encodeWorker = null;
   let encodeWorkerAvailable = false;
-  try {
-    encodeWorker = new Worker('/encode-worker.js');
-    encodeWorkerAvailable = true;
-  } catch (err) {
-    encodeWorker = null; encodeWorkerAvailable = false;
-  }
-
-  if (encodeWorker) {
-    encodeWorker.onmessage = (ev) => {
+  let encodeWorkerAttempted = false;
+  function ensureEncodeWorker() {
+    if (encodeWorkerAttempted) return encodeWorkerAvailable;
+    encodeWorkerAttempted = true;
+    try {
+      encodeWorker = new Worker('/encode-worker.js');
+      encodeWorkerAvailable = true;
+      encodeWorker.onmessage = (ev) => {
       const d = ev.data;
       if (d.type === 'mp3') {
     const mp3 = new Uint8Array(d.mp3);
@@ -931,11 +938,21 @@ Speaker 2: I'm going to practice my English.</textarea>
       const a = document.createElement('a'); a.href = audioURL; a.download = name; a.click();
       encodeWaitingDownload = false;
     }
-  } else if (d.type === 'error') {
-    setDownloadStatus('error', d.message || 'Encoding failed');
-    encodeWaitingDownload = false;
-  }
-    };
+      } else if (d.type === 'error') {
+        setDownloadStatus('error', d.message || 'Encoding failed');
+        encodeWaitingDownload = false;
+      }
+      };
+      encodeWorker.onerror = () => {
+        encodeWorkerAvailable = false;
+        setDownloadStatus('error', I18N[currentLang].statusEncodeError);
+        encodeWaitingDownload = false;
+      };
+    } catch (err) {
+      encodeWorker = null;
+      encodeWorkerAvailable = false;
+    }
+    return encodeWorkerAvailable;
   }
 
   document.getElementById('rate').addEventListener('input', e =>
@@ -962,6 +979,18 @@ Speaker 2: I'm going to practice my English.</textarea>
     const flush = enc.flush();
     if (flush.length > 0) out.push(new Uint8Array(flush));
     return new Blob(out, { type: 'audio/mpeg' });
+  }
+
+  function loadLameJs() {
+    if (lamejsLoaded || window.lamejs) { lamejsLoaded = true; return Promise.resolve(); }
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js';
+      script.async = true;
+      script.onload = () => { lamejsLoaded = true; resolve(); };
+      script.onerror = () => reject(new Error(I18N[currentLang].statusEncodeError));
+      document.head.appendChild(script);
+    });
   }
 
   function float32ToWavBlob(float32, sampleRate) {
@@ -1021,6 +1050,8 @@ Speaker 2: I'm going to practice my English.</textarea>
 
     const voiceId = document.getElementById('voice-select').value;
     const speed   = parseFloat(document.getElementById('rate').value);
+    setDownloadStatus('recording', I18N[currentLang].statusModelLoading);
+    preloadKokoro();
 
     try {
       // If single voice: generate Kokoro preview (no Web Speech API). Start worker generation immediately and play when ready.
@@ -1029,12 +1060,13 @@ Speaker 2: I'm going to practice my English.</textarea>
         try {
           // race worker with a timeout: if worker doesn't reply in 60s, fall back to main
           const workerPromise = workerReady.then(() => workerGenerate({ type: 'generate', text, voice: voiceId, speed }));
-          const timeoutPromise = new Promise((_, rej) => setTimeout(() => rej(new Error('Worker timeout')), 60000));
+          const timeoutPromise = new Promise((_, rej) => setTimeout(() => rej(new Error('Worker timeout')), 180000));
           const res = await Promise.race([workerPromise, timeoutPromise]).catch(async (err) => {
             // Fallback: try main-thread generation so user still gets audio
             try {
               setDownloadStatus('recording', 'Fallback: generating in main thread…');
-              if (!ttsModel) ttsModel = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
+              const TTS = await loadKokoroLibrary();
+              if (!ttsModel) ttsModel = await TTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
               const mainRes = await ttsModel.generate(text, { voice: voiceId, speed });
               return { pcm: mainRes.audio.buffer, sr: mainRes.sampling_rate };
             } catch (mainErr) {
@@ -1083,7 +1115,8 @@ Speaker 2: I'm going to practice my English.</textarea>
         // Fallback: generate sequentially on main thread (preserve original behavior)
         if (!ttsModel) {
           setDownloadStatus('recording', 'Loading voice model (~86 MB, cached after first use)…');
-          ttsModel = await KokoroTTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
+          const TTS = await loadKokoroLibrary();
+          ttsModel = await TTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
         }
         const pieces = [];
         let sr = 22050;
@@ -1148,14 +1181,15 @@ Speaker 2: I'm going to practice my English.</textarea>
 
     // Otherwise, request background encoding (worker if available)
     setDownloadStatus('recording', 'Encoding to MP3…');
-    if (encodeWorkerAvailable && encodeWorker) {
+    if (ensureEncodeWorker() && encodeWorker) {
       try {
         encodeWaitingDownload = true;
       // Transfer a copy to preserve lastPCM if needed; send copy for safety
       const pcmCopy = new Float32Array(lastPCM);
       encodeWorker.postMessage({ pcm: pcmCopy.buffer, sr: lastSR }, [pcmCopy.buffer]);
-    } catch (err) {
+      } catch (err) {
       try {
+        await loadLameJs();
         audioBlob = pcmToMp3(lastPCM, lastSR);
         if (audioURL) URL.revokeObjectURL(audioURL);
         audioURL = URL.createObjectURL(audioBlob);
@@ -1169,6 +1203,7 @@ Speaker 2: I'm going to practice my English.</textarea>
     } else {
     // Fallback: encode on main thread
     try {
+      await loadLameJs();
       audioBlob = pcmToMp3(lastPCM, lastSR);
       if (audioURL) URL.revokeObjectURL(audioURL);
       audioURL = URL.createObjectURL(audioBlob);

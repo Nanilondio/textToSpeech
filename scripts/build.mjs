@@ -18,7 +18,7 @@
  */
 
 import { promises as fs } from 'node:fs';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -68,6 +68,7 @@ const ensureDir = async (p) => { await fs.mkdir(p, { recursive: true }); };
 
 async function writeIfChanged(filePath, content) {
   if (DRY_RUN) return;
+  content = content.replace(/[ \t]+\n/g, '\n');
   const existing = existsSync(filePath) ? readText(filePath) : null;
   if (existing === content) return;
   await ensureDir(path.dirname(filePath));
@@ -82,6 +83,7 @@ const UI = {
     howItWorks: 'How it works', faq: 'FAQ', about: 'About', contact: 'Contact',
     listeningExercises: 'Listening Exercises',
     vocabulary: 'Vocabulary', dialogue: 'Dialogue',
+    transcript: 'Transcript', learningFocus: 'Learning focus', answerKey: 'Answer key',
     comprehensionQuestions: 'Comprehension Questions',
     trueFalse: 'True / False', teacherTips: 'Teacher Tips',
     relatedExercises: 'Related Exercises',
@@ -105,6 +107,7 @@ const UI = {
     howItWorks: 'Cómo funciona', faq: 'Preguntas', about: 'Acerca de', contact: 'Contacto',
     listeningExercises: 'Ejercicios de escucha',
     vocabulary: 'Vocabulario', dialogue: 'Diálogo',
+    transcript: 'Transcripción', learningFocus: 'Enfoque de aprendizaje', answerKey: 'Respuestas',
     comprehensionQuestions: 'Preguntas de comprensión',
     trueFalse: 'Verdadero / Falso', teacherTips: 'Consejos para el docente',
     relatedExercises: 'Ejercicios relacionados',
@@ -241,7 +244,7 @@ const TOGGLE_JS = `
 
 function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical, jsonLd = [], extraHead = '', robots = 'index, follow' }) {
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-es-title="${attrEscape(titleEs)}" data-es-description="${attrEscape(descriptionEs)}">
 <head>
 <meta charset="UTF-8">
 <meta name="google-adsense-account" content="ca-pub-7086938365759492">
@@ -250,6 +253,9 @@ function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical,
 <title>${htmlEscape(titleEn)}</title>
 <meta name="description" content="${htmlEscape(descriptionEn)}">
 <link rel="canonical" href="${htmlEscape(canonical)}">
+<link rel="alternate" hreflang="en" href="${htmlEscape(canonical)}">
+<link rel="alternate" hreflang="es" href="${htmlEscape(canonical.replace(SITE + '/', SITE + '/es/'))}">
+<link rel="alternate" hreflang="x-default" href="${htmlEscape(canonical)}">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="shortcut icon" href="/favicon.svg">
 <meta property="og:type" content="website">
@@ -269,6 +275,229 @@ ${jsonLd.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</scri
 ${extraHead}
 </head>
 <body>`;
+}
+
+// Build a Spanish URL from the already-rendered bilingual page. This keeps the
+// migration reversible while giving search engines a real, language-specific
+// document instead of relying on a client-side language toggle.
+function spanishPathFromEnglish(filePath) {
+  const relative = path.relative(ROOT, filePath).replace(/\\/g, '/');
+  return path.join(ROOT, 'es', relative);
+}
+
+function renderSpanishDocument(html) {
+  const decodeEntities = value => String(value || '')
+    .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  const title = decodeEntities(html.match(/data-es-title="([^"]*)"/)?.[1] || '');
+  const description = decodeEntities(html.match(/data-es-description="([^"]*)"/)?.[1] || '');
+  const headings = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)];
+  const visibleTitle = decodeEntities((headings.at(-1)?.[1] || '').replace(/<[^>]*>/g, '').replace(/\s+/g, ' ').trim()) || title;
+  const currentCrumbs = [...html.matchAll(/<span aria-current="page">([^<]+)<\/span>/g)];
+  const visibleCrumb = decodeEntities(currentCrumbs.at(-1)?.[1] || visibleTitle);
+  const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1] || SITE + '/';
+  const spanishCanonical = canonical.replace(SITE + '/', SITE + '/es/');
+  const explicitMain = html.indexOf('<main id="main">');
+  const contentMarkers = ['ENGLISH VERSION', 'ENGLISH CONTENT', 'CONTENT ──']
+    .map(marker => html.indexOf(marker))
+    .filter(index => index >= 0);
+  const contentMarker = contentMarkers.length ? Math.min(...contentMarkers) : -1;
+  const mainStart = explicitMain >= 0 ? explicitMain : html.indexOf('<div class="lang-content lang-en">', contentMarker);
+  const mainEnd = explicitMain >= 0 ? html.indexOf('</main>', mainStart) : html.indexOf('<footer', mainStart);
+  const main = explicitMain >= 0
+    ? html.slice(mainStart + '<main id="main">'.length, mainEnd)
+    : html.slice(mainStart, mainEnd);
+  const esMarker = '<div class="lang-content lang-es" hidden>';
+  const esStart = main.indexOf(esMarker);
+  const wrapperEnd = main.lastIndexOf('</div>');
+  if (esStart < 0 || wrapperEnd < esStart) throw new Error(`Spanish content block not found for ${canonical}`);
+  let body = main.slice(esStart + esMarker.length, wrapperEnd);
+  body = body.replace(/href="\/(?!\/)/g, 'href="/es/');
+  body = body.replace(/href="\/es\/es\//g, 'href="/es/');
+  // Manual pages and the generator do not yet have Spanish URL variants.
+  body = body.replace(/href="\/es\/(about|contact|privacy|terms|generator)\.html?"/g, 'href="/$1.html"');
+  const doc = html
+    .replace(/<html lang="en"[^>]*>/, '<html lang="es">')
+    .replace(/<div class="lang-content lang-en">[\s\S]*?<\/div>/, '')
+    .replace(/<div class="lang-content lang-es" hidden>/, '<div>')
+    .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
+    .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${description}">`)
+    .replace(/<link rel="canonical" href="[^"]+">/, `<link rel="canonical" href="${spanishCanonical}">`)
+    .replace(new RegExp(`<link rel="alternate" hreflang="en" href="[^"]+">`), `<link rel="alternate" hreflang="en" href="${canonical}">`)
+    .replace(new RegExp(`<link rel="alternate" hreflang="es" href="[^"]+">`), `<link rel="alternate" hreflang="es" href="${spanishCanonical}">`)
+    .replace(
+      html.slice(mainStart, explicitMain >= 0 ? mainEnd + '</main>'.length : mainEnd),
+      explicitMain >= 0 ? `<main id="main">${body}</main>` : body
+    )
+    .replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${title}">`)
+    .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${description}">`)
+    .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${spanishCanonical}">`)
+    .replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${title}">`)
+    .replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${description}">`);
+  let localized = doc;
+  localized = localized.replace(/<header class="site">[\s\S]*?<\/header>/, renderLocalizedHeader(spanishCanonical, canonical));
+  localized = localized.replace(/<footer(?: class="site")?>[\s\S]*?<\/footer>/, renderLocalizedFooter());
+  localized = localized.replace(/(<script\b[^>]*\bsrc=")[^/][^"]*(")/g, (match, before, after) => {
+    const src = match.slice(before.length, -after.length);
+    return `${before}/${src}${after}`;
+  });
+  const finalEs = localized.lastIndexOf('<div class="lang-content lang-es" hidden>');
+  const finalEn = localized.lastIndexOf('<div class="lang-content lang-en">', finalEs);
+  if (finalEn >= 0 && finalEs > finalEn) {
+    const finalEnd = localized.lastIndexOf('</div>');
+    localized = localized.slice(0, finalEn) + localized.slice(finalEs + '<div class="lang-content lang-es" hidden>'.length, finalEnd) + localized.slice(finalEnd + '</div>'.length);
+  }
+  localized = localized.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g, (full, json) => {
+    try {
+      const data = JSON.parse(json);
+      if (data && (data['@type'] === 'LearningResource' || data['@type'] === 'Article' || data['@type'] === 'WebPage')) {
+        data.name = visibleTitle;
+        data.description = description;
+      }
+      if (data?.['@type'] === 'Article') {
+        data.headline = visibleTitle;
+        delete data.author;
+      }
+      if (data?.['@type'] === 'LearningResource') {
+        const slug = data.url.split('/').filter(Boolean).at(-1);
+        const exercise = guideExerciseCatalog.find(item => item.slug === slug);
+        if (exercise?.es?.topicName) data.teaches = exercise.es.topicName;
+      }
+      if (data?.['@type'] === 'ItemList') {
+        data.name = 'Ejercicios de escucha en inglés';
+        for (const item of data.itemListElement || []) {
+          const slug = item.url?.split('/').filter(Boolean).at(-1);
+          const exercise = guideExerciseCatalog.find(candidate => candidate.slug === slug);
+          if (exercise?.es?.title) item.name = exercise.es.title;
+        }
+      }
+      if (data?.['@type'] === 'WebApplication') {
+        data.name = 'ListeningClassroom — Generador de audio en inglés';
+        data.description = description;
+        data.url = spanishCanonical;
+        if (data.audience) data.audience.audienceType = 'Docentes y estudiantes de inglés';
+        data.featureList = ['Generación de diálogos en inglés con dos voces', 'Descarga de audio MP3', 'Velocidad de habla ajustable', 'Texto a voz en el navegador'];
+      }
+      if (data && data['@type'] === 'BreadcrumbList' && Array.isArray(data.itemListElement)) {
+        data.itemListElement = data.itemListElement.map((item, index) => ({
+          ...item,
+          name: index === 0 ? 'Inicio' : index === 1 ? (canonical.includes('/guides/') ? 'Guías' : 'Ejercicios de escucha') : visibleCrumb,
+        }));
+      }
+      const visit = (value, key = '') => {
+        if (Array.isArray(value)) return value.map(item => visit(item, key));
+        if (!value || typeof value !== 'object') {
+          if (key === 'inLanguage' && value === 'en') return 'es';
+          if ((key === 'url' || key === 'item') && typeof value === 'string' && value.startsWith(SITE + '/')) {
+            return value.replace(SITE + '/', SITE + '/es/');
+          }
+          return value;
+        }
+        return Object.fromEntries(Object.entries(value).map(([childKey, childValue]) => [childKey, visit(childValue, childKey)]));
+      };
+      return `<script type="application/ld+json">${JSON.stringify(visit(data))}</script>`;
+    } catch {
+      return full;
+    }
+  });
+  if (!localized.includes('hreflang="en"')) {
+    localized = localized.replace('</head>', `<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="es" href="${spanishCanonical}"><link rel="alternate" hreflang="x-default" href="${canonical}">\n</head>`);
+  }
+  return localized
+    .replace(/href="\/resources\//g, 'href="/es/resources/')
+    .replace(/href="\/guides\//g, 'href="/es/guides/')
+    .replace(/href="\/levels\//g, 'href="/es/levels/')
+    .replace(/href="\/topics\//g, 'href="/es/topics/')
+    .replace(/<button class="lang-btn active" data-lang="en">EN<\/button>/, '<button class="lang-btn" data-lang="en">EN</button>')
+    .replace(/<button class="lang-btn" data-lang="es">ES<\/button>/, '<button class="lang-btn active" data-lang="es">ES</button>');
+}
+
+function renderLocalizedHeader(spanishUrl, englishUrl) {
+  const pathname = new URL(spanishUrl).pathname;
+  const active = pathname.includes('/resources/') ? 'resources'
+    : pathname.includes('/guides') ? 'guides'
+      : pathname.includes('/levels') ? 'levels'
+        : pathname.includes('/about') ? 'about'
+          : pathname.includes('/contact') ? 'contact' : '';
+  const nav = [
+    ['resources', '/es/resources/listening-exercises/', 'Ejercicios'],
+    ['guides', '/es/guides/', 'Guías'],
+    ['levels', '/es/levels/a1/', 'Niveles'],
+    ['', '/es/#how-it-works', 'Cómo funciona'],
+    ['', '/es/#faq', 'Preguntas'],
+    ['about', '/es/about.html', 'Acerca de'],
+    ['contact', '/es/contact.html', 'Contacto'],
+  ].map(([key, href, label]) => `<a href="${href}"${key && key === active ? ' aria-current="page"' : ''}>${label}</a>`).join('\n      ');
+  return `<header class="site">
+  <a href="/es/" class="logo">Listening<span>Classroom</span></a>
+  <div class="header-right">
+    <nav class="site-nav" aria-label="Principal">${nav}</nav>
+    <div class="lang-switcher"><a class="lang-btn" href="${englishUrl}" lang="en">EN</a><a class="lang-btn active" href="${spanishUrl}" lang="es" aria-current="page">ES</a></div>
+  </div>
+</header>`;
+}
+
+function renderLocalizedFooter() {
+  return `<footer class="site">
+  <p>© ${new Date().getFullYear()} ListeningClassroom.com · Herramienta de texto a voz y recursos de escucha en inglés</p>
+  <p class="links">
+    <a href="/es/resources/listening-exercises/">Ejercicios</a> ·
+    <a href="/es/guides/">Guías</a> ·
+    <a href="/es/levels/a1/">Niveles</a> ·
+    <a href="/es/generator/">Generador</a> ·
+    <a href="/es/about.html">Acerca de</a> ·
+    <a href="/es/contact.html">Contacto</a> ·
+    <a href="/es/privacy.html">Privacidad</a> ·
+    <a href="/es/terms.html">Términos</a>
+  </p>
+</footer>`;
+}
+
+async function writeSpanishVariant(englishPath) {
+  const spanishPath = spanishPathFromEnglish(englishPath);
+  const source = readText(englishPath);
+  await writeIfChanged(spanishPath, renderSpanishDocument(source));
+  return spanishPath;
+}
+
+async function writeManualSpanishVariant(englishPath, titleEs, descriptionEs, spanishPath = null) {
+  const source = readText(englishPath)
+    .replace('<html lang="en">', `<html lang="en" data-es-title="${attrEscape(titleEs)}" data-es-description="${attrEscape(descriptionEs)}">`);
+  const outputPath = spanishPath || spanishPathFromEnglish(englishPath);
+  await writeIfChanged(outputPath, renderSpanishDocument(source));
+  return outputPath;
+}
+
+async function writeGeneratorSpanishVariant() {
+  const sourcePath = path.join(ROOT, 'generator/index.html');
+  const outputPath = path.join(ROOT, 'es/generator/index.html');
+  const canonical = `${SITE}/generator/`;
+  const spanishCanonical = `${SITE}/es/generator/`;
+  const title = 'Generador de diálogos en inglés — Audio MP3 con dos voces | ListeningClassroom';
+  const description = 'Crea audio de diálogos en inglés con dos voces, ajusta la velocidad y descarga un archivo MP3 para clases y actividades de escucha.';
+  let source = readText(sourcePath)
+    .replace('<html lang="en">', '<html lang="es">')
+    .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
+    .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${description}">`)
+    .replace(/<link rel="canonical" href="[^"]+">/, `<link rel="canonical" href="${spanishCanonical}">`)
+    .replace(/<meta property="og:title" content="[^"]*">/, `<meta property="og:title" content="${title}">`)
+    .replace(/<meta property="og:description" content="[^"]*">/, `<meta property="og:description" content="${description}">`)
+    .replace(/<meta property="og:url" content="[^"]*">/, `<meta property="og:url" content="${spanishCanonical}">`)
+    .replace(/<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${title}">`)
+    .replace(/<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${description}">`)
+    .replace(/"description": "Free English text-to-speech and dialogue generator for ESL teachers\. Assign two voices to a conversation and download the result as an MP3 audio file\.",/, `"description": "${description}",`)
+    .replace(/"url": "https:\/\/listeningclassroom\.com\/generator\/"/, `"url": "${spanishCanonical}"`)
+    .replace(/"audienceType": "Teachers, ESL educators"/, '"audienceType": "Docentes y estudiantes de inglés"')
+    .replace(/"featureList": \["Two-voice English dialogue generation", "Downloadable MP3 audio", "Adjustable speech speed", "Browser-based text to speech"\]/,
+      '"inLanguage": "es", "featureList": ["Generación de diálogos en inglés con dos voces", "Descarga de audio MP3", "Velocidad de habla ajustable", "Texto a voz en el navegador"]')
+    .replace('</head>', `<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="es" href="${spanishCanonical}"><link rel="alternate" hreflang="x-default" href="${canonical}">\n</head>`)
+    .replace("let currentLang = localStorage.getItem('lang') || 'en';", "let currentLang = localStorage.getItem('lang') || 'es';")
+    .replace(/href="\/resources\//g, 'href="/es/resources/')
+    .replace(/href="\/guides\//g, 'href="/es/guides/')
+    .replace(/href="\/levels\//g, 'href="/es/levels/')
+    .replace(/href="\/about\.html"/g, 'href="/es/about.html"')
+    .replace(/href="\/contact\.html"/g, 'href="/es/contact.html"');
+  await writeIfChanged(outputPath, source);
 }
 
 function renderHeader(current = '') {
@@ -358,6 +587,8 @@ function dialogueToString(dialogue) {
 
 // ── Page renderers ──────────────────────────────────────────────────────────
 
+let guideExerciseCatalog = [];
+
 function renderExerciseBlock(ex, lang) {
   const ui = UI[lang];
   const title = (lang === 'es' && ex.es?.title) ? ex.es.title : ex.title;
@@ -367,6 +598,9 @@ function renderExerciseBlock(ex, lang) {
   const questions = (lang === 'es' && ex.es?.questions) ? ex.es.questions : ex.questions;
   const trueFalse = (lang === 'es' && ex.es?.trueFalse) ? ex.es.trueFalse : ex.trueFalse;
   const tips = (lang === 'es' && ex.es?.teacherTips) ? ex.es.teacherTips : ex.teacherTips;
+  const learningObjectives = lang === 'es' ? ex.es?.learningObjectives : ex.learningObjectives;
+  const beforeListening = lang === 'es' ? ex.es?.beforeListening : ex.beforeListening;
+  const extensionActivity = lang === 'es' ? ex.es?.extensionActivity : ex.extensionActivity;
 
   const homeCrumb = lang === 'es' ? 'Inicio' : 'Home';
   const breadcrumbHtml = `
@@ -391,7 +625,7 @@ function renderExerciseBlock(ex, lang) {
   const dialogueText = dialogueToString(ex.dialogue || []);
   const dialogueHtml = `
 <section class="exercise-block">
-  <h2>${ui.dialogue}</h2>
+  <h2>${ui.transcript}</h2>
   <div class="dialogue-block">
     ${ex.dialogue.map(d => `
       <div class="dialogue-line speaker-${d.speaker}">
@@ -406,7 +640,19 @@ function renderExerciseBlock(ex, lang) {
     <a class="btn-generate" href="/generator/">${ui.openGenerator}</a>
   </div>
 </section>
-<div class="ad-slot" data-slot="exercises-after-dialogue"><span class="ad-label">${ui.advertisement}</span></div>`;
+  <div class="ad-slot" data-slot="exercises-after-dialogue"><span class="ad-label">${ui.advertisement}</span></div>`;
+
+  const focusHtml = (learningObjectives && learningObjectives.length) ? `
+<section class="exercise-block">
+  <h2>${ui.learningFocus}</h2>
+  <ul>${learningObjectives.map(item => `<li>${htmlEscape(item)}</li>`).join('')}</ul>
+</section>` : '';
+
+  const beforeHtml = (beforeListening && beforeListening.length) ? `
+<section class="exercise-block">
+  <h2>${lang === 'es' ? 'Antes de escuchar' : 'Before listening'}</h2>
+  <ul>${beforeListening.map(item => `<li>${htmlEscape(item)}</li>`).join('')}</ul>
+</section>` : '';
 
   const questionsHtml = (questions && questions.length) ? `
 <section class="exercise-block">
@@ -417,7 +663,6 @@ function renderExerciseBlock(ex, lang) {
       <ol class="options">
         ${q.options.map(o => `<li>${htmlEscape(o)}</li>`).join('')}
       </ol>
-      <div class="answer">${htmlEscape(q.options[q.answer])}</div>
     </div>`).join('')}
 </section>` : '';
 
@@ -439,6 +684,23 @@ function renderExerciseBlock(ex, lang) {
   </ul>
 </section>` : '';
 
+  const answersHtml = (questions && questions.length) ? `
+<section class="exercise-block answer-key">
+  <h2>${ui.answerKey}</h2>
+  <ol>${questions.map(q => `<li>${htmlEscape(q.options[q.answer])}</li>`).join('')}</ol>
+</section>` : '';
+
+  const extensionHtml = (extensionActivity && extensionActivity.length) ? `
+<section class="exercise-block">
+  <h2>${lang === 'es' ? 'Actividad de ampliación' : 'Extension activity'}</h2>
+  <ul>${extensionActivity.map(item => `<li>${htmlEscape(item)}</li>`).join('')}</ul>
+</section>` : '';
+
+  const teachingGuide = ['at-school', 'at-the-supermarket', 'daily-routine', 'introducing-yourself', 'my-family', 'weekend-plans'].includes(ex.slug)
+    ? 'how-to-build-listening-activities-for-a1-and-a2-students'
+    : 'how-to-create-listening-exercises-for-esl-students';
+  const guideLink = `<section class="exercise-block related-guide"><h2>${lang === 'es' ? 'Idea para docentes' : 'Teaching idea'}</h2><p>${lang === 'es' ? 'Consulta la guía sobre ' : 'See our guide to '}<a href="/guides/${teachingGuide}/">${lang === 'es' ? 'diseñar actividades de escucha' : 'designing listening activities'}</a>.</p></section>`;
+
   const relatedHtml = (ex.relatedExercises && ex.relatedExercises.length) ? `
 <section class="exercise-block">
   <h2>${ui.relatedExercises}</h2>
@@ -459,16 +721,21 @@ ${breadcrumbHtml}
     <h1>${htmlEscape(title)}</h1>
     <p>${htmlEscape(description || '')}</p>
     <div class="meta-row">
-      <span class="badge level-${ex.level}">${levelLabel}</span>
-      <span class="badge topic">${htmlEscape(topicName || ex.topic)}</span>
-      ${ex.duration ? `<span class="duration">⏱ ${htmlEscape(ex.duration)}</span>` : ''}
+      <a class="badge level-${ex.level}" href="/levels/${ex.level}/">${levelLabel}</a>
+      <a class="badge topic" href="/topics/${ex.topic}/">${htmlEscape(topicName || ex.topic)}</a>
+      ${ex.duration ? `<span class="duration">⏱ ${htmlEscape(lang === 'es' ? ex.duration.replace(/\bminutes?\b/gi, 'minutos') : ex.duration)}</span>` : ''}
     </div>
   </header>
   ${vocabHtml}
+  ${focusHtml}
+  ${beforeHtml}
   ${dialogueHtml}
   ${questionsHtml}
   ${tfHtml}
+  ${answersHtml}
   ${tipsHtml}
+  ${extensionHtml}
+  ${guideLink}
   <div class="ad-slot" data-slot="exercises-after-questions"><span class="ad-label">${ui.advertisement}</span></div>
   ${relatedHtml}
 </article>`;
@@ -649,7 +916,7 @@ function renderLevel(levelMeta, exercises) {
   });
 }
 
-function renderTopicBlock(topicMeta, exercises, lang) {
+function renderTopicBlock(topicMeta, exercises, lang, topicContent = null) {
   const ui = UI[lang];
   const id = topicMeta.id;
   const displayName = (lang === 'es' && topicMeta.es) ? topicMeta.es.name : topicMeta.name;
@@ -657,6 +924,15 @@ function renderTopicBlock(topicMeta, exercises, lang) {
   const filtered = exercises.filter(e => e.topic === id);
   const homeCrumb = lang === 'es' ? 'Inicio' : 'Home';
   const emptyMsg = lang === 'es' ? 'Aún no hay ejercicios para este tema. Vuelve pronto.' : 'No exercises yet for this topic. Check back soon.';
+  const editorial = topicContent?.[lang];
+  const editorialHtml = editorial ? `
+<section class="section topic-editorial">
+  <h2>${htmlEscape(editorial.heading)}</h2>
+  ${editorial.paragraphs.map(paragraph => `<p>${htmlEscape(paragraph)}</p>`).join('\n  ')}
+  <h3>${htmlEscape(editorial.skillsHeading)}</h3>
+  <ul>${editorial.skills.map(skill => `<li>${htmlEscape(skill)}</li>`).join('')}</ul>
+  <p><a href="/guides/${editorial.guideSlug}/">${htmlEscape(editorial.guideLinkText)}</a></p>
+</section>` : '';
 
   return `
 <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -670,6 +946,8 @@ function renderTopicBlock(topicMeta, exercises, lang) {
   <p class="lead">${htmlEscape(displayDesc)}</p>
 </header>
 
+${editorialHtml}
+
 <section class="section">
   <h2>${ui.exercises} <span class="count">${filtered.length}</span></h2>
   ${filtered.length ? `<div class="card-grid">${filtered.map(e => renderExerciseCard(e, lang)).join('')}</div>` : `<p>${emptyMsg}</p>`}
@@ -678,7 +956,7 @@ function renderTopicBlock(topicMeta, exercises, lang) {
 <div class="ad-slot" data-slot="topic-bottom"><span class="ad-label">${ui.advertisement}</span></div>`;
 }
 
-function renderTopic(topicMeta, exercises) {
+function renderTopic(topicMeta, exercises, topicContent = null) {
   const url = `${SITE}/topics/${topicMeta.id}/`;
   const displayNameEn = topicMeta.name;
   const displayNameEs = (topicMeta.es && topicMeta.es.name) || topicMeta.name;
@@ -697,8 +975,8 @@ function renderTopic(topicMeta, exercises) {
     ])],
   }) + pageWrap({
     current: 'resources',
-    bodyEn: renderTopicBlock(topicMeta, exercises, 'en'),
-    bodyEs: renderTopicBlock(topicMeta, exercises, 'es'),
+    bodyEn: renderTopicBlock(topicMeta, exercises, 'en', topicContent),
+    bodyEs: renderTopicBlock(topicMeta, exercises, 'es', topicContent),
     jsonLd: [],
   });
 }
@@ -712,6 +990,18 @@ function renderGuideBlock(g, lang) {
   const date = g.date;
   const bodySource = (useEs ? g._esBody : g._body).replace(/^\s*#\s+.*\n/, '');
   const html = renderMarkdown(bodySource);
+  const recommendations = {
+    'how-to-build-listening-activities-for-a1-and-a2-students': ['at-school', 'daily-routine', 'at-the-restaurant'],
+    'how-to-create-dictation-activities': ['daily-routine', 'weekend-plans', 'at-the-airport'],
+    'how-to-create-listening-exercises-for-esl-students': ['asking-for-directions', 'at-the-restaurant', 'making-a-complaint'],
+    'how-to-practice-english-pronunciation-with-audio': ['introducing-yourself', 'giving-advice', 'job-interview'],
+    'how-to-use-text-to-speech-in-english-classes': ['at-school', 'at-the-restaurant', 'job-interview'],
+  }[g.slug] || [];
+  const relatedExercises = recommendations
+    .map(slug => guideExerciseCatalog.find(exercise => exercise.slug === slug))
+    .filter(Boolean);
+  const relatedHeading = lang === 'es' ? 'Práctica relacionada' : 'Related listening practice';
+  const generatorText = lang === 'es' ? 'Crear audio para otra actividad' : 'Create audio for another activity';
   const homeCrumb = lang === 'es' ? 'Inicio' : 'Home';
   const readingLabel = lang === 'es' ? 'de lectura' : 'read';
 
@@ -733,6 +1023,11 @@ function renderGuideBlock(g, lang) {
     </div>
   </header>
   ${html}
+  <section class="section related-guide-resources">
+    <h2>${relatedHeading}</h2>
+    <div class="card-grid">${relatedExercises.map(ex => `<a class="resource-card" href="/resources/listening-exercises/${ex.slug}/"><div class="meta"><span class="badge level-${ex.level}">${ex.level.toUpperCase()}</span></div><h3>${htmlEscape(lang === 'es' ? (ex.es?.title || ex.title) : ex.title)}</h3><p>${htmlEscape(lang === 'es' ? (ex.es?.summary || ex.summary) : ex.summary)}</p></a>`).join('')}</div>
+    <p><a href="/generator/">${generatorText}</a></p>
+  </section>
 </article>
 <div class="ad-slot" data-slot="guide-bottom"><span class="ad-label">${ui.advertisement}</span></div>`;
 }
@@ -751,7 +1046,6 @@ function renderGuide(g) {
     description: g.description,
     inLanguage: 'en',
     url,
-    author: { '@type': 'Organization', name: 'ListeningClassroom', url: SITE },
     publisher: { '@type': 'Organization', name: 'ListeningClassroom', url: SITE },
     datePublished: g.date || new Date().toISOString().slice(0, 10),
   };
@@ -851,15 +1145,91 @@ Sitemap: ${SITE}/sitemap.xml
 `;
 }
 
+async function validateGeneratedPages() {
+  const roots = ['resources', 'levels', 'topics', 'guides', 'es'];
+  const files = [];
+  async function walk(dir) {
+    if (!existsSync(dir)) return;
+    for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
+      const file = path.join(dir, entry.name);
+      if (entry.isDirectory()) await walk(file);
+      else if (entry.isFile() && entry.name.endsWith('.html')) files.push(file);
+    }
+  }
+  for (const root of roots) await walk(path.join(ROOT, root));
+  for (const file of ['index.html', 'generator/index.html', 'about.html', 'contact.html', 'privacy.html', 'terms.html']) {
+    const absolute = path.join(ROOT, file);
+    if (existsSync(absolute)) files.push(absolute);
+  }
+
+  const failures = [];
+  const internalTarget = (raw, sourceFile) => {
+    if (!raw || raw.startsWith('#') || /^(mailto:|tel:|javascript:|data:)/i.test(raw)) return null;
+    let parsed;
+    try { parsed = new URL(raw, `${SITE}/${path.relative(ROOT, sourceFile).replace(/\\/g, '/')}`); }
+    catch { return null; }
+    if (parsed.origin !== new URL(SITE).origin) return null;
+    let pathname;
+    try { pathname = decodeURIComponent(parsed.pathname); }
+    catch { return `${sourceFile}: invalid encoded URL ${raw}`; }
+    const target = path.resolve(ROOT, `.${pathname}`);
+    if (!target.startsWith(ROOT + path.sep) && target !== ROOT) return `${sourceFile}: target escapes site root: ${raw}`;
+    let targetFile = target;
+    if (existsSync(targetFile) && statSync(targetFile).isDirectory()) targetFile = path.join(targetFile, 'index.html');
+    else if (!path.extname(targetFile)) targetFile = path.join(targetFile, 'index.html');
+    if (!existsSync(targetFile)) return `${path.relative(ROOT, sourceFile)}: broken link ${raw}`;
+    return null;
+  };
+  for (const file of files) {
+    const html = readText(file);
+    const relative = path.relative(ROOT, file).replace(/\\/g, '/');
+    const spanish = relative === 'es' || relative.startsWith('es/');
+    const required = [
+      ['title', /<title>[^<]+<\/title>/],
+      ['description', /<meta name="description" content="[^"]+">/],
+      ['canonical', /<link rel="canonical" href="https:\/\/listeningclassroom\.com\//],
+      ['h1', /<h1[\s>]/],
+    ];
+    if (spanish) required.push(
+      ['lang=es', /<html lang="es">/],
+      ['hreflang=en', /hreflang="en"/],
+      ['hreflang=es', /hreflang="es"/],
+      ['hreflang=x-default', /hreflang="x-default"/],
+    );
+    for (const [label, pattern] of required) {
+      if (!pattern.test(html)) failures.push(`${relative}: missing ${label}`);
+    }
+    for (const match of html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)) {
+      try { JSON.parse(match[1]); }
+      catch { failures.push(`${relative}: invalid JSON-LD`); }
+    }
+    for (const match of html.matchAll(/(?:href|src)\s*=\s*["']([^"']+)["']/gi)) {
+      const problem = internalTarget(match[1], file);
+      if (problem) failures.push(problem);
+    }
+  }
+  if (failures.length) throw new Error(`Generated-page validation failed:\n${failures.join('\n')}`);
+  log(`Validated metadata, JSON-LD and local links in ${files.length} site HTML pages.`);
+}
+
 // ── Main ────────────────────────────────────────────────────────────────────
 async function main() {
   log(`Site base: ${SITE}`);
   log(`Dry run: ${DRY_RUN}`);
 
   const exercises = await loadExercises();
+  guideExerciseCatalog = exercises;
   const guides = await loadGuides();
   const levels = await readJson(path.join(ROOT, 'data', 'levels.json'));
   const topics = await readJson(path.join(ROOT, 'data', 'topics.json'));
+  const topicContent = await readJson(path.join(ROOT, 'data', 'topic-content.json'));
+  const pedagogy = await readJson(path.join(ROOT, 'data', 'pedagogy.json'));
+  const pedagogyEs = await readJson(path.join(ROOT, 'data', 'pedagogy.es.json'));
+  for (const ex of exercises) {
+    const additions = pedagogy[ex.slug];
+    if (additions) Object.assign(ex, additions);
+    if (pedagogyEs[ex.slug]) ex.es = { ...(ex.es || {}), ...pedagogyEs[ex.slug] };
+  }
 
   log(`Loaded ${exercises.length} exercises, ${guides.length} guides, ${levels.levels.length} levels, ${topics.topics.length} topics.`);
 
@@ -871,16 +1241,36 @@ async function main() {
   urls.add(`${SITE}/privacy.html`);
   urls.add(`${SITE}/terms.html`);
 
+  // Manual pages already contain reviewed Spanish content. Publish separate
+  // Spanish documents while keeping the existing English URLs stable.
+  const manualSpanish = [
+    ['index.html', 'ListeningClassroom — Audio y ejercicios de escucha en inglés', 'Genera audio de diálogos en inglés con dos voces y explora ejercicios gratuitos de escucha organizados por nivel.', 'es/index.html', `${SITE}/es/`],
+    ['about.html', 'Acerca de ListeningClassroom — Proyecto independiente', 'Conoce ListeningClassroom, un proyecto independiente con una herramienta de texto a voz y recursos de escucha en inglés.', 'es/about.html', `${SITE}/es/about.html`],
+    ['contact.html', 'Contacto — ListeningClassroom', 'Contacta con ListeningClassroom para enviar comentarios, preguntas o informes sobre la herramienta de audio y los recursos.', 'es/contact.html', `${SITE}/es/contact.html`],
+    ['privacy.html', 'Política de privacidad — ListeningClassroom', 'Consulta cómo ListeningClassroom gestiona los datos, las cookies, la analítica y los servicios publicitarios.', 'es/privacy.html', `${SITE}/es/privacy.html`],
+    ['terms.html', 'Términos de uso — ListeningClassroom', 'Condiciones de uso de la herramienta de texto a voz y los recursos educativos de ListeningClassroom.', 'es/terms.html', `${SITE}/es/terms.html`],
+  ];
+  for (const [file, titleEs, descriptionEs, output, url] of manualSpanish) {
+    await writeManualSpanishVariant(path.join(ROOT, file), titleEs, descriptionEs, path.join(ROOT, output));
+    urls.add(url);
+  }
+  await writeGeneratorSpanishVariant();
+  urls.add(`${SITE}/es/generator/`);
+
   // Resource index
   const idxPath = path.join(ROOT, 'resources/listening-exercises/index.html');
   await writeIfChanged(idxPath, renderExerciseIndex(exercises));
   urls.add(`${SITE}/resources/listening-exercises/`);
+  await writeSpanishVariant(idxPath);
+  urls.add(`${SITE}/es/resources/listening-exercises/`);
 
   // Each exercise
   for (const ex of exercises) {
     const p = path.join(ROOT, 'resources/listening-exercises', ex.slug, 'index.html');
     await writeIfChanged(p, renderExercise(ex));
     urls.add(`${SITE}/resources/listening-exercises/${ex.slug}/`);
+    await writeSpanishVariant(p);
+    urls.add(`${SITE}/es/resources/listening-exercises/${ex.slug}/`);
   }
 
   // Each level
@@ -890,7 +1280,11 @@ async function main() {
     // Only add to sitemap if there are exercises at this level.
     if (exercises.some(e => e.level === lvl.id)) {
       urls.add(`${SITE}/levels/${lvl.id}/`);
+      urls.add(`${SITE}/es/levels/${lvl.id}/`);
     }
+    // Empty levels remain noindex but their Spanish counterpart keeps links
+    // from other level navigation valid without entering the sitemap.
+    await writeSpanishVariant(p);
   }
 
   // Each topic (only those with exercises)
@@ -898,24 +1292,32 @@ async function main() {
   for (const t of topics.topics) {
     if (!seenTopics.has(t.id)) continue;
     const p = path.join(ROOT, 'topics', t.id, 'index.html');
-    await writeIfChanged(p, renderTopic(t, exercises));
+    await writeIfChanged(p, renderTopic(t, exercises, topicContent[t.id]));
     urls.add(`${SITE}/topics/${t.id}/`);
+    await writeSpanishVariant(p);
+    urls.add(`${SITE}/es/topics/${t.id}/`);
   }
 
   // Guides index + each guide
   const gIdx = path.join(ROOT, 'guides/index.html');
   await writeIfChanged(gIdx, renderGuideIndex(guides));
   urls.add(`${SITE}/guides/`);
+  await writeSpanishVariant(gIdx);
+  urls.add(`${SITE}/es/guides/`);
   for (const g of guides) {
     const p = path.join(ROOT, 'guides', g.slug, 'index.html');
     await writeIfChanged(p, renderGuide(g));
     urls.add(`${SITE}/guides/${g.slug}/`);
+    await writeSpanishVariant(p);
+    urls.add(`${SITE}/es/guides/${g.slug}/`);
   }
 
   // Sitemap
   const sortedUrls = [...urls].sort();
   await writeIfChanged(path.join(ROOT, 'sitemap.xml'), renderSitemap(sortedUrls));
   log(`Wrote sitemap.xml with ${sortedUrls.length} URLs.`);
+
+  await validateGeneratedPages();
 
   // robots.txt
   await writeIfChanged(path.join(ROOT, 'robots.txt'), renderRobots());

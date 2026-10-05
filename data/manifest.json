@@ -1,9 +1,9 @@
 {
   "site": "https://listeningclassroom.com",
-  "generatedAt": "2026-09-02T14:25:55.118Z",
+  "generatedAt": "2026-10-05T15:15:09.628Z",
   "counts": {
     "exercises": 15,
-    "guides": 5,
+    "guides": 7,
     "levels": 4,
     "topics": 13
   },
@@ -168,6 +168,18 @@
       "title": "How to Practice English Pronunciation with Audio",
       "description": "A practical guide to using audio tools and simple drills to improve English pronunciation in class or self-study, focused on stress, intonation, and connected speech.",
       "readingTime": "7 minutes"
+    },
+    {
+      "slug": "how-to-scaffold-listening-for-mixed-ability-esl-classes",
+      "title": "How to Scaffold Listening for Mixed-Ability ESL Classes",
+      "description": "Practical scaffolding strategies for ESL listening lessons where learners are at different stages, including tiered tasks, audio speed, and follow-up options.",
+      "readingTime": "7 minutes"
+    },
+    {
+      "slug": "how-to-teach-listening-vocabulary-in-context",
+      "title": "How to Teach Listening Vocabulary in Context",
+      "description": "A practical guide to pre-teaching, recycling and revising vocabulary through listening tasks, with a four-step classroom routine that fits any level.",
+      "readingTime": "6 minutes"
     },
     {
       "slug": "how-to-use-text-to-speech-in-english-classes",
