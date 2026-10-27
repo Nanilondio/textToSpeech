@@ -1,113 +1,33 @@
 {
-  "slug": "job-interview",
-  "title": "Job Interview",
-  "level": "b1",
-  "topic": "work",
-  "topicName": "Work & Career",
-  "category": "listening-exercises",
-  "summary": "An interviewer asks a candidate about experience, strengths, and why they want the job.",
-  "description": "A short intermediate-level interview simulation. Useful vocabulary includes 'strengths and weaknesses', 'relevant experience', and 'teamwork'. The interview ends with a polite close.",
-  "duration": "3 minutes",
-  "vocabulary": [
-    { "word": "candidate", "definition": "a person who is being considered for a job" },
-    { "word": "experience", "definition": "knowledge or skill you get from doing a job" },
-    { "word": "strengths", "definition": "the things you are good at" },
-    { "word": "teamwork", "definition": "the ability to work well with other people" },
-    { "word": "available", "definition": "able to start doing something, for example a new job" }
+  "slug":"job-interview","title":"Job Interview","level":"b1","topic":"work","topicName":"Work & Careers","category":"listening-exercises",
+  "summary":"A candidate discusses her experience, strengths and response to a workplace challenge in a first-round interview.",
+  "description":"A B1 listening lesson about a realistic job interview. Learners follow developed answers about experience, transferable skills and problem-solving, then practise giving evidence for their own strengths.",
+  "duration":"15–18 minutes (editorial estimate)","status":"published",
+  "levelRationale":"B1 is appropriate because the candidate gives connected answers about past responsibilities, explains a workplace problem and supports a strength with an example. The interviewer asks natural follow-up questions, but the language remains practical and familiar for intermediate learners.",
+  "context":{"setting":"A candidate has a first interview for a customer-support position at a software company.","estimatedDuration":"15–18 minutes; editorial estimate for preparation, two listens, evidence-based feedback and a speaking extension."},
+  "objectives":["Identify the candidate’s previous role, main responsibilities and reason for applying after the first listen.","Match a strength and a workplace example to the evidence the candidate gives in a second listen.","Use a clear answer structure to describe experience, a strength and a response to a workplace problem."],
+  "activities":{
+    "preListening":["In pairs, rank these interview topics from easiest to hardest to answer: previous experience, strengths, a difficult situation, reason for applying. Explain one choice.","Predict two follow-up questions an interviewer might ask after a candidate names a strength.","Match the expressions handle enquiries, keep track of, calm someone down and take responsibility to their likely workplace meaning."],
+    "global":["Listen once and choose the best summary: A) A candidate explains her customer-support experience and how she dealt with a delayed order. B) A manager trains a new employee on software. C) Two colleagues compare their salaries.","Note the position, the candidate’s previous job and her main reason for applying."],
+    "detailed":["Complete the notes: previous role: ____; daily responsibility: ____; strength: ____; example problem: ____.","Which three actions did Nina take when a customer’s order was delayed? Put them in the order she describes them.","Why does Nina want to move into software support? Select the reason she gives and identify the line that supports it.","Decide true or false: Nina worked in a hotel; she checked information before calling the customer back; the interviewer asks for an example of organisation."],
+    "extension":["Use the structure situation–action–result to answer: Tell me about a time you solved a problem at work or in your studies. A partner listens and asks one follow-up question about the result.","For a second round, choose one strength from the lesson and give a different example without repeating Nina’s situation."]
+  },
+  "transcript":[
+    {"line":1,"speaker":"1","text":"Thanks for coming in today, Nina. Could you start by telling me about your previous experience?"},{"line":2,"speaker":"2","text":"Of course. I worked in customer service for a travel company for three years. I handled enquiries by phone and email, and I helped customers change bookings when their plans changed."},{"line":3,"speaker":"1","text":"What did you enjoy most about that role?"},{"line":4,"speaker":"2","text":"I liked finding practical solutions, especially when someone was worried or in a hurry. I learned to listen carefully and explain the next step clearly."},{"line":5,"speaker":"1","text":"This position can be busy. Can you give me an example of handling a difficult situation?"},{"line":6,"speaker":"2","text":"Once, a customer’s train was cancelled the day before a trip. She was very upset, so I first checked the available options and spoke to the train company. Then I called her back with two possible routes and helped her choose one."},{"line":7,"speaker":"1","text":"What would you say is one of your main strengths?"},{"line":8,"speaker":"2","text":"I am organised. I keep track of several cases at the same time, and I make notes so that I do not forget a follow-up. My team leader often trusted me with the more complicated enquiries."},{"line":9,"speaker":"1","text":"Why are you interested in moving into software support?"},{"line":10,"speaker":"2","text":"I enjoy helping people with practical problems, and I would like to learn more about digital products. Your company also provides training, so I could build on my customer-service experience while developing new technical skills."},{"line":11,"speaker":"1","text":"That makes sense. Is there anything you would like to ask me?"},{"line":12,"speaker":"2","text":"Yes. How does the team share information when a problem cannot be solved immediately?"}
   ],
-  "dialogue": [
-    { "speaker": "1", "text": "Good morning. Please, have a seat. So, tell me a little about yourself." },
-    { "speaker": "2", "text": "Good morning. My name is Daniel. I have five years of experience in marketing." },
-    { "speaker": "1", "text": "Great. What would you say are your main strengths?" },
-    { "speaker": "2", "text": "I am organised, I work well under pressure, and I enjoy teamwork." },
-    { "speaker": "1", "text": "And your weaknesses?" },
-    { "speaker": "2", "text": "Sometimes I am too detail-oriented, but I am learning to prioritise better." },
-    { "speaker": "1", "text": "Why do you want to work for our company?" },
-    { "speaker": "2", "text": "I admire your focus on sustainability, and I would love to grow in this field." },
-    { "speaker": "1", "text": "When would you be available to start?" },
-    { "speaker": "2", "text": "I can start in two weeks, after giving notice at my current job." },
-    { "speaker": "1", "text": "Thank you, Daniel. We will contact you by the end of the week." }
+  "answerKey":[
+    {"activityId":"global-summary","answer":"A; Nina explains travel-company customer service and a response to a cancelled train.","explanation":"The interview covers her previous customer-service role and the specific cancelled-train situation she handled.","evidenceLines":[2,5,6]},
+    {"activityId":"detailed-notes","answer":"customer service at a travel company; handling enquiries and changing bookings; organisation; a customer’s train was cancelled.","explanation":"Nina names the company context and duties in line 2, her strength in line 8, and the problem in line 6.","evidenceLines":[2,6,8]},
+    {"activityId":"problem-actions","answer":"She checked available options, spoke to the train company, then called the customer with two routes and helped her choose.","explanation":"These actions show how Nina moved from gathering information to offering a practical solution.","evidenceLines":[6]},
+    {"activityId":"motivation","answer":"She wants to help with practical problems while learning about digital products and developing technical skills.","explanation":"Nina connects the new role to her existing customer-service experience and the company’s training.","evidenceLines":[9,10]},
+    {"activityId":"true-false","answer":"False; true; false.","explanation":"Nina worked for a travel company, she checked options before calling back, and the interviewer asks about a difficult situation rather than organisation.","evidenceLines":[2,6,8]}
   ],
-  "questions": [
-    {
-      "q": "How many years of experience does Daniel have?",
-      "options": ["Three", "Five", "Seven"],
-      "answer": 1
-    },
-    {
-      "q": "What is one of Daniel's strengths?",
-      "options": ["Working under pressure", "Being disorganised", "Working alone"],
-      "answer": 0
-    },
-    {
-      "q": "When can Daniel start?",
-      "options": ["Next week", "In two weeks", "Next month"],
-      "answer": 1
-    }
-  ],
-  "trueFalse": [
-    {
-      "statement": "Daniel has ten years of marketing experience.",
-      "answer": false,
-      "explanation": "Daniel says he has five years of experience in marketing."
-    },
-    {
-      "statement": "Daniel admires the company's focus on sustainability.",
-      "answer": true,
-      "explanation": "Daniel explicitly says 'I admire your focus on sustainability.'"
-    }
-  ],
-  "teacherTips": [
-    "Pre-teach formulaic interview phrases: 'I would say', 'I am good at…', 'My weakness is…'",
-    "After listening, students write five bullet points about themselves following the same structure.",
-    "Run a mock interview in pairs using the same questions, then swap roles."
-  ],
-  "relatedExercises": ["travel-problems", "giving-advice"],
-  "es": {
-    "title": "Entrevista de trabajo",
-    "summary": "Un entrevistador pregunta a un candidato sobre su experiencia, sus puntos fuertes y por qué quiere el puesto.",
-    "description": "Una breve simulación de entrevista de nivel intermedio. El vocabulario útil incluye 'strengths and weaknesses', 'relevant experience' y 'teamwork'. La entrevista termina con un cierre educado.",
-    "topicName": "Trabajo y carrera",
-    "vocabulary": [
-      { "word": "candidate", "definition": "una persona que está siendo considerada para un trabajo" },
-      { "word": "experience", "definition": "conocimiento o habilidad que obtienes al hacer un trabajo" },
-      { "word": "strengths", "definition": "las cosas en las que eres bueno" },
-      { "word": "teamwork", "definition": "la capacidad de trabajar bien con otras personas" },
-      { "word": "available", "definition": "capaz de empezar a hacer algo, por ejemplo un trabajo nuevo" }
-    ],
-    "questions": [
-      {
-        "q": "¿Cuántos años de experiencia tiene Daniel?",
-        "options": ["Tres", "Cinco", "Siete"],
-        "answer": 1
-      },
-      {
-        "q": "¿Cuál es uno de los puntos fuertes de Daniel?",
-        "options": ["Trabajar bajo presión", "Ser desorganizado", "Trabajar solo"],
-        "answer": 0
-      },
-      {
-        "q": "¿Cuándo puede empezar Daniel?",
-        "options": ["La próxima semana", "En dos semanas", "El mes que viene"],
-        "answer": 1
-      }
-    ],
-    "trueFalse": [
-      {
-        "statement": "Daniel tiene diez años de experiencia en marketing.",
-        "answer": false,
-        "explanation": "Daniel dice que tiene cinco años de experiencia en marketing."
-      },
-      {
-        "statement": "Daniel admira el enfoque de sostenibilidad de la empresa.",
-        "answer": true,
-        "explanation": "Daniel dice explícitamente 'I admire your focus on sustainability'."
-      }
-    ],
-    "teacherTips": [
-      "Enseña antes fórmulas de entrevista: 'I would say', 'I am good at…', 'My weakness is…'.",
-      "Después de escuchar, los estudiantes escriben cinco puntos sobre sí mismos siguiendo la misma estructura.",
-      "Haz una entrevista simulada por parejas usando las mismas preguntas y luego intercambiad los papeles."
-    ]
-  }
+  "teacherGuide":{"procedure":["Preparation (4 minutes): elicit interview topics and clarify handle enquiries, keep track of and follow-up with quick workplace examples.","First listen (3 minutes): play the interview without the transcript. Learners identify the position, previous job and reason for applying.","Second listen (5 minutes): learners complete notes and sequence the problem-solving actions. Ask them to underline evidence, not just answers.","Feedback (3 minutes): reconstruct Nina’s answer using situation, action and result; compare why each detail is useful in an interview.","Speaking extension (6 minutes): learners answer the problem question, receive one follow-up question and improve one detail."],"differentiation":["Support: provide a note frame with the headings role, responsibility, problem, action and result; replay lines 5–10 once.","Stretch: ask learners to paraphrase Nina’s answer and add a measurable result to their own example."],"followUp":["Learners prepare a 60-second answer to Tell me about a time you solved a problem, then record or rehearse it using situation–action–result." ]},
+  "printable":{"studentSheet":true,"teacherSheet":true},"updatedAt":"2026-10-27","publishedAt":"2026-10-27",
+  "vocabulary":[{"word":"handle enquiries","definition":"deal with questions or requests from customers"},{"word":"change a booking","definition":"make a different reservation or travel arrangement"},{"word":"practical solution","definition":"an answer that can work in a real situation"},{"word":"keep track of","definition":"continue to know the status or details of something"},{"word":"follow-up","definition":"a later action to check or continue a matter"},{"word":"build on experience","definition":"use existing knowledge as a basis for developing further skills"}],
+  "dialogue":[{"speaker":"1","text":"Thanks for coming in today, Nina. Could you start by telling me about your previous experience?"},{"speaker":"2","text":"Of course. I worked in customer service for a travel company for three years. I handled enquiries by phone and email, and I helped customers change bookings when their plans changed."},{"speaker":"1","text":"What did you enjoy most about that role?"},{"speaker":"2","text":"I liked finding practical solutions, especially when someone was worried or in a hurry. I learned to listen carefully and explain the next step clearly."},{"speaker":"1","text":"This position can be busy. Can you give me an example of handling a difficult situation?"},{"speaker":"2","text":"Once, a customer’s train was cancelled the day before a trip. She was very upset, so I first checked the available options and spoke to the train company. Then I called her back with two possible routes and helped her choose one."},{"speaker":"1","text":"What would you say is one of your main strengths?"},{"speaker":"2","text":"I am organised. I keep track of several cases at the same time, and I make notes so that I do not forget a follow-up. My team leader often trusted me with the more complicated enquiries."},{"speaker":"1","text":"Why are you interested in moving into software support?"},{"speaker":"2","text":"I enjoy helping people with practical problems, and I would like to learn more about digital products. Your company also provides training, so I could build on my customer-service experience while developing new technical skills."},{"speaker":"1","text":"That makes sense. Is there anything you would like to ask me?"},{"speaker":"2","text":"Yes. How does the team share information when a problem cannot be solved immediately?"}],
+  "questions":[{"q":"How long did Nina work in customer service?","options":["One year","Three years","Five years"],"answer":1},{"q":"What happened to the customer’s train?","options":["It was delayed for one hour","It was cancelled","It arrived early"],"answer":1},{"q":"What strength does Nina identify?","options":["Organisation","Public speaking","Sales"],"answer":0}],
+  "trueFalse":[{"statement":"Nina worked for a travel company.","answer":true,"explanation":"She says this directly when describing her previous experience."},{"statement":"Nina gave the customer only one possible route.","answer":false,"explanation":"She called back with two possible routes."}],
+  "teacherTips":["Use a simple situation–action–result frame so learners hear how examples make interview answers convincing.","Pause after the problem-solving answer and ask which details show empathy, initiative and organisation.","In pair work, require one follow-up question so learners practise developing an answer rather than giving isolated sentences."],"relatedExercises":["giving-advice","making-an-appointment"],
+  "es":{"title":"Entrevista de trabajo","summary":"Una candidata habla de su experiencia, sus fortalezas y cómo respondió a un problema laboral en una primera entrevista.","description":"Una lección B1 de comprensión auditiva sobre una entrevista de trabajo realista. El alumnado sigue respuestas desarrolladas sobre experiencia, habilidades transferibles y resolución de problemas, y practica cómo justificar sus fortalezas con ejemplos.","topicName":"Trabajo y profesiones","levelRationale":"El nivel B1 es adecuado porque la candidata desarrolla respuestas sobre responsabilidades pasadas, explica un problema laboral y apoya una fortaleza con un ejemplo. Las preguntas de seguimiento son naturales, pero el lenguaje sigue siendo práctico para un nivel intermedio.","context":{"setting":"Una candidata realiza una primera entrevista para un puesto de atención al cliente en una empresa de software.","estimatedDuration":"15–18 minutos; estimación editorial para la preparación, dos escuchas, la retroalimentación con evidencia y una extensión oral."},"objectives":["Identificar el puesto anterior, las responsabilidades y el motivo para postularse tras la primera escucha.","Relacionar una fortaleza y un ejemplo laboral con las evidencias de la segunda escucha.","Usar una estructura clara para describir experiencia, una fortaleza y la respuesta a un problema laboral."],"activities":{"preListening":["En parejas, ordenen estos temas de entrevista de más fácil a más difícil: experiencia, fortalezas, situación difícil y motivo para postularse. Justifiquen una elección.","Predigan dos preguntas de seguimiento después de que una candidata mencione una fortaleza.","Relacionen handle enquiries, keep track of, calm someone down y take responsibility con su posible significado laboral."],"global":["Escuchen una vez y elijan: A) Una candidata explica su experiencia en atención al cliente y cómo resolvió un problema con un tren cancelado. B) Un gerente forma a una persona nueva. C) Dos compañeros comparan sus sueldos.","Anoten el puesto, el trabajo anterior y el motivo principal para postularse."],"detailed":["Completen: trabajo anterior: ____; responsabilidad: ____; fortaleza: ____; problema: ____.","¿Qué tres acciones realizó Nina cuando se canceló el tren? Ordénenlas.","¿Por qué quiere pasar a soporte de software? Elijan el motivo y señalen la línea que lo demuestra.","Decidan si son verdaderas: Nina trabajó en un hotel; comprobó la información antes de llamar; el entrevistador pide un ejemplo de organización."],"extension":["Usen la estructura situación–acción–resultado para responder: Cuéntame una ocasión en la que resolviste un problema en el trabajo o los estudios. El compañero hace una pregunta de seguimiento.","Para ampliar, elijan otra fortaleza y den un ejemplo diferente al de Nina."]},"teacherGuide":{"procedure":["Preparación (4 minutos): active temas de entrevista y aclare handle enquiries, keep track of y follow-up con ejemplos laborales breves.","Primera escucha (3 minutos): reproduzca sin transcripción. Identifiquen puesto, trabajo anterior y motivo.","Segunda escucha (5 minutos): completen las notas y ordenen las acciones; pidan subrayar evidencias.","Corrección (3 minutos): reconstruya la respuesta de Nina con situación, acción y resultado; comenten por qué cada detalle es útil.","Extensión oral (6 minutos): respondan la pregunta del problema, reciban una pregunta de seguimiento y mejoren un detalle."],"differentiation":["Apoyo: entregue una tabla con puesto, responsabilidad, problema, acción y resultado; repita las líneas 5–10.","Ampliación: parafraseen la respuesta de Nina y añadan un resultado medible a su propio ejemplo."],"followUp":["Preparen una respuesta de 60 segundos a Cuéntame una ocasión en la que resolviste un problema y ensáyenla con situación–acción–resultado."]},"printable":{"studentSheet":true,"teacherSheet":true},"vocabulary":[{"word":"handle enquiries","definition":"atender preguntas o solicitudes de clientes"},{"word":"change a booking","definition":"modificar una reserva o gestión de viaje"},{"word":"practical solution","definition":"una solución que funciona en una situación real"},{"word":"keep track of","definition":"seguir conociendo el estado o los detalles de algo"},{"word":"follow-up","definition":"acción posterior para comprobar o continuar un asunto"},{"word":"build on experience","definition":"usar conocimientos previos como base para desarrollar nuevas habilidades"}],"questions":[{"q":"¿Cuánto tiempo trabajó Nina en atención al cliente?","options":["Un año","Tres años","Cinco años"],"answer":1},{"q":"¿Qué ocurrió con el tren de la clienta?","options":["Se retrasó una hora","Se canceló","Llegó antes"],"answer":1},{"q":"¿Qué fortaleza menciona Nina?","options":["La organización","Hablar en público","Las ventas"],"answer":0}],"trueFalse":[{"statement":"Nina trabajó para una empresa de viajes.","answer":true,"explanation":"Lo dice directamente al describir su experiencia anterior."},{"statement":"Nina ofreció a la clienta una sola ruta.","answer":false,"explanation":"Dice que llamó con dos rutas posibles."}],"teacherTips":["Use una estructura situación–acción–resultado para mostrar cómo los ejemplos fortalecen las respuestas.","Pause después de la respuesta sobre el problema y pregunte qué detalles muestran empatía, iniciativa y organización.","Exija una pregunta de seguimiento en parejas para practicar respuestas desarrolladas."],"relatedExercises":["giving-advice","making-an-appointment"]}
 }

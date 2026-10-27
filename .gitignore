@@ -1,1 +1,10 @@
 .claude/
+
+# Local-only certification and performance benchmark scripts
+/scripts/benchmark-kokoro.mjs
+ADSENSE_READINESS_AUDIT.md
+
+# Ignore Markdown documents except README files.
+*.md
+!README.md
+!**/README.md

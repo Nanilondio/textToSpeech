@@ -21,6 +21,7 @@ import { promises as fs } from 'node:fs';
 import { readFileSync, existsSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { validateExercises } from './content-validator.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -28,6 +29,7 @@ const ROOT = path.resolve(__dirname, '..');
 // ── CLI args ────────────────────────────────────────────────────────────────
 const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
+const PREVIEW = argv.includes('--preview');
 const baseArg = argv.find(a => a.startsWith('--base='));
 const SITE = (baseArg ? baseArg.split('=')[1] : 'https://listeningclassroom.com')
   .replace(/\/+$/, '');
@@ -83,7 +85,7 @@ const UI = {
     howItWorks: 'How it works', faq: 'FAQ', about: 'About', contact: 'Contact',
     listeningExercises: 'Listening Exercises',
     vocabulary: 'Vocabulary', dialogue: 'Dialogue',
-    transcript: 'Transcript', learningFocus: 'Learning focus', answerKey: 'Answer key',
+    transcript: 'Transcript', learningFocus: 'Learning focus', answerKey: 'Answer key', context: 'Context and timing', preListening: 'Before listening', global: 'First listening: general understanding', detailed: 'Second listening: details', extension: 'Follow-up activity', teacherGuide: 'Teacher guide', procedure: 'Procedure', differentiation: 'Differentiation', evidence: 'Evidence', pendingReview: 'Editorial status: pending human review',
     comprehensionQuestions: 'Comprehension Questions',
     trueFalse: 'True / False', teacherTips: 'Teacher Tips',
     relatedExercises: 'Related Exercises',
@@ -107,7 +109,7 @@ const UI = {
     howItWorks: 'Cómo funciona', faq: 'Preguntas', about: 'Acerca de', contact: 'Contacto',
     listeningExercises: 'Ejercicios de escucha',
     vocabulary: 'Vocabulario', dialogue: 'Diálogo',
-    transcript: 'Transcripción', learningFocus: 'Enfoque de aprendizaje', answerKey: 'Respuestas',
+    transcript: 'Transcripción', learningFocus: 'Enfoque de aprendizaje', answerKey: 'Respuestas', context: 'Contexto y duración', preListening: 'Antes de escuchar', global: 'Primera escucha: comprensión general', detailed: 'Segunda escucha: detalles', extension: 'Actividad de seguimiento', teacherGuide: 'Guía docente', procedure: 'Procedimiento', differentiation: 'Diferenciación', evidence: 'Evidencia', pendingReview: 'Estado editorial: pendiente de revisión humana',
     comprehensionQuestions: 'Preguntas de comprensión',
     trueFalse: 'Verdadero / Falso', teacherTips: 'Consejos para el docente',
     relatedExercises: 'Ejercicios relacionados',
@@ -153,6 +155,7 @@ function renderMarkdown(md) {
 }
 
 function parseFrontMatter(src) {
+  src = src.replace(/\r\n/g, '\n');
   if (!src.startsWith('---')) return { meta: {}, body: src };
   const end = src.indexOf('\n---', 3);
   if (end === -1) return { meta: {}, body: src };
@@ -200,6 +203,13 @@ async function loadGuides() {
     const slug = f.replace(/\.md$/, '');
     const enSrc = readText(path.join(dir, f));
     const { meta: enMeta, body: enBody } = parseFrontMatter(enSrc);
+    // Keep guide loading resilient to CRLF/BOM front matter from existing files.
+    if (!enMeta.title || !enMeta.description) {
+      const normalized = enSrc.replace(/^\uFEFF/, '').replace(/\r\n/g, '\n');
+      for (const key of ['title', 'description']) {
+        if (!enMeta[key]) enMeta[key] = normalized.match(new RegExp(`^${key}\\s*:\\s*(.+)$`, 'm'))?.[1]?.trim();
+      }
+    }
 
     const esFile = f.replace(/\.md$/, '.es.md');
     const esPath = path.join(dir, esFile);
@@ -601,6 +611,8 @@ function renderExerciseBlock(ex, lang) {
   const learningObjectives = lang === 'es' ? ex.es?.learningObjectives : ex.learningObjectives;
   const beforeListening = lang === 'es' ? ex.es?.beforeListening : ex.beforeListening;
   const extensionActivity = lang === 'es' ? ex.es?.extensionActivity : ex.extensionActivity;
+  const editorial = lang === 'es' ? ex.es : ex;
+  const transcript = editorial?.transcript?.length ? editorial.transcript : ex.transcript;
 
   const homeCrumb = lang === 'es' ? 'Inicio' : 'Home';
   const breadcrumbHtml = `
@@ -625,19 +637,15 @@ function renderExerciseBlock(ex, lang) {
   const dialogueText = dialogueToString(ex.dialogue || []);
   const dialogueHtml = `
 <section class="exercise-block">
-  <h2>${ui.transcript}</h2>
-  <div class="dialogue-block">
-    ${ex.dialogue.map(d => `
+  <h2>${ui.transcript}</h2><div class="dialogue-block">${ex.dialogue.map(d => `
       <div class="dialogue-line speaker-${d.speaker}">
         <span class="who">Speaker ${d.speaker}</span>
         <span class="text">${htmlEscape(d.text)}</span>
-      </div>`).join('')}
-  </div>
+      </div>`).join('')}</div>
   <div class="dialogue-actions">
     <button type="button" class="btn-generate" data-generate-text="${attrEscape(dialogueText)}">
       ${ui.openInGenerator}
     </button>
-    <a class="btn-generate" href="/generator/">${ui.openGenerator}</a>
   </div>
 </section>
   <div class="ad-slot" data-slot="exercises-after-dialogue"><span class="ad-label">${ui.advertisement}</span></div>`;
@@ -653,6 +661,13 @@ function renderExerciseBlock(ex, lang) {
   <h2>${lang === 'es' ? 'Antes de escuchar' : 'Before listening'}</h2>
   <ul>${beforeListening.map(item => `<li>${htmlEscape(item)}</li>`).join('')}</ul>
 </section>` : '';
+
+  const listSection = (title, items) => items?.length ? `<section class="exercise-block"><h2>${title}</h2><ol>${items.map(item => `<li>${htmlEscape(item)}</li>`).join('')}</ol></section>` : '';
+  const contextHtml = editorial.context ? `<section class="exercise-block"><h2>${ui.context}</h2><p><strong>${htmlEscape(editorial.context.setting)}</strong></p><p>${htmlEscape(editorial.context.estimatedDuration || '')}</p></section>` : '';
+  const activitiesHtml = editorial.activities ? `${listSection(ui.preListening, editorial.activities.preListening)}${listSection(ui.global, editorial.activities.global)}${listSection(ui.detailed, editorial.activities.detailed)}${listSection(ui.extension, editorial.activities.extension)}` : '';
+  const answerKeyHtml = editorial.answerKey?.length ? `<section class="exercise-block answer-key"><h2>${ui.answerKey}</h2>${editorial.answerKey.map(a => `<div class="answer-item"><p><strong>${htmlEscape(a.activityId)}:</strong> ${htmlEscape(a.answer)}</p><p>${htmlEscape(a.explanation)}</p><p><strong>${ui.evidence}:</strong> ${a.evidenceLines.map(n => `line ${htmlEscape(n)}`).join(', ')}</p></div>`).join('')}</section>` : '';
+  const guideHtml = editorial.teacherGuide ? `<section class="tips-block"><h2>${ui.teacherGuide}</h2>${listSection(ui.procedure, editorial.teacherGuide.procedure)}${listSection(ui.differentiation, editorial.teacherGuide.differentiation)}${listSection(ui.extension, editorial.teacherGuide.followUp)}</section>` : '';
+  const statusHtml = ex.status === 'needs_review' ? `<p class="editorial-status" role="status">${ui.pendingReview}</p>` : '';
 
   const questionsHtml = (questions && questions.length) ? `
 <section class="exercise-block">
@@ -727,13 +742,18 @@ ${breadcrumbHtml}
     </div>
   </header>
   ${vocabHtml}
+  ${statusHtml}
+  ${contextHtml}
   ${focusHtml}
   ${beforeHtml}
+  ${activitiesHtml}
   ${dialogueHtml}
   ${questionsHtml}
   ${tfHtml}
   ${answersHtml}
+  ${answerKeyHtml}
   ${tipsHtml}
+  ${guideHtml}
   ${extensionHtml}
   ${guideLink}
   <div class="ad-slot" data-slot="exercises-after-questions"><span class="ad-label">${ui.advertisement}</span></div>
@@ -771,6 +791,7 @@ function renderExercise(ex) {
   return renderHead({
     titleEn, titleEs, descriptionEn, descriptionEs,
     canonical: url,
+    robots: (ex.status === 'needs_review' || ex.status === 'draft') ? 'noindex, nofollow' : 'index, follow',
     ogType: 'article',
     jsonLd: [educationalLd, breadcrumbsLd],
   }) + pageWrap({
@@ -1212,6 +1233,22 @@ async function validateGeneratedPages() {
   log(`Validated metadata, JSON-LD and local links in ${files.length} site HTML pages.`);
 }
 
+// Remove only generated lesson directories whose source is no longer public.
+// Other resources and hand-authored pages are intentionally left untouched.
+async function removeStaleExercisePages(publishedExercises) {
+  if (DRY_RUN) return;
+  const publicSlugs = new Set(publishedExercises.map(ex => ex.slug));
+  for (const prefix of ['resources/listening-exercises', 'es/resources/listening-exercises']) {
+    const dir = path.join(ROOT, prefix);
+    if (!existsSync(dir)) continue;
+    for (const entry of await fs.readdir(dir, { withFileTypes: true })) {
+      if (!entry.isDirectory() || publicSlugs.has(entry.name)) continue;
+      const index = path.join(dir, entry.name, 'index.html');
+      if (existsSync(index)) await fs.rm(path.join(dir, entry.name), { recursive: true, force: true });
+    }
+  }
+}
+
 // ── Main ────────────────────────────────────────────────────────────────────
 async function main() {
   log(`Site base: ${SITE}`);
@@ -1231,7 +1268,12 @@ async function main() {
     if (pedagogyEs[ex.slug]) ex.es = { ...(ex.es || {}), ...pedagogyEs[ex.slug] };
   }
 
-  log(`Loaded ${exercises.length} exercises, ${guides.length} guides, ${levels.levels.length} levels, ${topics.topics.length} topics.`);
+  const validation = validateExercises(exercises);
+  const previewExercises = exercises.filter(e => e.status === 'needs_review' || e.status === 'draft');
+  const publishedExercises = validation.published;
+  guideExerciseCatalog = publishedExercises;
+
+  log(`Loaded ${exercises.length} exercises, ${publishedExercises.length} ${PREVIEW ? 'preview/public' : 'public'} exercises, ${guides.length} guides, ${levels.levels.length} levels, ${topics.topics.length} topics.`);
 
   const urls = new Set();
   urls.add(`${SITE}/`);
@@ -1259,26 +1301,28 @@ async function main() {
 
   // Resource index
   const idxPath = path.join(ROOT, 'resources/listening-exercises/index.html');
-  await writeIfChanged(idxPath, renderExerciseIndex(exercises));
+  await writeIfChanged(idxPath, renderExerciseIndex(publishedExercises));
   urls.add(`${SITE}/resources/listening-exercises/`);
   await writeSpanishVariant(idxPath);
   urls.add(`${SITE}/es/resources/listening-exercises/`);
 
   // Each exercise
-  for (const ex of exercises) {
+  // Keep non-public pilot pages available for internal preview and for stable
+  // links from existing lessons, but never include them in collections or the sitemap.
+  for (const ex of [...publishedExercises, ...previewExercises]) {
     const p = path.join(ROOT, 'resources/listening-exercises', ex.slug, 'index.html');
     await writeIfChanged(p, renderExercise(ex));
-    urls.add(`${SITE}/resources/listening-exercises/${ex.slug}/`);
+    if (ex.status !== 'needs_review' && ex.status !== 'draft') urls.add(`${SITE}/resources/listening-exercises/${ex.slug}/`);
     await writeSpanishVariant(p);
-    urls.add(`${SITE}/es/resources/listening-exercises/${ex.slug}/`);
+    if (ex.status !== 'needs_review' && ex.status !== 'draft') urls.add(`${SITE}/es/resources/listening-exercises/${ex.slug}/`);
   }
 
   // Each level
   for (const lvl of levels.levels) {
     const p = path.join(ROOT, 'levels', lvl.id, 'index.html');
-    await writeIfChanged(p, renderLevel(lvl, exercises));
+    await writeIfChanged(p, renderLevel(lvl, publishedExercises));
     // Only add to sitemap if there are exercises at this level.
-    if (exercises.some(e => e.level === lvl.id)) {
+    if (publishedExercises.some(e => e.level === lvl.id)) {
       urls.add(`${SITE}/levels/${lvl.id}/`);
       urls.add(`${SITE}/es/levels/${lvl.id}/`);
     }
@@ -1288,11 +1332,11 @@ async function main() {
   }
 
   // Each topic (only those with exercises)
-  const seenTopics = new Set(exercises.map(e => e.topic));
+  const seenTopics = new Set(publishedExercises.map(e => e.topic));
   for (const t of topics.topics) {
     if (!seenTopics.has(t.id)) continue;
     const p = path.join(ROOT, 'topics', t.id, 'index.html');
-    await writeIfChanged(p, renderTopic(t, exercises, topicContent[t.id]));
+    await writeIfChanged(p, renderTopic(t, publishedExercises, topicContent[t.id]));
     urls.add(`${SITE}/topics/${t.id}/`);
     await writeSpanishVariant(p);
     urls.add(`${SITE}/es/topics/${t.id}/`);
@@ -1312,27 +1356,24 @@ async function main() {
     urls.add(`${SITE}/es/guides/${g.slug}/`);
   }
 
+  await removeStaleExercisePages([...publishedExercises, ...previewExercises]);
+
   // Sitemap
   const sortedUrls = [...urls].sort();
   await writeIfChanged(path.join(ROOT, 'sitemap.xml'), renderSitemap(sortedUrls));
   log(`Wrote sitemap.xml with ${sortedUrls.length} URLs.`);
-
-  await validateGeneratedPages();
-
-  // robots.txt
-  await writeIfChanged(path.join(ROOT, 'robots.txt'), renderRobots());
 
   // Manifest (used by homepage generator if needed)
   const manifest = {
     site: SITE,
     generatedAt: new Date().toISOString(),
     counts: {
-      exercises: exercises.length,
+      exercises: publishedExercises.length,
       guides: guides.length,
       levels: levels.levels.length,
       topics: topics.topics.length,
     },
-    exercises: exercises.map(e => ({
+    exercises: publishedExercises.map(e => ({
       slug: e.slug,
       title: e.title,
       titleEs: e.es?.title,
@@ -1346,7 +1387,12 @@ async function main() {
     topics: topics.topics,
   };
   await ensureDir(path.join(ROOT, 'data'));
-  await fs.writeFile(path.join(ROOT, 'data', 'manifest.json'), JSON.stringify(manifest, null, 2));
+  if (!DRY_RUN) await fs.writeFile(path.join(ROOT, 'data', 'manifest.json'), JSON.stringify(manifest, null, 2));
+
+  await validateGeneratedPages();
+
+  // robots.txt
+  await writeIfChanged(path.join(ROOT, 'robots.txt'), renderRobots());
 
   log('Build complete.');
 }

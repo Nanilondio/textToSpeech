@@ -1,6 +1,6 @@
 {
   "site": "https://listeningclassroom.com",
-  "generatedAt": "2026-10-05T15:15:09.628Z",
+  "generatedAt": "2026-10-27T18:58:45.372Z",
   "counts": {
     "exercises": 15,
     "guides": 7,
@@ -60,7 +60,7 @@
       "level": "a2",
       "topic": "travel",
       "topicName": "Travel & Directions",
-      "summary": "A tourist asks a passer-by how to get to the train station and follows the instructions step by step."
+      "summary": "A visitor asks for directions to a community centre, checks the route and practises explaining it."
     },
     {
       "slug": "at-the-airport",
@@ -113,8 +113,8 @@
       "titleEs": "Entrevista de trabajo",
       "level": "b1",
       "topic": "work",
-      "topicName": "Work & Career",
-      "summary": "An interviewer asks a candidate about experience, strengths, and why they want the job."
+      "topicName": "Work & Careers",
+      "summary": "A candidate discusses her experience, strengths and response to a workplace challenge in a first-round interview."
     },
     {
       "slug": "making-a-complaint",

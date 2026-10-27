@@ -1,4 +1,4 @@
-importScripts('https://cdn.jsdelivr.net/npm/lamejs@1.2.1/lame.min.js');
+importScripts('/vendor/lamejs/lame.min.js');
 
 self.onmessage = function(e) {
   const d = e.data;

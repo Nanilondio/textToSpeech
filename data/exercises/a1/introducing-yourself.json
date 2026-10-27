@@ -7,7 +7,68 @@
   "category": "listening-exercises",
   "summary": "A short first-meeting conversation where two students introduce themselves and exchange basic personal information.",
   "description": "A simple first-meeting dialogue for beginners. Students hear two people introduce themselves, ask each other's name, where they are from, and what they study. It can be used as an introductory listening exercise.",
-  "duration": "1 minute",
+  "duration": "8–10 minutes (editorial estimate)",
+  "status": "published",
+  "levelRationale": "A1 is appropriate because the dialogue uses short, predictable turns and high-frequency language for names, countries, study and first meetings. Learners can identify explicit personal information without needing to infer unstated meaning.",
+  "context": {
+    "setting": "Two students meet on the first day of an English class.",
+    "estimatedDuration": "8–10 minutes; editorial estimate for a first listen, a second listen and pair work."
+  },
+  "objectives": [
+    "Identify each speaker's name and country after one listen.",
+    "Locate the shared study subject in the transcript after a second listen.",
+    "Use the frames My name is…, I am from… and I study… to introduce oneself to a partner."
+  ],
+  "activities": {
+    "preListening": [
+      "In pairs, predict two questions people ask when they meet for the first time. Compare your predictions with What is your name? and Where are you from?",
+      "Look at the words name, from, student and study. Say which word you expect to hear with each question."
+    ],
+    "global": [
+      "Listen once without reading. Choose the best summary: A) Two students introduce themselves and talk about what they study. B) Two students plan a trip. C) Two students discuss a test."
+    ],
+    "detailed": [
+      "Listen again and complete: Anna is from ____. Ben is from ____. They both study ____. ",
+      "Put the events in order: Ben says his name; Anna asks where Ben is from; Ben says he studies English.",
+      "Listen for the final word too. Who says it, and what does it show?"
+    ],
+    "extension": [
+      "Role-play a new first meeting. Keep the question pattern, but change the names, countries and subject. Partner A introduces themselves; Partner B asks one follow-up question."
+    ]
+  },
+  "transcript": [
+    { "line": 1, "speaker": "1", "text": "Hi! My name is Anna. What is your name?" },
+    { "line": 2, "speaker": "2", "text": "Hello, Anna. My name is Ben. Nice to meet you." },
+    { "line": 3, "speaker": "1", "text": "Nice to meet you too, Ben. Where are you from?" },
+    { "line": 4, "speaker": "2", "text": "I am from Canada. And you?" },
+    { "line": 5, "speaker": "1", "text": "I am from Spain. Are you a student?" },
+    { "line": 6, "speaker": "2", "text": "Yes, I am a student. I study English." },
+    { "line": 7, "speaker": "1", "text": "Great! I study English too." }
+  ],
+  "answerKey": [
+    { "activityId": "global-summary", "answer": "A", "explanation": "The speakers exchange names, countries and the subject they study.", "evidenceLines": [1, 2, 4, 6, 7] },
+    { "activityId": "detail-facts", "answer": "Spain; Canada; English", "explanation": "Line 4 gives Ben's country, line 5 gives Anna's country, and lines 6–7 name their shared subject.", "evidenceLines": [4, 5, 6, 7] },
+    { "activityId": "detail-order", "answer": "Ben says his name; Anna asks where Ben is from; Ben says he studies English.", "explanation": "These events appear in that order in lines 2, 3 and 6.", "evidenceLines": [2, 3, 6] },
+    { "activityId": "detail-too", "answer": "Anna; it shows that she also studies English.", "explanation": "Anna says I study English too, so too means also in this context.", "evidenceLines": [7] }
+  ],
+  "teacherGuide": {
+    "procedure": [
+      "Before listening (2 minutes): elicit likely first-meeting questions and pre-teach only name, from and study.",
+      "First listen (1 minute): play the dialogue without the transcript and ask learners to choose the global summary.",
+      "Second listen (2 minutes): give learners the detailed tasks; pause once after line 4 if the class needs support.",
+      "Check (2 minutes): ask learners to point to the transcript line that proves each answer rather than accepting unsupported guesses."
+    ],
+    "differentiation": [
+      "Support: provide the three sentence frames and let learners read the transcript on the second listen.",
+      "Stretch: ask stronger learners to add one new personal-information question while keeping the greeting sequence."
+    ],
+    "followUp": [
+      "Pairs perform the extension role-play, then swap partners and report one fact about their new partner using He/She is from… or He/She studies…."
+    ]
+  },
+  "printable": { "studentSheet": true, "teacherSheet": true },
+  "updatedAt": "2026-10-27",
+  "publishedAt": "2026-10-27",
   "vocabulary": [
     { "word": "name", "definition": "the word someone is called" },
     { "word": "from", "definition": "the place where someone lives or was born" },
@@ -64,6 +125,17 @@
     "summary": "Una conversación corta de primer encuentro en la que dos estudiantes se presentan e intercambian información personal básica.",
     "description": "Un diálogo sencillo de primer encuentro para principiantes. Los estudiantes oyen a dos personas presentarse, preguntar el nombre, de dónde son y qué estudian. Puede utilizarse como ejercicio introductorio de escucha.",
     "topicName": "Presentaciones y saludos",
+    "levelRationale": "A1 es adecuado porque el diálogo usa turnos breves y lenguaje frecuente para nombres, países, estudios y primeros encuentros. El alumnado puede identificar información explícita sin inferir significados no dichos.",
+    "context": { "setting": "Dos estudiantes se conocen el primer día de una clase de inglés.", "estimatedDuration": "8–10 minutos; estimación editorial para una primera escucha, una segunda escucha y trabajo en parejas." },
+    "objectives": ["Identificar el nombre y el país de cada hablante después de una escucha.", "Localizar la asignatura común después de una segunda escucha.", "Usar My name is…, I am from… e I study… para presentarse a un compañero."],
+    "activities": {
+      "preListening": ["En parejas, predigan dos preguntas habituales al conocer a alguien. Comparen sus ideas con What is your name? y Where are you from?", "Relacionen name, from, student y study con la pregunta en la que esperan oírlas."],
+      "global": ["Escuchen una vez sin leer y elijan el mejor resumen: A) Dos estudiantes se presentan y hablan de lo que estudian. B) Dos estudiantes organizan un viaje. C) Dos estudiantes hablan de un examen."],
+      "detailed": ["Escuchen otra vez y completen: Anna is from ____. Ben is from ____. They both study ____.", "Ordenen: Ben dice su nombre; Anna pregunta de dónde es Ben; Ben dice que estudia inglés.", "Escuchen la última palabra too. ¿Quién la dice y qué muestra?"],
+      "extension": ["Representen un nuevo primer encuentro. Cambien nombres, países y asignatura, manteniendo el patrón de preguntas."]
+    },
+    "teacherGuide": { "procedure": ["Antes de escuchar (2 minutos): elicite preguntas habituales y enseñe solo name, from y study.", "Primera escucha (1 minuto): reproduzca el diálogo sin transcripción y pida elegir el resumen.", "Segunda escucha (2 minutos): entregue las tareas detalladas; pause tras la línea 4 si hace falta.", "Corrección (2 minutos): pida señalar la línea que prueba cada respuesta."], "differentiation": ["Apoyo: entregue las tres estructuras y permita leer la transcripción en la segunda escucha.", "Ampliación: pida añadir una pregunta nueva de información personal."], "followUp": ["Las parejas representan la extensión, cambian de compañero e informan de un dato sobre la nueva persona."] },
+    "printable": { "studentSheet": true, "teacherSheet": true },
     "vocabulary": [
       { "word": "name", "definition": "la palabra por la que se llama a alguien" },
       { "word": "from", "definition": "el lugar donde alguien vive o nació" },

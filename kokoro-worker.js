@@ -18,7 +18,7 @@ self.onmessage = async (e) => {
   try {
     if (d.type === 'loadModel') {
       await getModel(d.modelId);
-      self.postMessage({ type: 'loaded' });
+      self.postMessage({ type: 'loaded', device: 'wasm' });
 
     } else if (d.type === 'generate') {
       const { text, voice, speed } = d;
