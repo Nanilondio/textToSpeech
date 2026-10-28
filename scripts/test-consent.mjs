@@ -12,6 +12,7 @@ assert.equal((guideIndex.match(new RegExp(adsenseTag.replace(/[.*+?^${}()|[\]\\]
 assert.doesNotMatch(source, /loadScriptOnce\(\s*['"]adsense['"]/, 'consent does not dynamically load AdSense');
 assert.doesNotMatch(source, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/, 'consent has no duplicate AdSense URL');
 assert.ok(buildSource.includes('if (/^https?:\\/\\//i.test(raw)) return null;'), 'external HTTP(S) resources are not validated as local paths');
+assert.ok(buildSource.includes('if (/^(?:https?:|\\/\\/|data:|blob:)/i.test(src)) return match;'), 'Spanish generation preserves external script URLs');
 
 class ClassList {
   constructor() { this.values = new Set(); }

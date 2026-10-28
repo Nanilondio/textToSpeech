@@ -350,6 +350,7 @@ function renderSpanishDocument(html) {
   localized = localized.replace(/<footer(?: class="site")?>[\s\S]*?<\/footer>/, renderLocalizedFooter());
   localized = localized.replace(/(<script\b[^>]*\bsrc=")[^/][^"]*(")/g, (match, before, after) => {
     const src = match.slice(before.length, -after.length);
+    if (/^(?:https?:|\/\/|data:|blob:)/i.test(src)) return match;
     return `${before}/${src}${after}`;
   });
   const finalEs = localized.lastIndexOf('<div class="lang-content lang-es" hidden>');
