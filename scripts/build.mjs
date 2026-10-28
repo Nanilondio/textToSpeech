@@ -1187,6 +1187,7 @@ async function validateGeneratedPages() {
   const failures = [];
   const internalTarget = (raw, sourceFile) => {
     if (!raw || raw.startsWith('#') || /^(mailto:|tel:|javascript:|data:)/i.test(raw)) return null;
+    if (/^https?:\/\//i.test(raw)) return null;
     let parsed;
     try { parsed = new URL(raw, `${SITE}/${path.relative(ROOT, sourceFile).replace(/\\/g, '/')}`); }
     catch { return null; }
