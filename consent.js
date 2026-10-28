@@ -4,6 +4,13 @@
   const GA4_ID = 'G-E1D8VDYM6D';
   const GTM_ID = 'GTM-KTXQJMMH';
   const CONSENT_MAX_AGE_MS = 365 * 24 * 60 * 60 * 1000;
+  const MARKETING_SCRIPT_STATE = {
+    gtm: 'idle',
+    ga4: 'idle',
+    adsense: 'idle',
+  };
+  const MARKETING_SCRIPT_PROMISES = new Map();
+  let communicatedConsent = null;
 
   const I18N = {
     en: {
@@ -38,19 +45,6 @@
     },
   };
 
-  const detectRegion = () => {
-    let tz = '';
-    try {
-      tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || '').toLowerCase();
-    } catch { tz = ''; }
-    const isEU = tz.startsWith('europe/') || tz === 'atlantic/reykjavik';
-    const isCA = tz === 'america/los_angeles'
-      || tz === 'america/ensenada'
-      || tz === 'america/tijuana'
-      || tz === 'pst8pdt';
-    return { isEU, isCA };
-  };
-
   const state = () => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -59,7 +53,7 @@
       try { parsed = JSON.parse(raw); }
       catch { parsed = { value: raw, at: null }; }
       if (!parsed.value) return null;
-      if (parsed.value === 'accepted' && parsed.at) {
+      if (parsed.at) {
         const age = Date.now() - new Date(parsed.at).getTime();
         if (!Number.isFinite(age) || age > CONSENT_MAX_AGE_MS) return null;
       }
@@ -233,59 +227,98 @@
     document.head.appendChild(style);
   };
 
-  const loadScript = (src, attrs = {}) => new Promise((resolve, reject) => {
-    if (document.querySelector(`script[src="${src}"]`)) {
-      resolve();
-      return;
-    }
-
-    const script = document.createElement('script');
-    script.src = src;
-    Object.entries(attrs).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) script.setAttribute(key, value);
-    });
-    script.async = true;
-    script.onload = () => resolve();
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-
-  const loadMarketingScripts = async ({ nonPersonalized = false } = {}) => {
-    if (window.__lcMarketingLoaded) return;
-    window.__lcMarketingLoaded = true;
-
+  const ensureGoogleTagStub = () => {
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-
-    await loadScript(
-      `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(GTM_ID)}`,
-      { 'data-lc-consent': 'accepted' }
-    );
-
-    await loadScript(
-      `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA4_ID)}`
-    );
     window.gtag = window.gtag || function () {
       window.dataLayer.push(arguments);
     };
-    window.gtag('js', new Date());
-    const adStorage = nonPersonalized ? 'denied' : 'granted';
-    const adUserData = nonPersonalized ? 'denied' : 'granted';
-    const adPersonalization = nonPersonalized ? 'denied' : 'granted';
-    window.gtag('consent', 'update', {
-      ad_storage: adStorage,
-      ad_user_data: adUserData,
-      ad_personalization: adPersonalization,
-      analytics_storage: nonPersonalized ? 'denied' : 'granted',
+  };
+
+  const consentFor = (value) => ({
+    ad_storage: value === 'accepted' ? 'granted' : 'denied',
+    ad_user_data: value === 'accepted' ? 'granted' : 'denied',
+    ad_personalization: value === 'accepted' ? 'granted' : 'denied',
+    // “limited” limits ads only; it still permits measurement after choice.
+    analytics_storage: value === 'rejected' ? 'denied' : 'granted',
+  });
+
+  const setConsent = (value) => {
+    ensureGoogleTagStub();
+    const command = communicatedConsent ? 'update' : 'default';
+    window.gtag('consent', command, {
+      ...consentFor(value),
+      ...(command === 'default' ? { wait_for_update: 500 } : {}),
     });
+    communicatedConsent = value;
+  };
+
+  const loadScriptOnce = (key, src, attrs = {}) => {
+    if (MARKETING_SCRIPT_PROMISES.has(key)) return MARKETING_SCRIPT_PROMISES.get(key);
+    const promise = new Promise((resolve, reject) => {
+      const existing = document.querySelector(`script[data-lc-marketing="${key}"]`);
+      if (existing) {
+        MARKETING_SCRIPT_STATE[key] = 'loaded';
+        resolve();
+        return;
+      }
+      MARKETING_SCRIPT_STATE[key] = 'loading';
+      const script = document.createElement('script');
+      script.src = src;
+      script.dataset.lcMarketing = key;
+      Object.entries(attrs).forEach(([name, value]) => {
+        if (value !== undefined && value !== null) script.setAttribute(name, value);
+      });
+      script.async = true;
+      script.onload = () => {
+        MARKETING_SCRIPT_STATE[key] = 'loaded';
+        resolve();
+      };
+      script.onerror = (error) => {
+        MARKETING_SCRIPT_STATE[key] = 'failed';
+        MARKETING_SCRIPT_PROMISES.delete(key);
+        script.remove();
+        reject(error);
+      };
+      document.head.appendChild(script);
+    });
+    MARKETING_SCRIPT_PROMISES.set(key, promise);
+    return promise;
+  };
+
+  const loadMarketingScripts = async (value) => {
+    if (!['accepted', 'limited'].includes(value)) return;
+    ensureGoogleTagStub();
+    if (communicatedConsent !== value) setConsent(value);
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+
+    await loadScriptOnce(
+      'gtm',
+      `https://www.googletagmanager.com/gtm.js?id=${encodeURIComponent(GTM_ID)}`,
+      { 'data-lc-consent': value }
+    );
+    await loadScriptOnce(
+      'ga4',
+      `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA4_ID)}`
+    );
+    window.gtag('js', new Date());
     window.gtag('config', GA4_ID);
 
     const adsenseParams = new URLSearchParams({ client: ADSENSE_CLIENT });
-    if (nonPersonalized) adsenseParams.set('npa', '1');
-    await loadScript(
+    if (value === 'limited') adsenseParams.set('npa', '1');
+    await loadScriptOnce(
+      'adsense',
       `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?${adsenseParams.toString()}`,
       { crossorigin: 'anonymous' }
     );
+  };
+
+  const applyConsent = async (value) => {
+    saveState(value);
+    setConsent(value);
+    if (value === 'accepted' || value === 'limited') await loadMarketingScripts(value);
+    hideBanner();
+    showManage();
+    window.dispatchEvent(new CustomEvent(`lc-consent:${value}`));
   };
 
   const hideBanner = () => {
@@ -318,28 +351,19 @@
     if (bar) bar.classList.add('is-visible');
   };
 
-  const accept = async () => {
-    saveState('accepted');
+  const accept = () => applyConsent('accepted').catch(() => {
     hideBanner();
-    await loadMarketingScripts();
     showManage();
-    window.dispatchEvent(new CustomEvent('lc-consent:accepted'));
-  };
+    window.dispatchEvent(new CustomEvent('lc-consent:error'));
+  });
 
-  const reject = () => {
-    saveState('rejected');
-    hideBanner();
-    showManage();
-    window.dispatchEvent(new CustomEvent('lc-consent:rejected'));
-  };
+  const reject = () => applyConsent('rejected');
 
-  const acceptLimited = async () => {
-    saveState('limited');
+  const acceptLimited = () => applyConsent('limited').catch(() => {
     hideBanner();
     showManage();
-    await loadMarketingScripts({ nonPersonalized: true });
-    window.dispatchEvent(new CustomEvent('lc-consent:limited'));
-  };
+    window.dispatchEvent(new CustomEvent('lc-consent:error'));
+  });
 
   const buildBanner = () => {
     if (document.getElementById('lc-consent-banner')) return;
@@ -411,7 +435,6 @@
     const banner = document.getElementById('lc-consent-banner');
     if (!banner) return;
     const t = I18N[currentLang()];
-    const region = detectRegion();
     banner.querySelector('.lc-consent-card').setAttribute('aria-label', t.ariaLabel);
     banner.querySelector('.lc-consent-copy strong').textContent = t.title;
     banner.querySelector('.lc-consent-copy p:not(.lc-consent-ccpa)').textContent = t.copy;
@@ -422,14 +445,9 @@
     if (limited) limited.textContent = t.limited;
     const ccpaEl = banner.querySelector('.lc-consent-ccpa');
     if (ccpaEl) {
-      if (region.isCA) {
-        ccpaEl.hidden = false;
-        ccpaEl.textContent = t.ccpaCopy;
-      } else {
-        ccpaEl.hidden = true;
-      }
+      ccpaEl.hidden = true;
     }
-    if (limited) limited.hidden = !region.isCA;
+    if (limited) limited.hidden = false;
 
     const ccpaBar = document.getElementById('lc-consent-ccpa');
     if (ccpaBar) {
@@ -461,26 +479,25 @@
     buildCcpaBar();
     bindLanguageUpdates();
 
-    const region = detectRegion();
     const consent = state();
+    // Establish a denied baseline without loading any external script.
+    setConsent(consent || 'rejected');
     showManage();
 
     if (consent === 'accepted') {
-      await loadMarketingScripts();
+      await loadMarketingScripts('accepted').catch(() => {});
       hideBanner();
-      if (region.isCA) showCcpa();
       return;
     }
 
     if (consent === 'limited') {
-      await loadMarketingScripts({ nonPersonalized: true });
+      await loadMarketingScripts('limited').catch(() => {});
       hideBanner();
       return;
     }
 
     if (consent === 'rejected') {
       hideBanner();
-      if (region.isCA) showCcpa();
       return;
     }
 
