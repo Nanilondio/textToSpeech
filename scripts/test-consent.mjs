@@ -3,6 +3,14 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const source = await readFile(new URL('../consent.js', import.meta.url), 'utf8');
+const buildSource = await readFile(new URL('./build.mjs', import.meta.url), 'utf8');
+const guideIndex = await readFile(new URL('../guides/index.html', import.meta.url), 'utf8');
+
+const adsenseTag = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>';
+assert.equal((buildSource.match(new RegExp(adsenseTag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length, 1, 'build template has one AdSense tag');
+assert.equal((guideIndex.match(new RegExp(adsenseTag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length, 1, 'guide index has one AdSense tag');
+assert.doesNotMatch(source, /loadScriptOnce\(\s*['"]adsense['"]/, 'consent does not dynamically load AdSense');
+assert.doesNotMatch(source, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/, 'consent has no duplicate AdSense URL');
 
 class ClassList {
   constructor() { this.values = new Set(); }
@@ -125,8 +133,8 @@ for (const [initial, choice, selector] of [
 
 const accepted = makeContext('accepted');
 await settle();
-assert.equal(accepted.document.head.children.filter(node => node.tagName === 'script').length, 3, 'accepted loads three services once');
-assert.equal(new Set(accepted.document.head.children.filter(node => node.tagName === 'script').map(node => node.src)).size, 3, 'accepted scripts have unique sources');
+assert.equal(accepted.document.head.children.filter(node => node.tagName === 'script').length, 2, 'accepted loads GTM and GA4 once');
+assert.equal(new Set(accepted.document.head.children.filter(node => node.tagName === 'script').map(node => node.src)).size, 2, 'accepted scripts have unique sources');
 
 const expired = makeContext({ value: 'rejected', at: new Date(Date.now() - 366 * 24 * 60 * 60 * 1000).toISOString() });
 await settle();

@@ -1,13 +1,11 @@
 (() => {
   const STORAGE_KEY = 'lc_cookie_consent';
-  const ADSENSE_CLIENT = 'ca-pub-7086938365759492';
   const GA4_ID = 'G-E1D8VDYM6D';
   const GTM_ID = 'GTM-KTXQJMMH';
   const CONSENT_MAX_AGE_MS = 365 * 24 * 60 * 60 * 1000;
   const MARKETING_SCRIPT_STATE = {
     gtm: 'idle',
     ga4: 'idle',
-    adsense: 'idle',
   };
   const MARKETING_SCRIPT_PROMISES = new Map();
   let communicatedConsent = null;
@@ -303,13 +301,6 @@
     window.gtag('js', new Date());
     window.gtag('config', GA4_ID);
 
-    const adsenseParams = new URLSearchParams({ client: ADSENSE_CLIENT });
-    if (value === 'limited') adsenseParams.set('npa', '1');
-    await loadScriptOnce(
-      'adsense',
-      `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?${adsenseParams.toString()}`,
-      { crossorigin: 'anonymous' }
-    );
   };
 
   const applyConsent = async (value) => {
