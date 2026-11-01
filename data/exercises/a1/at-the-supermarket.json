@@ -49,9 +49,9 @@
       "explanation": "The shop assistant says the water is in aisle one."
     },
     {
-      "statement": "The customer asks for a bag.",
+      "statement": "The customer accepts a bag.",
       "answer": true,
-      "explanation": "The customer says 'Do you need a bag? — Yes, please.'"
+      "explanation": "The assistant offers a bag and the customer answers 'Yes, please.'"
     }
   ],
   "teacherTips": [
@@ -96,9 +96,9 @@
         "explanation": "El dependiente dice que el agua está en el pasillo uno."
       },
       {
-        "statement": "El cliente pide una bolsa.",
+        "statement": "El cliente acepta una bolsa.",
         "answer": true,
-        "explanation": "El cliente dice 'Do you need a bag? — Yes, please'."
+        "explanation": "El dependiente ofrece una bolsa y el cliente responde 'Yes, please'."
       }
     ],
     "teacherTips": [

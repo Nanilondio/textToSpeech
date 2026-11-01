@@ -32,7 +32,7 @@
       "answer": 1
     },
     {
-      "q": "Where is the speaker's classroom?",
+      "q": "Where is the second speaker's classroom?",
       "options": ["On the first floor", "On the second floor", "Next to the library"],
       "answer": 1
     },
@@ -79,7 +79,7 @@
         "answer": 1
       },
       {
-        "q": "¿Dónde está el aula del interlocutor?",
+        "q": "¿Dónde está el aula del segundo interlocutor?",
         "options": ["En la primera planta", "En la segunda planta", "Al lado de la biblioteca"],
         "answer": 1
       },

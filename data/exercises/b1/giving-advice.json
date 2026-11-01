@@ -45,9 +45,9 @@
   ],
   "trueFalse": [
     {
-      "statement": "Mark says Edinburgh is more expensive than the speaker's city.",
+      "statement": "Mark says rents in Edinburgh are higher than in the speaker's city.",
       "answer": true,
-      "explanation": "Mark says 'Rents are higher than in my city,' which the speaker accepts."
+      "explanation": "Mark says 'Rents are higher than in my city,' referring specifically to rent costs."
     },
     {
       "statement": "Mark recommends spending all the savings before moving.",
@@ -92,9 +92,9 @@
     ],
     "trueFalse": [
       {
-        "statement": "Mark dice que Edimburgo es más caro que la ciudad del interlocutor.",
+        "statement": "Mark dice que los alquileres en Edimburgo son más altos que en la ciudad del interlocutor.",
         "answer": true,
-        "explanation": "Mark dice 'Rents are higher than in my city', y el interlocutor lo acepta."
+        "explanation": "Mark se refiere específicamente a que los alquileres son más altos que en su ciudad."
       },
       {
         "statement": "Mark recomienda gastarse todos los ahorros antes de mudarse.",

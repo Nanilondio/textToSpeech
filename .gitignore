@@ -2,9 +2,17 @@
 
 # Local-only certification and performance benchmark scripts
 /scripts/benchmark-kokoro.mjs
+/tools/benchmark-kokoro-server.mjs
+/tools/benchmark-kokoro-worker.js
+/tools/benchmark-kokoro.html
+/kokoro-wasm-benchmark.json
 ADSENSE_READINESS_AUDIT.md
 
 # Ignore Markdown documents except README files.
 *.md
+
+# Local-only browser certification/QA scripts
+scripts/browser-qa.mjs
+scripts/audio-benchmark.mjs
 !README.md
 !**/README.md

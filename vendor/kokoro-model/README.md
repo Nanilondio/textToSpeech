@@ -2,7 +2,7 @@
 
 - Repository: `onnx-community/Kokoro-82M-v1.0-ONNX`
 - Revision: `468588286ebb2dd77c25b9771e5d165896538cce`
-- Variant: `model_q8f16.onnx`
+- Variant: `model_q8f16.onnx` (served to the runtime as `model_quantized.onnx`)
 - License reported by the model card: Apache-2.0
 
 This is a local test copy containing only the model metadata and the five voices exposed by the generator. The model runtime is configured to disallow remote model loading during this test.

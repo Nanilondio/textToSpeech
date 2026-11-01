@@ -22,9 +22,20 @@ import { readFileSync, existsSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateExercises } from './content-validator.mjs';
+import { editorializeLegacy } from './legacy-editorial.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
+
+// The bundled Transformers.js runtime requests the q8 model as
+// `model_quantized.onnx`; the upstream Kokoro repository names the same
+// quantized artifact `model_q8f16.onnx`. Expose the expected static URL.
+const kokoroModelDir = path.join(ROOT, 'vendor/kokoro-model/onnx-community/Kokoro-82M-v1.0-ONNX/onnx');
+const kokoroModelAlias = path.join(kokoroModelDir, 'model_quantized.onnx');
+const kokoroModelSource = path.join(kokoroModelDir, 'model_q8f16.onnx');
+if (!existsSync(kokoroModelAlias) && existsSync(kokoroModelSource)) {
+  await fs.copyFile(kokoroModelSource, kokoroModelAlias);
+}
 
 // ── CLI args ────────────────────────────────────────────────────────────────
 const argv = process.argv.slice(2);
@@ -185,7 +196,7 @@ async function loadExercises() {
     const files = await fs.readdir(dir);
     for (const f of files) {
       if (!f.endsWith('.json')) continue;
-      const data = JSON.parse(readText(path.join(dir, f)));
+      const data = editorializeLegacy(JSON.parse(readText(path.join(dir, f))));
       data._level = level;
       out.push(data);
     }
@@ -658,7 +669,7 @@ function renderExerciseBlock(ex, lang) {
   <ul>${learningObjectives.map(item => `<li>${htmlEscape(item)}</li>`).join('')}</ul>
 </section>` : '';
 
-  const beforeHtml = (beforeListening && beforeListening.length) ? `
+  const beforeHtml = (!editorial.activities && beforeListening && beforeListening.length) ? `
 <section class="exercise-block">
   <h2>${lang === 'es' ? 'Antes de escuchar' : 'Before listening'}</h2>
   <ul>${beforeListening.map(item => `<li>${htmlEscape(item)}</li>`).join('')}</ul>
@@ -701,13 +712,13 @@ function renderExerciseBlock(ex, lang) {
   </ul>
 </section>` : '';
 
-  const answersHtml = (questions && questions.length) ? `
+  const answersHtml = (!editorial.answerKey?.length && questions && questions.length) ? `
 <section class="exercise-block answer-key">
   <h2>${ui.answerKey}</h2>
   <ol>${questions.map(q => `<li>${htmlEscape(q.options[q.answer])}</li>`).join('')}</ol>
 </section>` : '';
 
-  const extensionHtml = (extensionActivity && extensionActivity.length) ? `
+  const extensionHtml = (!editorial.activities && extensionActivity && extensionActivity.length) ? `
 <section class="exercise-block">
   <h2>${lang === 'es' ? 'Actividad de ampliación' : 'Extension activity'}</h2>
   <ul>${extensionActivity.map(item => `<li>${htmlEscape(item)}</li>`).join('')}</ul>
@@ -1269,6 +1280,10 @@ async function main() {
     const additions = pedagogy[ex.slug];
     if (additions) Object.assign(ex, additions);
     if (pedagogyEs[ex.slug]) ex.es = { ...(ex.es || {}), ...pedagogyEs[ex.slug] };
+    if (additions && ex.activities) {
+      if (additions.beforeListening?.length) ex.activities.preListening = additions.beforeListening;
+      if (additions.extensionActivity?.length) ex.activities.extension = additions.extensionActivity;
+    }
   }
 
   const validation = validateExercises(exercises);

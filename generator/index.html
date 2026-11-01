@@ -846,8 +846,11 @@ Speaker 2: I'm going to practice my English.</textarea>
   let kokoroWorker = null;
   let workerAvailable = false;
   let workerReadyResolve;
+  let workerReadyReject;
   let workerReady = Promise.resolve();
   let workerLoadRequested = false;
+  let workerLoadSettled = false;
+  let modelLoadMs = 0;
 
   // Helper to call worker and receive a single result via Promise
   function workerGenerate(payload) {
@@ -878,27 +881,44 @@ Speaker 2: I'm going to practice my English.</textarea>
   function preloadKokoro() {
     if (workerLoadRequested) return workerReady;
     workerLoadRequested = true;
-    workerReady = new Promise(resolve => { workerReadyResolve = resolve; });
+    workerLoadSettled = false;
+    workerReady = new Promise((resolve, reject) => {
+      workerReadyResolve = value => {
+        if (workerLoadSettled) return;
+        workerLoadSettled = true;
+        resolve(value);
+      };
+      workerReadyReject = error => {
+        if (workerLoadSettled) return;
+        workerLoadSettled = true;
+        reject(error instanceof Error ? error : new Error(String(error)));
+      };
+    });
     try {
       kokoroWorker = new Worker('/kokoro-worker.js', { type: 'module' });
       workerAvailable = true;
       kokoroWorker.onerror = () => {
         workerAvailable = false;
-        workerReadyResolve();
+        workerReadyReject(new Error('Audio worker failed to load. Check the browser console and local model files.'));
       };
       const onModelReady = event => {
         const data = event.data;
         if (data?.type !== 'loaded' && data?.type !== 'error') return;
         kokoroWorker.removeEventListener('message', onModelReady);
-        if (data.type === 'error') workerAvailable = false;
-        workerReadyResolve();
+        if (data.type === 'error') {
+          workerAvailable = false;
+          workerReadyReject(new Error(data.message || 'Could not load the audio model.'));
+        } else {
+          modelLoadMs = data.loadMs || 0;
+          workerReadyResolve();
+        }
       };
       kokoroWorker.addEventListener('message', onModelReady);
-      kokoroWorker.postMessage({ type: 'loadModel', modelId: MODEL_ID });
+      kokoroWorker.postMessage({ type: 'loadModel', modelId: MODEL_ID, numThreads: navigator.hardwareConcurrency || 2 });
     } catch (e) {
       kokoroWorker = null;
       workerAvailable = false;
-      workerReadyResolve();
+      workerReadyReject(e);
     }
     return workerReady;
   }
@@ -1040,30 +1060,18 @@ Speaker 2: I'm going to practice my English.</textarea>
     const voiceId = document.getElementById('voice-select').value;
     const speed   = parseFloat(document.getElementById('rate').value);
     setDownloadStatus('recording', I18N[currentLang].statusModelLoading);
-    preloadKokoro();
+    const modelReady = preloadKokoro();
 
     try {
       // If single voice: generate Kokoro preview (no Web Speech API). Start worker generation immediately and play when ready.
       if (audioMode === 'single') {
         setDownloadStatus('recording', 'Generating preview…');
         try {
-          // race worker with a timeout: if worker doesn't reply in 60s, fall back to main
-          const workerPromise = workerReady.then(() => workerGenerate({ type: 'generate', text, voice: voiceId, speed }));
-          const timeoutPromise = new Promise((_, rej) => setTimeout(() => rej(new Error('Worker timeout')), 180000));
-          const res = await Promise.race([workerPromise, timeoutPromise]).catch(async (err) => {
-            // Fallback: try main-thread generation so user still gets audio
-            try {
-              setDownloadStatus('recording', 'Fallback: generating in main thread…');
-              const TTS = await loadKokoroLibrary();
-              if (!ttsModel) ttsModel = await TTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
-              const mainRes = await ttsModel.generate(text, { voice: voiceId, speed });
-              return { pcm: mainRes.audio.buffer, sr: mainRes.sampling_rate };
-            } catch (mainErr) {
-              throw mainErr;
-            }
-          });
+          const workerPromise = modelReady.then(() => workerGenerate({ type: 'generate', text, voice: voiceId, speed }));
+          const timeoutPromise = new Promise((_, rej) => setTimeout(() => rej(new Error('Audio generation timed out. Please try again.')), 180000));
+          const res = await Promise.race([workerPromise, timeoutPromise]);
 
-          // handle result (res may be from workerGenerate or fallback main)
+          // Handle the worker result.
           const pcmBuf = res.pcm;
           const sr = res.sr;
           const pcm = new Float32Array(pcmBuf);
@@ -1081,7 +1089,9 @@ Speaker 2: I'm going to practice my English.</textarea>
           document.getElementById('btn-download').style.display = 'none';
           try { await ap.play(); document.getElementById('btn-preview').textContent = I18N[currentLang].btnPause; } catch(e) { /* autoplay may be blocked */ }
           document.getElementById('btn-download').style.display = 'flex';
-          setDownloadStatus('done', 'Preview ready — click Download to encode MP3 (may take longer)');
+          const inferenceSeconds = (res.inferenceMs || 0) / 1000;
+          const loadSeconds = modelLoadMs / 1000;
+          setDownloadStatus('done', `Preview ready — generation ${(inferenceSeconds + loadSeconds).toFixed(1)}s (model ${loadSeconds.toFixed(1)}s, audio ${inferenceSeconds.toFixed(1)}s). Click Download for MP3.`);
         } catch (finalErr) {
           setDownloadStatus('error', finalErr.message || String(finalErr));
         }
@@ -1097,30 +1107,7 @@ Speaker 2: I'm going to practice my English.</textarea>
       if (!turns.length) throw new Error('Add at least two dialogue lines.');
       // Build turns payload with voice selections
       const payloadTurns = turns.map(t => ({ speaker: t.speaker, text: t.text, voice: document.getElementById(`dialogue-voice-${t.speaker}`).value }));
-      let res = null;
-      try {
-        res = await workerReady.then(() => workerGenerate({ type: 'generate_dialogue', turns: payloadTurns, speed }));
-      } catch (workerErr) {
-        // Fallback: generate sequentially on main thread (preserve original behavior)
-        if (!ttsModel) {
-          setDownloadStatus('recording', 'Loading voice model (~86 MB, cached after first use)…');
-          const TTS = await loadKokoroLibrary();
-          ttsModel = await TTS.from_pretrained(MODEL_ID, { dtype: 'q8', device: 'wasm' });
-        }
-        const pieces = [];
-        let sr = 22050;
-        for (let turnIndex = 0; turnIndex < payloadTurns.length; turnIndex++) {
-          const turn = payloadTurns[turnIndex];
-          document.getElementById('dialogue-progress').hidden = false;
-          document.getElementById('dialogue-progress').textContent = `Generating line ${turnIndex + 1} of ${payloadTurns.length}…`;
-          const r = await ttsModel.generate(turn.text, { voice: turn.voice, speed });
-          sr = r.sampling_rate;
-          pieces.push(r.audio, new Float32Array(Math.round(sr * 0.22)));
-        }
-        const pcmAll = new Float32Array(pieces.reduce((total, part) => total + part.length, 0));
-        let offset = 0; pieces.forEach(part => { pcmAll.set(part, offset); offset += part.length; });
-        res = { pcm: pcmAll.buffer, sr };
-      }
+      const res = await modelReady.then(() => workerGenerate({ type: 'generate_dialogue', turns: payloadTurns, speed }));
 
       const pcm = new Float32Array(res.pcm);
       lastPCM = pcm; lastSR = res.sr;
@@ -1137,7 +1124,9 @@ Speaker 2: I'm going to practice my English.</textarea>
       // Let the browser paint the preview control before exposing the slower MP3 action.
       await new Promise(requestAnimationFrame);
       document.getElementById('btn-download').style.display = 'flex';
-      setDownloadStatus('done', 'Preview ready — click Download to encode MP3 (may take longer)');
+      const inferenceSeconds = (res.inferenceMs || 0) / 1000;
+      const loadSeconds = modelLoadMs / 1000;
+      setDownloadStatus('done', `Preview ready — generation ${(inferenceSeconds + loadSeconds).toFixed(1)}s (model ${loadSeconds.toFixed(1)}s, audio ${inferenceSeconds.toFixed(1)}s). Click Download for MP3.`);
       document.getElementById('dialogue-progress').hidden = true;
     } catch (err) {
       setDownloadStatus('error', err.message);
