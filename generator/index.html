@@ -1038,6 +1038,28 @@ Speaker 2: I'm going to practice my English.</textarea>
     return new Blob([view], { type: 'audio/wav' });
   }
 
+  function removeBlankLines(text) {
+    const lines = text.split(/\r?\n/).filter(line => line.trim());
+    return lines.join('\n') + (lines.length && /\r?\n$/.test(text) ? '\n' : '');
+  }
+
+  function bindBlankLineRemoval(id) {
+    const textarea = document.getElementById(id);
+    textarea.addEventListener('input', () => {
+      const value = textarea.value;
+      const normalizeBefore = position => removeBlankLines(value.slice(0, position)).length;
+      const selectionStart = normalizeBefore(textarea.selectionStart);
+      const selectionEnd = normalizeBefore(textarea.selectionEnd);
+      const normalized = removeBlankLines(value);
+      if (normalized === value) return;
+      textarea.value = normalized;
+      textarea.setSelectionRange(selectionStart, selectionEnd);
+    });
+  }
+
+  bindBlankLineRemoval('download-text');
+  bindBlankLineRemoval('dialogue-text');
+
   function parseDialogue(source) {
     return source.split('\n').map(line => line.trim()).filter(Boolean).map((line, index) => {
       const match = line.match(/^(?:speaker|orador)\s*([12])\s*:\s*(.+)$/i);
@@ -1047,9 +1069,9 @@ Speaker 2: I'm going to practice my English.</textarea>
   }
 
   async function generateAudio() {
-    const text = (audioMode === 'dialogue'
-      ? document.getElementById('dialogue-text').value.trim()
-      : document.getElementById('download-text').value.trim());
+    const textInput = document.getElementById(audioMode === 'dialogue' ? 'dialogue-text' : 'download-text');
+    textInput.value = removeBlankLines(textInput.value);
+    const text = textInput.value.trim();
     if (!text) { setDownloadStatus('error', I18N[currentLang].statusDownloadReady); return; }
 
     const btn = document.getElementById('btn-generate');
