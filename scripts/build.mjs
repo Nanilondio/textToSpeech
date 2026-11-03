@@ -263,13 +263,13 @@ const TOGGLE_JS = `
 </script>
 `;
 
-function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical, jsonLd = [], extraHead = '', robots = 'index, follow' }) {
+function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical, jsonLd = [], extraHead = '', robots = 'index, follow', adsense = true, bodyClass = '' }) {
   return `<!DOCTYPE html>
 <html lang="en" data-es-title="${attrEscape(titleEs)}" data-es-description="${attrEscape(descriptionEs)}">
 <head>
 <meta charset="UTF-8">
-<meta name="google-adsense-account" content="ca-pub-7086938365759492">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>
+${adsense ? '<meta name="google-adsense-account" content="ca-pub-7086938365759492">' : ''}
+${adsense ? '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>' : ''}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="${htmlEscape(robots)}">
 <title>${htmlEscape(titleEn)}</title>
@@ -296,7 +296,7 @@ function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical,
 ${jsonLd.map(j => `<script type="application/ld+json">${JSON.stringify(j)}</script>`).join('\n')}
 ${extraHead}
 </head>
-<body>`;
+<body${bodyClass ? ` class="${htmlEscape(bodyClass)}"` : ''}>`;
 }
 
 // Build a Spanish URL from the already-rendered bilingual page. This keeps the
@@ -468,6 +468,7 @@ function renderLocalizedFooter() {
     <a href="/es/guides/">Guías</a> ·
     <a href="/es/levels/a1/">Niveles</a> ·
     <a href="/es/generator/">Generador</a> ·
+    <a href="/es/support/">Apoyar</a> ·
     <a href="/es/about.html">Acerca de</a> ·
     <a href="/es/contact.html">Contacto</a> ·
     <a href="/es/privacy.html">Privacidad</a> ·
@@ -519,7 +520,8 @@ async function writeGeneratorSpanishVariant() {
     .replace(/href="\/guides\//g, 'href="/es/guides/')
     .replace(/href="\/levels\//g, 'href="/es/levels/')
     .replace(/href="\/about\.html"/g, 'href="/es/about.html"')
-    .replace(/href="\/contact\.html"/g, 'href="/es/contact.html"');
+    .replace(/href="\/contact\.html"/g, 'href="/es/contact.html"')
+    .replace(/href="\/support\/"/g, 'href="/es/support/"');
   await writeIfChanged(outputPath, source);
 }
 
@@ -571,6 +573,7 @@ function renderFooter() {
     <a href="/guides/">Guides</a> ·
     <a href="/levels/a1/">Levels</a> ·
     <a href="/generator/">Generator</a> ·
+    <span class="lang-content lang-en"><a href="/support/">Support</a></span><span class="lang-content lang-es" hidden><a href="/es/support/">Apoyar</a></span> ·
     <a href="/about.html">About</a> ·
     <a href="/contact.html">Contact</a> ·
     <a href="/privacy.html">Privacy</a> ·
@@ -646,6 +649,9 @@ function renderExerciseBlock(ex, lang) {
       </div>`).join('')}
   </div>
 </section>` : '';
+  const supportNote = lang === 'es'
+    ? '¿Te resulta útil este recurso? Puedes <a href="/support/">apoyar ListeningClassroom</a>.'
+    : 'Find this resource useful? You can <a href="/support/">support ListeningClassroom</a>.';
 
   const dialogueText = dialogueToString(ex.dialogue || []);
   const dialogueHtml = `
@@ -771,7 +777,65 @@ ${breadcrumbHtml}
   ${guideLink}
   <div class="ad-slot" data-slot="exercises-after-questions"><span class="ad-label">${ui.advertisement}</span></div>
   ${relatedHtml}
-</article>`;
+</article>
+<p class="exercise-support-note">${supportNote}</p>`;
+}
+
+function renderSupportBlock(lang) {
+  const spanish = lang === 'es';
+  const paypalUrl = 'https://paypal.me/listeningclassroom';
+  const options = spanish
+    ? [
+      ['2', 'USD 2', 'Aporte sugerido'],
+      ['5', 'USD 5', 'Aporte sugerido'],
+      ['10', 'USD 10', 'Aporte sugerido'],
+      ['custom', 'Importe libre', 'Elige cuánto aportar'],
+    ]
+    : [
+      ['2', 'USD 2', 'Suggested amount'],
+      ['5', 'USD 5', 'Suggested amount'],
+      ['10', 'USD 10', 'Suggested amount'],
+      ['custom', 'Custom amount', 'Choose what works for you'],
+    ];
+  const title = spanish
+    ? 'Ayúdanos a mantener el aprendizaje del inglés accesible para todos.'
+    : 'Help us keep English learning accessible.';
+  const description = spanish
+    ? 'ListeningClassroom ofrece ejercicios gratuitos de comprensión auditiva, diálogos interactivos y herramientas de audio para profesores y estudiantes de todo el mundo. Tu contribución voluntaria nos ayuda a mantener el sitio, mejorar nuestras herramientas y crear nuevos recursos educativos. Cada aporte cuenta. ¡Gracias por apoyar ListeningClassroom!'
+    : 'ListeningClassroom provides free English listening exercises, interactive dialogues and audio tools for teachers and learners around the world. Your voluntary contribution helps us maintain the website, improve our learning tools and create new educational resources. Every contribution makes a difference. Thank you for supporting ListeningClassroom!';
+  return `<section class="hero support-hero">
+  <h1>${title}</h1>
+  <p class="lead">${description}</p>
+</section>
+<section class="support-section" aria-labelledby="support-options-title">
+  <h2 id="support-options-title">${spanish ? 'Elige un aporte único y voluntario' : 'Choose a one-time voluntary contribution'}</h2>
+  <div class="support-options">
+    ${options.map(([value, amount, label]) => `<a class="support-option" href="${paypalUrl}" target="_blank" rel="noopener noreferrer" data-support-option="${value}">
+      <span class="support-option-amount">${amount}</span>
+      <span class="support-option-label">${label}</span>
+      <span class="support-option-link">${spanish ? 'Continuar a PayPal' : 'Continue to PayPal'} <span aria-hidden="true">→</span></span>
+    </a>`).join('\n    ')}
+  </div>
+  <p class="support-payment-note">${spanish
+    ? 'PayPal.Me no completa el importe automáticamente. En PayPal, ingresa el importe sugerido o cualquier otro que prefieras. El aporte es voluntario, se realiza una sola vez y no activa una suscripción.'
+    : 'PayPal.Me does not prefill an amount. On PayPal, enter the suggested amount or any amount you prefer. Contributions are voluntary, one-time payments and do not start a subscription.'}</p>
+</section>`;
+}
+
+function renderSupportPage() {
+  return renderHead({
+    titleEn: 'Support ListeningClassroom',
+    titleEs: 'Apoya a ListeningClassroom',
+    descriptionEn: 'Support free English listening exercises, interactive dialogues and audio tools for learners and teachers around the world.',
+    descriptionEs: 'Apoya los ejercicios gratuitos de comprensión auditiva, diálogos interactivos y herramientas de audio de ListeningClassroom.',
+    canonical: `${SITE}/support/`,
+    adsense: false,
+    bodyClass: 'support-page',
+  }) + pageWrap({
+    current: '',
+    bodyEn: renderSupportBlock('en'),
+    bodyEs: renderSupportBlock('es'),
+  });
 }
 
 function renderExercise(ex) {
@@ -1191,7 +1255,7 @@ async function validateGeneratedPages() {
     }
   }
   for (const root of roots) await walk(path.join(ROOT, root));
-  for (const file of ['index.html', 'generator/index.html', 'about.html', 'contact.html', 'privacy.html', 'terms.html']) {
+  for (const file of ['index.html', 'generator/index.html', 'about.html', 'contact.html', 'privacy.html', 'terms.html', 'support/index.html']) {
     const absolute = path.join(ROOT, file);
     if (existsSync(absolute)) files.push(absolute);
   }
@@ -1300,6 +1364,12 @@ async function main() {
   urls.add(`${SITE}/contact.html`);
   urls.add(`${SITE}/privacy.html`);
   urls.add(`${SITE}/terms.html`);
+
+  const supportPath = path.join(ROOT, 'support/index.html');
+  await writeIfChanged(supportPath, renderSupportPage());
+  urls.add(`${SITE}/support/`);
+  await writeSpanishVariant(supportPath);
+  urls.add(`${SITE}/es/support/`);
 
   // Manual pages already contain reviewed Spanish content. Publish separate
   // Spanish documents while keeping the existing English URLs stable.

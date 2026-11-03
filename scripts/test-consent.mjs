@@ -5,6 +5,9 @@ import vm from 'node:vm';
 const source = await readFile(new URL('../consent.js', import.meta.url), 'utf8');
 const buildSource = await readFile(new URL('./build.mjs', import.meta.url), 'utf8');
 const guideIndex = await readFile(new URL('../guides/index.html', import.meta.url), 'utf8');
+const supportPage = await readFile(new URL('../support/index.html', import.meta.url), 'utf8');
+const supportPageEs = await readFile(new URL('../es/support/index.html', import.meta.url), 'utf8');
+const sitemap = await readFile(new URL('../sitemap.xml', import.meta.url), 'utf8');
 
 const adsenseTag = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>';
 assert.equal((buildSource.match(new RegExp(adsenseTag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g')) || []).length, 1, 'build template has one AdSense tag');
@@ -13,6 +16,16 @@ assert.doesNotMatch(source, /loadScriptOnce\(\s*['"]adsense['"]/, 'consent does 
 assert.doesNotMatch(source, /pagead2\.googlesyndication\.com\/pagead\/js\/adsbygoogle\.js/, 'consent has no duplicate AdSense URL');
 assert.ok(buildSource.includes('if (/^https?:\\/\\//i.test(raw)) return null;'), 'external HTTP(S) resources are not validated as local paths');
 assert.ok(buildSource.includes('if (/^(?:https?:|\\/\\/|data:|blob:)/i.test(src)) return match;'), 'Spanish generation preserves external script URLs');
+assert.match(supportPage, /<title>Support ListeningClassroom<\/title>/, 'English support title is generated');
+assert.match(supportPageEs, /<title>Apoya a ListeningClassroom<\/title>/, 'Spanish support title is generated');
+assert.match(supportPage, /rel="canonical" href="https:\/\/listeningclassroom\.com\/support\/"/, 'English support canonical is correct');
+assert.match(supportPageEs, /rel="canonical" href="https:\/\/listeningclassroom\.com\/es\/support\/"/, 'Spanish support canonical is correct');
+assert.doesNotMatch(supportPage + supportPageEs, /adsbygoogle|google-adsense-account/, 'support pages omit AdSense');
+assert.equal((supportPage.match(/href="https:\/\/paypal\.me\/listeningclassroom"/g) || []).length, 8, 'English support options use the confirmed PayPal.Me URL');
+assert.equal((supportPageEs.match(/href="https:\/\/paypal\.me\/listeningclassroom"/g) || []).length, 4, 'Spanish support options use the confirmed PayPal.Me URL');
+assert.equal((supportPage.match(/target="_blank" rel="noopener noreferrer"/g) || []).length, 8, 'all English payment links open safely in a new tab');
+assert.match(sitemap, /<loc>https:\/\/listeningclassroom\.com\/support\/<\/loc>/, 'English support URL is listed in the sitemap');
+assert.match(sitemap, /<loc>https:\/\/listeningclassroom\.com\/es\/support\/<\/loc>/, 'Spanish support URL is listed in the sitemap');
 
 class ClassList {
   constructor() { this.values = new Set(); }
@@ -66,7 +79,7 @@ class FakeStorage {
   removeItem(key) { this.values.delete(key); }
 }
 
-function makeContext(initialState = null) {
+function makeContext(initialState = null, pathname = '/') {
   const document = {
     readyState: 'complete',
     ids: new Map(),
@@ -81,11 +94,16 @@ function makeContext(initialState = null) {
       }
       return null;
     },
-    querySelectorAll() { return []; },
+    querySelectorAll(selector) { return selector === '[data-support-option]' ? supportLinks : []; },
     addEventListener() {},
   };
   document.head = new Element('head', document);
   document.body = new Element('body', document);
+  const supportLinks = ['2', '5', '10', 'custom'].map(option => {
+    const link = new Element('a', document);
+    link.dataset.supportOption = option;
+    return link;
+  });
   const localStorage = new FakeStorage();
   if (initialState) {
     const stored = typeof initialState === 'string' ? { value: initialState, at: new Date().toISOString() } : initialState;
@@ -94,13 +112,14 @@ function makeContext(initialState = null) {
   const events = [];
   const window = {
     localStorage,
+    location: { pathname },
     dataLayer: [],
     dispatchEvent(event) { events.push(event.type); },
     CustomEvent: class { constructor(type) { this.type = type; } },
   };
   const context = { window, document, localStorage, Date, Intl, URLSearchParams, CustomEvent: window.CustomEvent, console };
   vm.runInNewContext(source, context);
-  return { ...context, events };
+  return { ...context, events, supportLinks };
 }
 
 async function settle() { await new Promise(resolve => setImmediate(resolve)); }
@@ -137,6 +156,33 @@ const accepted = makeContext('accepted');
 await settle();
 assert.equal(accepted.document.head.children.filter(node => node.tagName === 'script').length, 2, 'accepted loads GTM and GA4 once');
 assert.equal(new Set(accepted.document.head.children.filter(node => node.tagName === 'script').map(node => node.src)).size, 2, 'accepted scripts have unique sources');
+
+const supportEvents = context => context.window.dataLayer.filter(entry => entry?.[0] === 'event');
+const support = makeContext('accepted', '/support/');
+await settle();
+assert.equal(supportEvents(support).filter(entry => entry[1] === 'support_page_view').length, 1, 'accepted support page sends one page-view event');
+await support.supportLinks.find(link => link.dataset.supportOption === '5').click();
+const supportClick = supportEvents(support).find(entry => entry[1] === 'support_click');
+assert.equal(supportClick?.[2]?.support_option, '5', 'support click records only the selected amount option');
+await support.document.getElementById('lc-consent-manage').click();
+await choose(support, '.lc-consent-reject');
+await support.supportLinks[0].click();
+assert.equal(supportEvents(support).filter(entry => entry[1] === 'support_click').length, 1, 'rejecting consent prevents subsequent support events');
+await support.document.getElementById('lc-consent-manage').click();
+await choose(support, '.lc-consent-accept');
+assert.equal(supportEvents(support).filter(entry => entry[1] === 'support_page_view').length, 1, 're-consenting does not duplicate the support page-view event');
+
+const rejectedSupport = makeContext('rejected', '/es/support/');
+await settle();
+await rejectedSupport.supportLinks[0].click();
+assert.equal(supportEvents(rejectedSupport).length, 0, 'rejected analytics consent prevents support events');
+
+const limitedSupport = makeContext('limited', '/es/support/');
+await settle();
+assert.equal(supportEvents(limitedSupport).filter(entry => entry[1] === 'support_page_view').length, 1, 'limited analytics consent permits one support page-view event');
+await limitedSupport.supportLinks.find(link => link.dataset.supportOption === 'custom').click();
+const customClick = supportEvents(limitedSupport).find(entry => entry[1] === 'support_click');
+assert.equal(customClick?.[2]?.support_option, 'custom', 'custom support option is reported without payment data');
 
 const expired = makeContext({ value: 'rejected', at: new Date(Date.now() - 366 * 24 * 60 * 60 * 1000).toISOString() });
 await settle();

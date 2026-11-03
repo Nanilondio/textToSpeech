@@ -9,6 +9,7 @@
   };
   const MARKETING_SCRIPT_PROMISES = new Map();
   let communicatedConsent = null;
+  let supportPageViewSent = false;
 
   const I18N = {
     en: {
@@ -59,6 +60,26 @@
     } catch {
       return null;
     }
+  };
+
+  const isSupportPage = () => /^\/(?:es\/)?support\/?$/.test(window.location.pathname || '');
+
+  const trackSupportPageView = () => {
+    if (supportPageViewSent || !isSupportPage() || !['accepted', 'limited'].includes(state())) return;
+    window.gtag('event', 'support_page_view');
+    supportPageViewSent = true;
+  };
+
+  const bindSupportTracking = () => {
+    if (!isSupportPage()) return;
+    document.querySelectorAll('[data-support-option]').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (!['accepted', 'limited'].includes(state())) return;
+        window.gtag('event', 'support_click', {
+          support_option: link.dataset.supportOption,
+        });
+      });
+    });
   };
 
   const saveState = (value) => {
@@ -306,7 +327,10 @@
   const applyConsent = async (value) => {
     saveState(value);
     setConsent(value);
-    if (value === 'accepted' || value === 'limited') await loadMarketingScripts(value);
+    if (value === 'accepted' || value === 'limited') {
+      await loadMarketingScripts(value);
+      trackSupportPageView();
+    }
     hideBanner();
     showManage();
     window.dispatchEvent(new CustomEvent(`lc-consent:${value}`));
@@ -474,16 +498,19 @@
     // Establish a denied baseline without loading any external script.
     setConsent(consent || 'rejected');
     showManage();
+    bindSupportTracking();
 
     if (consent === 'accepted') {
       await loadMarketingScripts('accepted').catch(() => {});
       hideBanner();
+      trackSupportPageView();
       return;
     }
 
     if (consent === 'limited') {
       await loadMarketingScripts('limited').catch(() => {});
       hideBanner();
+      trackSupportPageView();
       return;
     }
 
