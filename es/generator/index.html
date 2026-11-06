@@ -8,8 +8,8 @@
   <meta name="google-adsense-account" content="ca-pub-7086938365759492">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Generador de diálogos en inglés — Audio MP3 con dos voces | ListeningClassroom</title>
-  <meta name="description" content="Crea audio de diálogos en inglés con dos voces, ajusta la velocidad y descarga un archivo MP3 para clases y actividades de escucha.">
+  <title>Generador de audio y actividades para clases | ListeningClassroom</title>
+  <meta name="description" content="Crea audio en inglés con una voz o en diálogo y convierte tu texto en una sopa de letras para el aula. Genera y descarga audio MP3 y actividades de vocabulario desde el navegador.">
   <meta name="keywords" content="English dialogue generator, two voice text to speech, dialogue audio generator, ESL listening exercises, English conversation audio, classroom MP3, text to speech for teachers, downloadable English audio">
   <meta name="author" content="ListeningClassroom.com">
   <meta name="robots" content="index, follow">
@@ -21,15 +21,15 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Generador de diálogos en inglés — Audio MP3 con dos voces | ListeningClassroom">
-  <meta property="og:description" content="Crea audio de diálogos en inglés con dos voces, ajusta la velocidad y descarga un archivo MP3 para clases y actividades de escucha.">
+  <meta property="og:title" content="Generador de audio y actividades para clases">
+  <meta property="og:description" content="Crea audio en inglés con una voz o en diálogo y genera sopas de letras desde tu texto. Gratis y en el navegador.">
   <meta property="og:url" content="https://listeningclassroom.com/es/generator/">
   <meta property="og:image" content="https://listeningclassroom.com/logo.svg">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Generador de diálogos en inglés — Audio MP3 con dos voces | ListeningClassroom">
-  <meta name="twitter:description" content="Crea audio de diálogos en inglés con dos voces, ajusta la velocidad y descarga un archivo MP3 para clases y actividades de escucha.">
+  <meta name="twitter:title" content="Generador de audio y actividades para clases">
+  <meta name="twitter:description" content="Crea audio en inglés y sopas de letras para el aula a partir de tu texto. Gratis y en el navegador.">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -37,12 +37,12 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "ListeningClassroom.com",
-    "description": "Crea audio de diálogos en inglés con dos voces, ajusta la velocidad y descarga un archivo MP3 para clases y actividades de escucha.",
+    "description": "Generador gratuito de audio en inglés y actividades para docentes. Crea audio con una voz o en diálogo y genera sopas de letras desde un texto.",
     "url": "https://listeningclassroom.com/es/generator/",
     "applicationCategory": "EducationApplication",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
     "audience": { "@type": "Audience", "audienceType": "Docentes y estudiantes de inglés" },
-    "inLanguage": "es", "featureList": ["Generación de diálogos en inglés con dos voces", "Descarga de audio MP3", "Velocidad de habla ajustable", "Texto a voz en el navegador"]
+    "inLanguage": "es", "featureList": ["Generación de audio en inglés con una o dos voces", "Descarga de audio MP3", "Generador de sopas de letras", "Velocidad de habla ajustable", "Texto a voz en el navegador"]
   }
   </script>
 
@@ -50,6 +50,8 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/activities.css">
+  <link rel="stylesheet" href="/assets/css/activities/word-search.css">
 
   <style>
     :root {
@@ -425,12 +427,13 @@
 <!-- ── HERO ── -->
 <section class="hero">
   <span class="hero-eyebrow" data-i18n="eyebrow">For educators · No account required · Instant download</span>
-  <h1 data-i18n-html="h1">English Audio Generator — Create classroom audio quickly<br><em>Now supports two-voice dialogues</em></h1>
-  <p data-i18n="heroParagraph">A browser-based audio tool for teachers, tutors, and lesson designers who need listening material, pronunciation models, or narrated slides — without setup friction.</p>
+  <h1 data-i18n-html="h1">English Audio & Classroom Activity Generator<br><em>Create audio and word searches from your text</em></h1>
+  <p data-i18n="heroParagraph">Create single-voice or dialogue audio, then turn the same text into a word search. A free, browser-based tool for teachers making listening and vocabulary activities.</p>
   <div class="badges">
     <span class="badge green" data-i18n="badgeFree">✓ Free to use</span>
     <span class="badge blue"  data-i18n="badgeVoices">✓ Multiple voices</span>
     <span class="badge warm"  data-i18n="badgeDownload">✓ Downloadable audio file</span>
+    <span class="badge"       data-i18n="badgeActivity">✓ Word search activity</span>
     <span class="badge"       data-i18n="badgeOffline">✓ May work offline after caching</span>
   </div>
 </section>
@@ -528,12 +531,32 @@ Speaker 2: I'm going to practice my English.</textarea>
   </aside>
 </main>
 
+<section class="lc-activity-layout" aria-label="Generador de actividades">
+  <article class="lc-activity-generator activity-card" data-activity-generator aria-label="Sopa de letras"></article>
+  <aside class="lc-activity-help tips-card">
+    <div class="lang-content lang-en">
+      <h3>How to create your word search</h3>
+      <p>Choose the text source. Single voice and Dialogue follow the text currently open in the audio generator, or choose Custom to write a different text.</p>
+      <p>Select suggested vocabulary or add your own words, choose a grid size and difficulty, then generate the puzzle.</p>
+      <p>Drag across letters with a mouse or touch, or use the arrow keys and Enter. Found words are marked in the list and on the grid.</p>
+    </div>
+    <div class="lang-content lang-es" hidden>
+      <h3>Cómo crear tu sopa de letras</h3>
+      <p>Elige la fuente del texto. Single voice y Dialogue usan automáticamente el texto activo del generador de audio, o selecciona Custom para escribir otro texto.</p>
+      <p>Selecciona vocabulario sugerido o agrega tus propias palabras, elige el tamaño y la dificultad, y crea la actividad.</p>
+      <p>Arrastra sobre las letras con el mouse o el tacto, o usa las flechas y Enter. Las palabras encontradas se marcan en la lista y la cuadrícula.</p>
+    </div>
+  </aside>
+</section>
+
 <!-- ── SEO CONTENT ── -->
 <section class="content-section" id="how-it-works">
 
   <!-- English content -->
   <div class="lang-content lang-en">
     <h2>How it works</h2>
+    <h2 class="seo-feature-heading">Create English audio and classroom activities</h2>
+    <p>Use Single voice for narration or Dialogue for a conversation with two voices, then create a Word Search from the active audio text or enter custom text. Select suggested vocabulary, adjust the puzzle settings, and download the finished activity as an image.</p>
     <h2 class="seo-feature-heading">English dialogue audio for listening lessons</h2>
     <p>Use Dialogue mode to turn a conversation script into a two-voice English MP3. Assign a different voice to Speaker 1 and Speaker 2, adjust the speed, and download one audio file ready for classroom activities, role-play practice, or PowerPoint.</p>
     <p>ListeningClassroom.com uses a neural voice model that runs entirely in your browser — no servers, no uploads, no sign-up required. Your text never leaves your device. Click Generate Audio, wait a few seconds, then download the MP3 file directly to your computer.</p>
@@ -566,6 +589,8 @@ Speaker 2: I'm going to practice my English.</textarea>
   <!-- Spanish content -->
   <div class="lang-content lang-es" hidden>
     <h2>Cómo funciona</h2>
+    <h2 class="seo-feature-heading">Crea audio en inglés y actividades para clases</h2>
+    <p>Usa Single voice para narrar o Dialogue para crear conversaciones con dos voces; después, genera una sopa de letras con el texto activo del audio o escribe uno personalizado. Selecciona vocabulario sugerido, ajusta la actividad y descarga la sopa como imagen.</p>
     <h2 class="seo-feature-heading">Audio de diálogos en inglés para clases</h2>
     <p>Usa el modo Diálogo para convertir un guion en inglés en un MP3 con dos voces. Asigna una voz diferente al Orador 1 y al Orador 2, ajusta la velocidad y descarga un archivo listo para actividades de aula, práctica de roles o PowerPoint.</p>
     <p>ListeningClassroom.com usa un modelo de voz neuronal que corre completamente en tu navegador — sin servidores, sin cargas, sin registro. Tu texto nunca sale de tu dispositivo. Haz clic en Generar Audio, espera unos segundos y descarga el archivo MP3 directamente a tu computadora.</p>
@@ -600,7 +625,7 @@ Speaker 2: I'm going to practice my English.</textarea>
 <section class="content-section" id="why-it-helps">
   <div class="lang-content lang-en">
     <h2>Why people use it</h2>
-    <p>The goal of ListeningClassroom.com is to remove friction from a very specific classroom task: getting clean English audio fast. Instead of juggling uploads, logins, or separate desktop software, you can paste text, choose a voice, and produce something usable in minutes.</p>
+    <p>ListeningClassroom.com helps teachers create classroom-ready English audio and vocabulary activities without uploads, accounts, or desktop software. Use the same text to make a listening resource and a word search in your browser.</p>
     <div class="use-grid">
       <div class="use-card">
         <h3>Listening exercises</h3>
@@ -618,6 +643,10 @@ Speaker 2: I'm going to practice my English.</textarea>
         <h3>Accessible lesson materials</h3>
         <p>Turn written instructions into audio so students can listen again later, especially in blended or asynchronous settings.</p>
       </div>
+      <div class="use-card">
+        <h3>Vocabulary word searches</h3>
+        <p>Build a word search from audio text or a custom passage, select the vocabulary, and download the puzzle as an image.</p>
+      </div>
     </div>
     <div class="content-note">
       <strong>Practical note:</strong> the first MP3 generation downloads the voice model to your browser cache. After that, the site is much faster on repeat visits.
@@ -626,7 +655,7 @@ Speaker 2: I'm going to practice my English.</textarea>
 
   <div class="lang-content lang-es" hidden>
     <h2>Por qué la usan</h2>
-    <p>El objetivo de ListeningClassroom.com es quitar fricción a una tarea muy concreta de aula: obtener audio en inglés de calidad rápidamente. En vez de depender de subidas, inicios de sesión o software de escritorio, puedes pegar el texto, elegir una voz y producir un recurso útil en minutos.</p>
+    <p>ListeningClassroom.com ayuda a docentes a crear audio en inglés y actividades de vocabulario listas para el aula, sin subir archivos, crear cuentas ni usar programas de escritorio. Usa el mismo texto para preparar un recurso de escucha y una sopa de letras desde el navegador.</p>
     <div class="use-grid">
       <div class="use-card">
         <h3>Ejercicios de escucha</h3>
@@ -643,6 +672,10 @@ Speaker 2: I'm going to practice my English.</textarea>
       <div class="use-card">
         <h3>Material accesible</h3>
         <p>Convierte instrucciones escritas en audio para que el alumnado pueda volver a escucharlas luego, especialmente en entornos híbridos o asincrónicos.</p>
+      </div>
+      <div class="use-card">
+        <h3>Sopas de letras de vocabulario</h3>
+        <p>Crea una sopa de letras a partir del texto del audio o de un texto personalizado, selecciona el vocabulario y descarga la actividad como imagen.</p>
       </div>
     </div>
     <div class="content-note">
@@ -669,6 +702,8 @@ Speaker 2: I'm going to practice my English.</textarea>
 </footer>
 
 <script type="module">
+  import { createActivityGenerator } from '/assets/js/activity-generator.js';
+
   let KokoroTTS = null;
   async function loadKokoroLibrary() {
     if (!KokoroTTS) ({ KokoroTTS } = await import('/vendor/kokoro/kokoro.web.js'));
@@ -684,10 +719,10 @@ Speaker 2: I'm going to practice my English.</textarea>
       navExercises: 'Exercises', navGuides: 'Guides', navLevels: 'Levels',
       navSupport: 'Support',
       eyebrow: 'For educators · No account required · Instant download',
-      h1: 'English Audio Generator — Create classroom audio quickly<br><em>Now supports two-voice dialogues</em>',
-      heroParagraph: 'A browser-based audio tool for teachers, tutors, and lesson designers who need listening material, pronunciation models, or narrated slides — without setup friction.',
+      h1: 'English Audio & Classroom Activity Generator<br><em>Create audio and word searches from your text</em>',
+      heroParagraph: 'Create single-voice or dialogue audio, then turn the same text into a word search. A free, browser-based tool for teachers making listening and vocabulary activities.',
       badgeFree: '✓ Free to use', badgeVoices: '✓ Multiple voices',
-      badgeDownload: '✓ Downloadable audio file', badgeOffline: '✓ May work offline after caching',
+      badgeDownload: '✓ Downloadable audio file', badgeActivity: '✓ Word search activity', badgeOffline: '✓ May work offline after caching',
       labelText: 'Your text',
       placeholderText: 'Paste or type any English paragraph here...',
       labelVoice: 'Voice', labelSpeed: 'Speed', labelFilename: 'File name (no extension)',
@@ -713,10 +748,10 @@ Speaker 2: I'm going to practice my English.</textarea>
       navExercises: 'Ejercicios', navGuides: 'Guías', navLevels: 'Niveles',
       navSupport: 'Apoyar',
       eyebrow: 'Para docentes · Sin cuenta · Descarga instantánea',
-      h1: 'Generador de audio — Crea audio para clases rápidamente<br><em>Ahora con soporte para diálogos de dos voces</em>',
-      heroParagraph: 'Una herramienta de audio en el navegador para docentes, tutores y diseñadores de clases que necesitan material de escucha, modelos de pronunciación o diapositivas narradas, sin complicaciones.',
+      h1: 'Generador de audio y actividades para clases<br><em>Crea audio y sopas de letras desde tu texto</em>',
+      heroParagraph: 'Crea audio con una voz o en diálogo y luego convierte el mismo texto en una sopa de letras. Una herramienta gratuita en el navegador para preparar actividades de escucha y vocabulario.',
       badgeFree: '✓ Gratis', badgeVoices: '✓ Múltiples voces',
-      badgeDownload: '✓ Archivo de audio descargable', badgeOffline: '✓ Puede funcionar sin conexión tras guardarse en caché',
+      badgeDownload: '✓ Archivo de audio descargable', badgeActivity: '✓ Sopa de letras', badgeOffline: '✓ Puede funcionar sin conexión tras guardarse en caché',
       labelText: 'Tu texto',
       placeholderText: 'Pega o escribe aquí cualquier párrafo en inglés...',
       labelVoice: 'Voz', labelSpeed: 'Velocidad', labelFilename: 'Nombre de archivo (sin extensión)',
@@ -785,6 +820,7 @@ Speaker 2: I'm going to practice my English.</textarea>
      TABS
   ══════════════════════════════════════════════════ */
   let audioMode = 'single';
+  let activitiesController = null;
   function switchTab(tabId, mode) {
     // If a mode is provided (single/dialogue), activate the matching tab button; otherwise match by tabId
     document.querySelectorAll('.tab-btn').forEach(b => {
@@ -810,11 +846,21 @@ Speaker 2: I'm going to practice my English.</textarea>
 
     const description = document.getElementById('mode-description');
     if (description) description.textContent = I18N[currentLang][audioMode === 'dialogue' ? 'modeDialogueHelp' : 'modeSingleHelp'];
+    activitiesController?.refreshSourceState();
 
   }
 
   document.querySelectorAll('.tab-btn').forEach(b =>
     b.addEventListener('click', () => switchTab(b.dataset.tab, b.dataset.mode)));
+
+  activitiesController = createActivityGenerator(
+    document.querySelector('[data-activity-generator]'),
+    () => document.getElementById(audioMode === 'dialogue' ? 'dialogue-text' : 'download-text').value,
+    () => audioMode,
+    mode => switchTab('download', mode)
+  );
+  ['download-text', 'dialogue-text'].forEach(id =>
+    document.getElementById(id).addEventListener('input', () => activitiesController.refreshSourceState()));
 
   /* ══════════════════════════════════════════════════
      DOWNLOAD MP3 — Kokoro TTS
@@ -842,7 +888,7 @@ Speaker 2: I'm going to practice my English.</textarea>
         sel.appendChild(o);
       });
       if (index === 1) sel.value = 'af_bella';
-      if (index === 2) sel.value = 'am_adam';
+      if (index === 2) sel.value = 'am_echo';
     });
   })();
 

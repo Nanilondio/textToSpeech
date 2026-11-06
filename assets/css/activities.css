@@ -1,0 +1,93 @@
+.lc-activity-layout {
+  --activity-surface: var(--surface2, #1c2128);
+  --activity-border: var(--border, #30363d);
+  --activity-text: var(--text, #e6edf3);
+  --activity-muted: var(--muted, #7d8590);
+  --activity-accent: var(--accent, #58a6ff);
+  max-width: 1100px;
+  margin: 0 auto 4rem;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.lc-activity-generator.activity-card,
+.lc-activity-help {
+  min-width: 0;
+  width: 100%;
+  padding: 1.5rem 2rem;
+  border: 1px solid var(--activity-border);
+  border-radius: 12px;
+  background: var(--surface, #161b22);
+  box-shadow: 0 0 40px rgba(0,0,0,0.25);
+}
+
+.lc-activity-help { align-self: start; }
+
+.lc-activity-generator h2,
+.lc-activity-help h3,
+.lc-activity-generator h3 {
+  color: var(--activity-text);
+  font-family: 'Fraunces', serif;
+}
+
+.lc-activity-generator h2 { font-size: 1.6rem; margin-bottom: 1rem; }
+.lc-activity-source-status { color: var(--activity-muted); }
+.lc-activity-help h3 { font-size: 1rem; margin-bottom: 1rem; }
+.lc-activity-help p { color: var(--activity-muted); font-size: 0.83rem; line-height: 1.6; margin-bottom: 0.8rem; }
+.lc-activity-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 0.65rem; margin-bottom: 0.8rem; }
+.lc-activity-sources { display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; margin: 0 0 1rem; }
+.lc-activity-source-option { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--activity-text); font-size: 0.85rem; cursor: pointer; }
+.lc-activity-source-option input { accent-color: var(--activity-accent); }
+.lc-activity-custom-text {
+  display: block;
+  width: 100%;
+  min-height: 120px;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  color: var(--activity-text);
+  background: var(--activity-surface);
+  border: 1px solid var(--activity-border);
+  border-radius: 8px;
+  font: inherit;
+  line-height: 1.6;
+  resize: vertical;
+}
+.lc-activity-custom-text[hidden] { display: none; }
+.lc-activity-custom-text:focus-visible { outline: 3px solid var(--activity-accent); outline-offset: 2px; }
+.lc-activity-generator button {
+  min-height: 2.4rem;
+  border: 1px solid var(--activity-border);
+  border-radius: 6px;
+  padding: 0.45rem 0.8rem;
+  color: var(--activity-text);
+  background: var(--activity-surface);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+.lc-activity-generator button:focus-visible,
+.lc-activity-generator input:focus-visible,
+.lc-activity-generator select:focus-visible {
+  outline: 3px solid var(--activity-accent);
+  outline-offset: 2px;
+}
+.lc-activity-generator button:disabled { cursor: not-allowed; opacity: 0.55; }
+.lc-activity-primary { color: #0d1117 !important; background: var(--activity-accent) !important; }
+.lc-activity-hosts { min-width: 0; }
+.lc-activity-instance[hidden] { display: none; }
+
+@media (max-width: 768px) {
+  .lc-activity-layout { grid-template-columns: 1fr; padding: 0 1rem; }
+  .lc-activity-generator.activity-card { padding: 1rem; }
+  .lc-activity-controls { align-items: flex-start; }
+  .lc-activity-help { padding: 1rem; }
+}
+
+@media (min-width: 541px) and (max-width: 768px) {
+  .lc-activity-layout { gap: 1rem; }
+  .lc-activity-generator.activity-card,
+  .lc-activity-help { padding: 1.25rem; }
+}
