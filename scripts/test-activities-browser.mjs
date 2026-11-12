@@ -144,10 +144,10 @@ try {
     assert.match(download.suggestedFilename(), /\.mp3$/);
   }
   await generateAndDownload('single', 'Hello there.');
-  await generateAndDownload('dialogue', 'Speaker 1: Hello there.\nSpeaker 2: How are you?', ['am_echo', 'af_bella']);
+  await generateAndDownload('dialogue', 'Speaker 1: Hello there.\nSpeaker 2: How are you?', ['am_adam', 'af_bella']);
   assert.deepEqual(
     await page.locator('#voice-select option').evaluateAll(options => options.map(option => option.value)),
-    ['af_heart', 'af_bella', 'am_echo', 'bf_emma', 'bm_george']
+    ['af_heart', 'af_bella', 'am_echo', 'am_adam', 'bf_emma', 'bm_george']
   );
   await generateAudio('single', 'Hello there.', ['am_echo']);
 

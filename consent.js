@@ -8,14 +8,14 @@
     ga4: 'idle',
   };
   const MARKETING_SCRIPT_PROMISES = new Map();
-  let communicatedConsent = null;
+  let communicatedConsent = window.__lcConsentDefaultsSent ? 'rejected' : null;
   let supportPageViewSent = false;
 
   const I18N = {
     en: {
       ariaLabel: 'Cookie consent',
       title: 'Cookies for ads and measurement',
-      copy: 'This cookie banner controls Google Tag Manager and Analytics only. The Google AdSense tag may load independently on some pages for ads and Google consent messages. See our Privacy Policy for details.',
+      copy: 'This banner sends Google Consent Mode choices for ads and analytics. The AdSense tag may load on some resource pages before you choose; consent signals start denied. See our Privacy Policy for details.',
       reject: 'Reject non-essential',
       limited: 'Allow analytics only',
       accept: 'Accept cookies',
@@ -23,14 +23,14 @@
       manage: 'Cookies',
       manageTitle: 'Manage cookie preferences',
       ccpa: 'Do Not Sell or Share My Personal Information',
-      ccpaCopy: 'California residents: this cookie banner does not control Google AdSense personalisation. Use Google’s consent message or Ad Settings to manage ad personalisation.',
-      confirmLimited: 'Personalised ads are off. Manage your choice from the cookies button at any time.',
+      ccpaCopy: 'California residents: this banner sends denied Google ad-consent signals when you reject non-essential cookies, but the AdSense tag may still load.',
+      confirmLimited: 'No ad consent was granted. Google may still make limited ad requests. Change your choice from the cookies button at any time.',
       saved: 'Preference saved.',
     },
     es: {
       ariaLabel: 'Consentimiento de cookies',
       title: 'Cookies para anuncios y medición',
-      copy: 'Este banner solo controla Google Tag Manager y Analytics. La etiqueta de Google AdSense puede cargarse por separado en algunas páginas para mostrar anuncios y mensajes de consentimiento de Google. Consulta nuestra Política de Privacidad.',
+      copy: 'Este banner envía a Google las opciones de Consent Mode para anuncios y analítica. La etiqueta de AdSense puede cargarse en algunas páginas de recursos antes de que elijas; las señales empiezan denegadas. Consulta nuestra Política de Privacidad.',
       reject: 'Rechazar no esenciales',
       limited: 'Permitir solo analítica',
       accept: 'Aceptar cookies',
@@ -38,8 +38,8 @@
       manage: 'Cookies',
       manageTitle: 'Gestionar preferencias de cookies',
       ccpa: 'No vender ni compartir mi información personal',
-      ccpaCopy: 'Residentes de California: este banner no controla la personalización de Google AdSense. Usa el mensaje de consentimiento o la Configuración de anuncios de Google para gestionar la personalización.',
-      confirmLimited: 'Los anuncios personalizados están desactivados. Cambia tu elección desde el botón de cookies en cualquier momento.',
+      ccpaCopy: 'Residentes de California: al rechazar las cookies no esenciales, este banner envía a Google señales que deniegan el consentimiento publicitario, pero la etiqueta de AdSense puede cargarse.',
+      confirmLimited: 'No diste consentimiento publicitario. Google aún podría realizar solicitudes publicitarias limitadas. Cambia tu elección desde el botón de cookies cuando quieras.',
       saved: 'Preferencia guardada.',
     },
   };
@@ -495,8 +495,8 @@
     bindLanguageUpdates();
 
     const consent = state();
-    // Establish a denied baseline without loading any external script.
-    setConsent(consent || 'rejected');
+    if (!communicatedConsent) setConsent('rejected');
+    if (consent && consent !== communicatedConsent) setConsent(consent);
     showManage();
     bindSupportTracking();
 
