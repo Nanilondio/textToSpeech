@@ -79,11 +79,11 @@ class FakeStorage {
   removeItem(key) { this.values.delete(key); }
 }
 
-function makeContext(initialState = null, pathname = '/', defaultsSent = false) {
+function makeContext(initialState = null, pathname = '/', defaultsSent = false, options = {}) {
   const document = {
     readyState: 'complete',
     ids: new Map(),
-    documentElement: { lang: 'en' },
+    documentElement: { lang: options.lang || 'en' },
     head: null,
     body: null,
     createElement(tagName) { return new Element(tagName, document); },
@@ -91,6 +91,9 @@ function makeContext(initialState = null, pathname = '/', defaultsSent = false) 
     querySelector(selector) {
       if (selector.startsWith('script[data-lc-marketing=')) {
         return document.head.children.find(child => child.dataset.lcMarketing === selector.match(/"([^"]+)"/)?.[1]) || null;
+      }
+      if (selector === 'script[src*="adsbygoogle.js"]' && options.hasAdSense !== false) {
+        return { src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' };
       }
       return null;
     },
@@ -105,17 +108,101 @@ function makeContext(initialState = null, pathname = '/', defaultsSent = false) 
     return link;
   });
   const localStorage = new FakeStorage();
+  if (options.authority) localStorage.setItem('lc_consent_authority', options.authority);
+  if (options.rawConsent !== undefined) localStorage.setItem('lc_cookie_consent', options.rawConsent);
   if (initialState) {
     const stored = typeof initialState === 'string' ? { value: initialState, at: new Date().toISOString() } : initialState;
     localStorage.setItem('lc_cookie_consent', JSON.stringify(stored));
   }
   const events = [];
+  const gppListeners = [];
+  const tcfListeners = [];
+  const callbackQueue = [];
+  callbackQueue.push = function (entry) {
+    Array.prototype.push.call(this, entry);
+    for (const [key, callback] of Object.entries(entry)) {
+      if (key === 'CONSENT_API_READY') callback();
+      if (key === 'CONSENT_MODE_DATA_READY') callback();
+      if (key === 'INITIAL_US_STATES_OPT_OUT_DATA_READY') callback();
+      if (key === 'CONSENT_DATA_READY') callback();
+    }
+    return this.length;
+  };
+  const gppPingData = (optedOut, signalStatus = 'ready') => {
+    const prefix = options.gppPrefix || 'usnat';
+    const fields = prefix === 'usnat'
+      ? ['MspaOptOut']
+      : prefix === 'usca'
+        ? ['SaleOptOut', 'SharingOptOut']
+        : ['SaleOptOut', 'TargetedAdvertisingOptOut'];
+    const values = Object.fromEntries(fields.map(field => [field, optedOut ? 1 : 2]));
+    if (options.gppIncomplete) delete values[fields.at(-1)];
+    if (options.gppSectionGpc) values.Gpc = true;
+    return {
+      signalStatus,
+      applicableSections: options.gppApplicableSections ?? [options.gppSectionId || (prefix === 'usnat' ? 7 : prefix === 'usca' ? 8 : prefix === 'usco' ? 10 : 9)],
+      parsedSections: options.gppSections || { [prefix]: [values] },
+    };
+  };
   const window = {
     localStorage,
-    location: { pathname },
+    location: { pathname, search: options.search || '', assigned: null, assign(value) { this.assigned = value; } },
+    navigator: { globalPrivacyControl: options.gpc === true },
     dataLayer: [],
+    adsbygoogle: Object.assign([], { pauseAdRequests: 1 }),
+    googlefc: {
+      callbackQueue,
+      usstatesoptout: { getInitialUsStatesOptOutStatus: () => options.usStatus ?? 1 },
+      getGoogleConsentModeValues: () => options.modeValues || {
+        adStoragePurposeConsentStatus: 3,
+        adUserDataPurposeConsentStatus: 3,
+        adPersonalizationPurposeConsentStatus: 3,
+        analyticsStoragePurposeConsentStatus: 3,
+      },
+      showRevocationMessage() { window.revocationShown = true; },
+    },
+    ...(options.gppUnavailable ? {} : { __gpp(command, callback) {
+      if (command !== 'addEventListener') return;
+      gppListeners.push(callback);
+      callback({ eventName: 'listenerRegistered', listenerId: 1, pingData: gppPingData(options.gppOptOut === true, options.gppInitialSignalStatus || 'ready') }, true);
+    } }),
+    setTimeout(callback) { callback(); },
     dispatchEvent(event) { events.push(event.type); },
     CustomEvent: class { constructor(type) { this.type = type; } },
+  };
+  const emitGppOptOut = (optedOut, transition = true) => {
+    if (transition) {
+      gppListeners.forEach(callback => callback({
+        eventName: 'signalStatus',
+        listenerId: 1,
+        data: 'not ready',
+        pingData: gppPingData(optedOut, 'not ready'),
+      }, true));
+    }
+    gppListeners.forEach(callback => callback({
+      eventName: 'signalStatus',
+      listenerId: 1,
+      data: 'ready',
+      pingData: gppPingData(optedOut),
+    }, true));
+  };
+  const emitGppFailure = () => gppListeners.forEach(callback => callback(null, false));
+  const emitGppUnexpected = () => gppListeners.forEach(callback => callback({
+    eventName: 'signalStatus',
+    listenerId: 1,
+    data: 'unexpected',
+    pingData: { signalStatus: 'error', applicableSections: [], parsedSections: {} },
+  }, true));
+  const emitTcf = (overrides = {}) => tcfListeners.forEach(callback => callback({
+    gdprApplies: options.gdprApplies ?? false,
+    eventStatus: options.eventStatus || 'tcloaded',
+    tcString: options.tcString || (options.gdprApplies ? 'simulated-tc-string' : ''),
+    ...overrides,
+  }, true));
+  window.__tcfapi = (command, version, callback) => {
+    if (command !== 'addEventListener') return callback(null, false);
+    tcfListeners.push(callback);
+    emitTcf();
   };
   if (defaultsSent) {
     window.__lcConsentDefaultsSent = true;
@@ -129,7 +216,7 @@ function makeContext(initialState = null, pathname = '/', defaultsSent = false) 
   }
   const context = { window, document, localStorage, Date, Intl, URLSearchParams, CustomEvent: window.CustomEvent, console };
   vm.runInNewContext(source, context);
-  return { ...context, events, supportLinks };
+  return { ...context, events, supportLinks, emitGppOptOut, emitGppFailure, emitGppUnexpected, emitTcf };
 }
 
 async function settle() { await new Promise(resolve => setImmediate(resolve)); }
@@ -177,6 +264,14 @@ const accepted = makeContext('accepted');
 await settle();
 assert.equal(accepted.document.head.children.filter(node => node.tagName === 'script').length, 2, 'accepted loads GTM and GA4 once');
 assert.equal(new Set(accepted.document.head.children.filter(node => node.tagName === 'script').map(node => node.src)).size, 2, 'accepted scripts have unique sources');
+await accepted.document.getElementById('lc-consent-manage').click();
+await choose(accepted, '.lc-consent-reject');
+await accepted.document.getElementById('lc-consent-manage').click();
+await choose(accepted, '.lc-consent-accept');
+assert.equal(accepted.window.dataLayer.filter(entry => entry?.event === 'gtm.js').length, 1,
+  'revoking and re-accepting does not duplicate GTM initialization');
+assert.equal(accepted.window.dataLayer.filter(entry => entry?.[0] === 'config' && entry?.[1] === 'G-E1D8VDYM6D').length, 1,
+  'revoking and re-accepting does not duplicate direct GA4 configuration');
 
 const earlyDefaults = makeContext('accepted', '/', true);
 await settle();
@@ -185,36 +280,326 @@ assert.equal(consentEvents(earlyDefaults).at(-1)?.[1], 'update', 'a saved choice
 assert.deepEqual({ ...consentEvents(earlyDefaults).at(-1)[2] }, expectedConsent('accepted'), 'a saved acceptance grants the expected consent types');
 
 const supportEvents = context => context.window.dataLayer.filter(entry => entry?.[0] === 'event');
-const support = makeContext('accepted', '/support/');
+const support = makeContext('accepted', '/support/', false, { hasAdSense: false, authority: 'legacy' });
 await settle();
-assert.equal(supportEvents(support).filter(entry => entry[1] === 'support_page_view').length, 1, 'accepted support page sends one page-view event');
+assert.equal(support.document.head.children.filter(node => node.tagName === 'script').length, 0,
+  'support page without AdSense does not load GTM or GA4 from a stale regional choice');
 await support.supportLinks.find(link => link.dataset.supportOption === '5').click();
-const supportClick = supportEvents(support).find(entry => entry[1] === 'support_click');
-assert.equal(supportClick?.[2]?.support_option, '5', 'support click records only the selected amount option');
+assert.equal(supportEvents(support).length, 0, 'support contribution choice is not sent without current regional consent');
 await support.document.getElementById('lc-consent-manage').click();
-await choose(support, '.lc-consent-reject');
-await support.supportLinks[0].click();
-assert.equal(supportEvents(support).filter(entry => entry[1] === 'support_click').length, 1, 'rejecting consent prevents subsequent support events');
-await support.document.getElementById('lc-consent-manage').click();
-await choose(support, '.lc-consent-accept');
-assert.equal(supportEvents(support).filter(entry => entry[1] === 'support_page_view').length, 1, 're-consenting does not duplicate the support page-view event');
-
-const rejectedSupport = makeContext('rejected', '/es/support/');
-await settle();
-await rejectedSupport.supportLinks[0].click();
-assert.equal(supportEvents(rejectedSupport).length, 0, 'rejected analytics consent prevents support events');
-
-const limitedSupport = makeContext('limited', '/es/support/');
-await settle();
-assert.equal(supportEvents(limitedSupport).filter(entry => entry[1] === 'support_page_view').length, 1, 'limited analytics consent permits one support page-view event');
-await limitedSupport.supportLinks.find(link => link.dataset.supportOption === 'custom').click();
-const customClick = supportEvents(limitedSupport).find(entry => entry[1] === 'support_click');
-assert.equal(customClick?.[2]?.support_option, 'custom', 'custom support option is reported without payment data');
+assert.equal(support.window.location.assigned, '/guides/?lc-manage-consent=1',
+  'support privacy management routes to a page that can resolve CMP region');
 
 const expired = makeContext({ value: 'rejected', at: new Date(Date.now() - 366 * 24 * 60 * 60 * 1000).toISOString() });
 await settle();
-assert.ok(expired.document.getElementById('lc-consent-banner').classList.contains('is-visible'), 'expired decisions show the banner');
+assert.ok(expired.document.getElementById('lc-consent-banner').classList.contains('is-visible'),
+  `expired decisions show the banner (authority=${expired.localStorage.getItem('lc_consent_authority')}, visible=${expired.document.getElementById('lc-consent-banner').classList.contains('is-visible')}, state=${expired.localStorage.getItem('lc_cookie_consent')})`);
 
 assert.match(source, /MARKETING_SCRIPT_PROMISES\.delete\(key\)/, 'failed script loads release their retry lock');
-assert.match(source, /analytics_storage: value === 'rejected' \? 'denied' : 'granted'/, 'limited preserves analytics storage');
-console.log('consent tests passed');
+assert.match(source, /analytics_storage: value !== 'rejected' && !hasGpcSignal\(\) \? 'granted' : 'denied'/,
+  'limited preserves analytics storage except when GPC is active');
+
+const invalidStoredConsent = makeContext(null, '/', true, { rawConsent: '{"value":"approved","at":"2025-01-01T00:00:00.000Z"}' });
+await settle();
+assert.equal(invalidStoredConsent.document.head.children.filter(node => node.tagName === 'script').length, 0,
+  'unknown persisted values do not load tags or become consent');
+assert.equal(invalidStoredConsent.document.getElementById('lc-consent-banner').classList.contains('is-visible'), true,
+  'unknown persisted values leave the choice undecided');
+
+const europeanDenied = makeContext(null, '/', true, { gdprApplies: true, modeValues: {
+  adStoragePurposeConsentStatus: 2,
+  adUserDataPurposeConsentStatus: 2,
+  adPersonalizationPurposeConsentStatus: 2,
+  analyticsStoragePurposeConsentStatus: 2,
+} });
+await settle();
+assert.equal(europeanDenied.document.head.children.filter(node => node.tagName === 'script').length, 0,
+  'simulated European rejection does not load GTM or GA4 in basic mode');
+assert.equal(europeanDenied.window.adsbygoogle.pauseAdRequests, 1,
+  'simulated European rejection keeps AdSense requests paused');
+
+const europeanGranted = makeContext(null, '/', true, { gdprApplies: true, modeValues: {
+  adStoragePurposeConsentStatus: 1,
+  adUserDataPurposeConsentStatus: 1,
+  adPersonalizationPurposeConsentStatus: 1,
+  analyticsStoragePurposeConsentStatus: 1,
+} });
+await settle();
+assert.equal(europeanGranted.document.head.children.filter(node => node.tagName === 'script').length, 2,
+  'simulated European grant loads GTM and GA4 only after all four purposes are granted');
+assert.equal(europeanGranted.window.adsbygoogle.pauseAdRequests, 0,
+  'simulated European grant resumes AdSense requests');
+assert.deepEqual({ ...consentEvents(europeanGranted).at(-1)[2] }, expectedConsent('accepted'),
+  'simulated European grant updates all four Consent Mode v2 signals');
+
+const europeanNotApplicable = makeContext(null, '/', true, { gdprApplies: true, modeValues: {
+  adStoragePurposeConsentStatus: 3,
+  adUserDataPurposeConsentStatus: 3,
+  adPersonalizationPurposeConsentStatus: 3,
+  analyticsStoragePurposeConsentStatus: 3,
+} });
+await settle();
+assert.equal(europeanNotApplicable.document.head.children.filter(node => node.tagName === 'script').length, 0,
+  'a not-applicable status is not treated as affirmative permission in Basic Mode');
+assert.equal(europeanNotApplicable.window.adsbygoogle.pauseAdRequests, 1,
+  'a not-applicable status keeps AdSense requests paused');
+
+const europeanTransitionsOptions = {
+  gdprApplies: true,
+  modeValues: {
+    adStoragePurposeConsentStatus: 2,
+    adUserDataPurposeConsentStatus: 2,
+    adPersonalizationPurposeConsentStatus: 2,
+    analyticsStoragePurposeConsentStatus: 2,
+  },
+};
+const europeanTransitions = makeContext(null, '/', true, europeanTransitionsOptions);
+await settle();
+assert.equal(europeanTransitions.window.adsbygoogle.pauseAdRequests, 1,
+  'a European rejection starts with requests paused');
+europeanTransitionsOptions.modeValues = {
+  adStoragePurposeConsentStatus: 1,
+  adUserDataPurposeConsentStatus: 1,
+  adPersonalizationPurposeConsentStatus: 1,
+  analyticsStoragePurposeConsentStatus: 1,
+};
+europeanTransitions.emitTcf({ eventStatus: 'useractioncomplete' });
+await settle();
+assert.equal(europeanTransitions.window.adsbygoogle.pauseAdRequests, 0,
+  'a later European acceptance updates Consent Mode and resumes eligible requests');
+europeanTransitionsOptions.modeValues = {
+  adStoragePurposeConsentStatus: 2,
+  adUserDataPurposeConsentStatus: 2,
+  adPersonalizationPurposeConsentStatus: 2,
+  analyticsStoragePurposeConsentStatus: 2,
+};
+europeanTransitions.emitTcf({ eventStatus: 'useractioncomplete' });
+await settle();
+assert.deepEqual({ ...consentEvents(europeanTransitions).at(-1)[2] }, expectedConsent('rejected'),
+  'a European revocation sends denied values for all four Consent Mode signals');
+assert.equal(europeanTransitions.window.adsbygoogle.pauseAdRequests, 1,
+  'a European revocation pauses subsequent AdSense requests');
+
+const gpc = makeContext('accepted', '/', true, { gpc: true });
+await settle();
+assert.equal(gpc.document.head.children.filter(node => node.tagName === 'script').length, 0,
+  'GPC prevents GTM and GA4 script loading before and after the local choice');
+await choose(gpc, '.lc-consent-accept');
+assert.equal(consentEvents(gpc).at(-1)?.[2]?.ad_personalization, 'denied',
+  'GPC keeps advertising personalization denied after an analytics choice');
+assert.equal(gpc.window.adsbygoogle.pauseAdRequests, 1, 'GPC keeps AdSense requests paused');
+
+const unavailableCmp = makeContext(null, '/', true, { gdprApplies: false, usStatus: 0 });
+await settle();
+assert.equal(unavailableCmp.localStorage.getItem('lc_consent_authority'), 'unavailable',
+  'an unresolved Google CMP region is recorded as unavailable');
+assert.equal(unavailableCmp.document.getElementById('lc-consent-banner').classList.contains('is-visible'), false,
+  'an unresolved region does not trigger a competing legacy consent dialog');
+assert.equal(unavailableCmp.window.adsbygoogle.pauseAdRequests, 1,
+  'an unresolved Google CMP region keeps AdSense requests paused');
+
+const unavailableGpp = makeContext('accepted', '/', true, {
+  gdprApplies: false,
+  usStatus: 2,
+  gppUnavailable: true,
+});
+await settle();
+assert.equal(unavailableGpp.localStorage.getItem('lc_consent_authority'), 'unavailable',
+  'a US-state region without a GPP signal fails closed');
+assert.equal(unavailableGpp.window.adsbygoogle.pauseAdRequests, 1,
+  'a missing GPP signal pauses requests despite a stored local acceptance');
+assert.equal(consentEvents(unavailableGpp).at(-1)?.[2]?.ad_personalization, 'denied',
+  'a missing GPP signal does not grant ad personalization');
+
+const incompleteGpp = makeContext('accepted', '/', true, {
+  gdprApplies: false,
+  usStatus: 2,
+  gppIncomplete: true,
+});
+await settle();
+assert.equal(incompleteGpp.window.adsbygoogle.pauseAdRequests, 1,
+  'incomplete applicable GPP fields fail closed');
+assert.equal(consentEvents(incompleteGpp).at(-1)?.[2]?.ad_personalization, 'denied',
+  'incomplete applicable GPP fields cannot authorize stored consent');
+
+const delayedGpp = makeContext('accepted', '/', true, {
+  gdprApplies: false,
+  usStatus: 2,
+  gppInitialSignalStatus: 'not ready',
+});
+await settle();
+assert.equal(delayedGpp.window.adsbygoogle.pauseAdRequests, 1,
+  'a not-ready GPP signal holds requests while the CMP completes');
+delayedGpp.emitGppOptOut(false, false);
+await settle();
+assert.equal(delayedGpp.window.adsbygoogle.pauseAdRequests, 0,
+  'a later valid ready GPP signal resolves the fail-closed state');
+
+const mismatchedGppSection = makeContext('accepted', '/', true, {
+  gdprApplies: false,
+  usStatus: 2,
+  gppApplicableSections: [8],
+});
+await settle();
+assert.equal(mismatchedGppSection.window.adsbygoogle.pauseAdRequests, 1,
+  'a parsed GPP section not declared applicable cannot authorize ad requests');
+
+const chile = makeContext(null, '/', true, { gdprApplies: false, usStatus: 1 });
+await settle();
+await choose(chile, '.lc-consent-accept');
+assert.equal(consentEvents(chile).at(-1)?.[2]?.ad_personalization, 'granted',
+  'simulated Chile/other-region acceptance follows the legacy consent choice');
+assert.equal(chile.window.adsbygoogle.pauseAdRequests, 0,
+  'simulated Chile/other-region acceptance resumes AdSense requests');
+
+const chileWithUsSection = makeContext('accepted', '/', true, {
+  gdprApplies: false,
+  usStatus: 1,
+  gppOptOut: true,
+});
+await settle();
+assert.equal(consentEvents(chileWithUsSection).at(-1)?.[2]?.ad_personalization, 'granted',
+  'a US section outside Google’s applicable jurisdiction does not restrict a Chilean visitor');
+assert.equal(chileWithUsSection.window.adsbygoogle.requestNonPersonalizedAds, undefined,
+  'a non-applicable US GPP opt-out does not set NPA');
+
+const californiaGppOptOut = makeContext('accepted', '/', true, {
+  gdprApplies: false,
+  usStatus: 2,
+  gppPrefix: 'usca',
+  gppApplicableSections: [8],
+  gppOptOut: true,
+});
+await settle();
+assert.equal(consentEvents(californiaGppOptOut).at(-1)?.[2]?.ad_personalization, 'denied',
+  'a California section is interpreted only when its matching section ID is applicable');
+
+const europeanWithUsGpp = makeContext(null, '/', true, {
+  gdprApplies: true,
+  usStatus: 3,
+  gppOptOut: true,
+  modeValues: {
+    adStoragePurposeConsentStatus: 1,
+    adUserDataPurposeConsentStatus: 1,
+    adPersonalizationPurposeConsentStatus: 1,
+    analyticsStoragePurposeConsentStatus: 1,
+  },
+});
+await settle();
+assert.equal(europeanWithUsGpp.window.adsbygoogle.pauseAdRequests, 0,
+  'an inapplicable US GPP opt-out does not replace European CMP consent status');
+assert.equal(consentEvents(europeanWithUsGpp).at(-1)?.[2]?.ad_personalization, 'granted',
+  'European Consent Mode values remain governed by the European CMP, not a US section');
+
+const usOptOut = makeContext('accepted', '/', true, { gdprApplies: false, usStatus: 3, gppOptOut: true });
+await settle();
+assert.equal(consentEvents(usOptOut).at(-1)?.[2]?.ad_personalization, 'denied',
+  'simulated US state opt-out keeps Consent Mode ad signals denied');
+assert.equal(usOptOut.window.adsbygoogle.requestNonPersonalizedAds, 1,
+  'simulated US state opt-out sets the AdSense non-personalized request flag');
+assert.equal(usOptOut.window.adsbygoogle.pauseAdRequests, 0,
+  'eligible opt-out requests are not confused with a full request block when GPC is absent');
+assert.equal(consentEvents(usOptOut).at(-1)?.[2]?.analytics_storage, 'granted',
+  'US advertising opt-out remains separate from an already accepted local analytics choice');
+await usOptOut.document.getElementById('lc-consent-manage').click();
+assert.equal(usOptOut.window.location.assigned, '/guides/?lc-manage-consent=1',
+  'US state privacy management routes to a page with the Google default opt-out entry point');
+
+const dynamicGpp = makeContext('accepted', '/', true, { gdprApplies: false, usStatus: 2 });
+await settle();
+assert.equal(consentEvents(dynamicGpp).at(-1)?.[2]?.ad_personalization, 'granted',
+  'an explicit US-state acceptance permits the configured signals before an opt-out update');
+dynamicGpp.emitGppOptOut(true);
+assert.equal(consentEvents(dynamicGpp).at(-1)?.[2]?.ad_personalization, 'denied',
+  'a subsequent GPP opt-out revokes Consent Mode advertising signals');
+assert.equal(dynamicGpp.window.adsbygoogle.requestNonPersonalizedAds, 1,
+  'a subsequent GPP opt-out switches accepted AdSense requests to non-personalized treatment');
+assert.equal(dynamicGpp.window.adsbygoogle.pauseAdRequests, 0,
+  'a GPP opt-out does not incorrectly treat denied personalization as no eligible ad request');
+dynamicGpp.emitGppOptOut(false);
+assert.equal(consentEvents(dynamicGpp).at(-1)?.[2]?.ad_personalization, 'granted',
+  'a later explicit GPP opt-in restores only the existing local accepted choice');
+assert.equal(dynamicGpp.window.adsbygoogle.requestNonPersonalizedAds, 0,
+  'a later explicit GPP opt-in clears the non-personalized request flag');
+
+const gppFailure = makeContext('accepted', '/', true, { gdprApplies: false, usStatus: 2 });
+await settle();
+gppFailure.emitGppFailure();
+assert.equal(gppFailure.window.adsbygoogle.pauseAdRequests, 1,
+  'loss of a previously ready GPP API fails closed');
+assert.equal(consentEvents(gppFailure).at(-1)?.[2]?.ad_personalization, 'denied',
+  'a GPP API error cannot restore a previous local acceptance');
+
+const gppUnexpected = makeContext('accepted', '/', true, { gdprApplies: false, usStatus: 2 });
+await settle();
+gppUnexpected.emitGppUnexpected();
+assert.equal(gppUnexpected.window.adsbygoogle.pauseAdRequests, 1,
+  'an unexpected GPP readiness state fails closed');
+
+const contradictoryInitialOptOut = makeContext('accepted', '/', true, {
+  gdprApplies: false,
+  usStatus: 3,
+  gppOptOut: false,
+});
+await settle();
+assert.equal(contradictoryInitialOptOut.window.adsbygoogle.pauseAdRequests, 1,
+  'a contradictory initial GPP no-opt-out does not cancel Google’s initial opt-out');
+assert.equal(consentEvents(contradictoryInitialOptOut).at(-1)?.[2]?.ad_personalization, 'denied',
+  'a contradictory initial GPP no-opt-out cannot override the opt-out with local acceptance');
+contradictoryInitialOptOut.emitGppOptOut(false);
+await settle();
+assert.equal(contradictoryInitialOptOut.window.adsbygoogle.pauseAdRequests, 0,
+  'a later explicit, ready GPP transition can resolve the contradictory initial signals');
+assert.equal(consentEvents(contradictoryInitialOptOut).at(-1)?.[2]?.ad_personalization, 'granted',
+  'only a subsequent GPP transition, not the initial contradiction, can restore the saved choice');
+
+const gppWithGpc = makeContext('accepted', '/', true, {
+  gdprApplies: false,
+  usStatus: 1,
+  gppSectionGpc: true,
+});
+await settle();
+assert.equal(gppWithGpc.window.adsbygoogle.pauseAdRequests, 1,
+  'a GPC signal embedded in GPP remains effective outside an applicable US-state section');
+assert.equal(gppWithGpc.window.dataLayer.filter(entry => entry?.[0] === 'consent' && entry[1] === 'update').at(-1)?.[2]?.analytics_storage,
+  'denied',
+  'a GPP GPC signal denies analytics Consent Mode as well as ad signals');
+
+const europeanRevocation = makeContext('accepted', '/', true, {
+  gdprApplies: true,
+  search: '?lc-manage-consent=1',
+  modeValues: {
+    adStoragePurposeConsentStatus: 2,
+    adUserDataPurposeConsentStatus: 2,
+    adPersonalizationPurposeConsentStatus: 2,
+    analyticsStoragePurposeConsentStatus: 2,
+  },
+});
+await settle();
+assert.equal(europeanRevocation.window.revocationShown, true,
+  'simulated EU, UK, or Switzerland privacy button invokes the queued CMP revocation API');
+
+const noAdsEuropeanPage = makeContext('accepted', '/privacy.html', false, {
+  hasAdSense: false,
+  authority: 'google-europe',
+  lang: 'es',
+});
+await settle();
+await noAdsEuropeanPage.document.getElementById('lc-consent-manage').click();
+assert.equal(noAdsEuropeanPage.window.location.assigned, '/es/guides/?lc-manage-consent=1',
+  'a Spanish no-AdSense page routes revocation to the Spanish page that loads Google CMP');
+assert.equal(noAdsEuropeanPage.document.getElementById('lc-consent-banner').classList.contains('is-visible'), false,
+  'a no-AdSense European page does not display a competing custom consent banner');
+
+const noAdsUsPage = makeContext('accepted', '/privacy.html', false, {
+  hasAdSense: false,
+  authority: 'google-us',
+});
+await settle();
+assert.equal(noAdsUsPage.document.head.children.filter(node => node.tagName === 'script').length, 0,
+  'a no-AdSense US-state page does not load Google tags without rechecking the GPP state');
+await noAdsUsPage.document.getElementById('lc-consent-manage').click();
+assert.equal(noAdsUsPage.window.location.assigned, '/guides/?lc-manage-consent=1',
+  'a no-AdSense US-state page routes to Google privacy options');
+
+console.log('consent tests passed (Google CMP cases are simulated; no live Google integration was exercised)');

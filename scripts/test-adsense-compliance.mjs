@@ -24,6 +24,7 @@ async function walk(directory) {
 await walk(ROOT);
 
 const adsTxt = (await readFile(path.join(ROOT, 'ads.txt'), 'utf8')).trim();
+const consentSource = await readFile(path.join(ROOT, 'consent.js'), 'utf8');
 assert.equal(adsTxt, `google.com, pub-${PUBLISHER_ID.slice(7)}, DIRECT, f08c47fec0942fa0`, 'ads.txt authorizes only the current publisher');
 
 const pagesWithAdSense = [];
@@ -42,6 +43,10 @@ for (const file of htmlFiles) {
     for (const key of ['ad_storage', 'ad_user_data', 'ad_personalization', 'analytics_storage']) {
       assert.match(html.slice(defaultIndex, adScripts[0].index), new RegExp(`${key}:"denied"`), `${path.relative(ROOT, file)} denies ${key} by default`);
     }
+    assert.match(html.slice(defaultIndex, adScripts[0].index), /window\.adsbygoogle\.pauseAdRequests=1/,
+      `${path.relative(ROOT, file)} pauses ad requests before loading AdSense`);
+    assert.match(html.slice(defaultIndex, adScripts[0].index), /window\.googlefc\.callbackQueue=window\.googlefc\.callbackQueue\|\|\[\]/,
+      `${path.relative(ROOT, file)} initializes the Google Privacy & messaging callback queue`);
   }
 }
 assert.ok(pagesWithAdSense.length > 0, 'generated resource pages include AdSense');
@@ -121,6 +126,8 @@ for (const rawUrl of urls) {
 const robots = await read('robots.txt');
 assert.ok(robots.includes(`Sitemap: ${SITE}/sitemap.xml`), 'robots.txt points to the canonical sitemap');
 assert.equal((await read('CNAME')).trim(), 'listeningclassroom.com', 'CNAME matches the canonical host');
+assert.match(consentSource, /CONSENT_API_READY[\s\S]*showRevocationMessage\(\)/,
+  'CMP revocation is invoked through the documented Google callback queue');
 for (const file of [
   'index.html', 'es/index.html', 'about.html', 'es/about.html',
   'contact.html', 'es/contact.html', 'privacy.html', 'es/privacy.html',

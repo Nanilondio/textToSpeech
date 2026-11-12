@@ -333,9 +333,12 @@ The publisher ID in `ads.txt` and page metadata is
 generated exercise, guide, level, topic and exercise-index pages. It does not
 insert that script on the homepage, Generator, legal/contact or support pages.
 The script loads independently of the cookie banner, with Google Consent Mode
-v2 defaults set to denied before it loads. Publisher-side Auto ads settings
-cannot be inspected in this repository, so the presence of the script does not
-prove that ads are currently displayed.
+v2 defaults set to denied and AdSense requests paused before it loads. The
+adapter resumes requests only after a usable consent decision; it keeps them
+paused if Google's regional consent status is unavailable or GPC is detected.
+Publisher-side Privacy & messaging and Auto ads settings cannot be inspected in
+this repository, so the presence of the script does not prove that ads are
+currently displayed or that a Google message is published.
 
 The `.ad-slot` placeholders are hidden unless `LC_ADSENSE.enabled` is set and a
 slot has the `enabled` class. There are no active `LC_ADSENSE` settings in this
@@ -348,13 +351,18 @@ repository. Do not add a second AdSense tag when changing ad placements.
 - Text entered into the Generator is processed locally by the browser code.
   Hosting and third-party Google requests can still process technical request
   data such as IP address and browser information.
-- GTM and GA4 load after the user accepts cookies or allows analytics. The
-  banner sends Consent Mode v2 defaults and updates for ad and analytics
-  signals. AdSense can load before a choice on generated pages with denied
-  defaults; denying consent does not prevent the request.
+- In EEA/UK/Switzerland, Google Privacy & messaging is the intended consent
+  authority; the site's Basic Consent Mode adapter loads Google tags only when
+  all four purposes are granted or not applicable. Outside Europe, the local
+  choice controls Consent Mode after Google confirms the region. GPC keeps
+  advertising signals denied and AdSense requests paused. The AdSense script
+  itself can download before a choice, but requests are paused pending a usable
+  decision. Pages without the AdSense tag do not load GTM/GA4 because this
+  static integration cannot safely reclassify their region; the privacy button
+  routes to a resource page instead.
 - `privacy.html` and `terms.html` describe the local code behavior. Google
-  publisher settings, live ad behavior, and whether a certified CMP is active
-  require separate verification.
+  publisher settings, live ad behavior, TCF v2.4/GPP signals, and whether the
+  certified CMP messages are published require separate verification.
 
 ---
 
