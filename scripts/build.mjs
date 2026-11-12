@@ -269,6 +269,7 @@ function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical,
 <head>
 <meta charset="UTF-8">
 ${adsense ? '<meta name="google-adsense-account" content="ca-pub-7086938365759492">' : ''}
+${adsense ? '<script>window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};window.gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",wait_for_update:500});window.__lcConsentDefaultsSent=true;</script>' : ''}
 ${adsense ? '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>' : ''}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="${htmlEscape(robots)}">
@@ -497,9 +498,12 @@ async function writeGeneratorSpanishVariant() {
   const outputPath = path.join(ROOT, 'es/generator/index.html');
   const canonical = `${SITE}/generator/`;
   const spanishCanonical = `${SITE}/es/generator/`;
+  const sourceMarkup = readText(sourcePath);
+  const hreflangLinks = sourceMarkup.includes('hreflang="en"') ? '' :
+    `<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="es" href="${spanishCanonical}"><link rel="alternate" hreflang="x-default" href="${canonical}">`;
   const title = 'Generador de diálogos en inglés — Audio MP3 con dos voces | ListeningClassroom';
   const description = 'Crea audio de diálogos en inglés con dos voces, ajusta la velocidad y descarga un archivo MP3 para clases y actividades de escucha.';
-  let source = readText(sourcePath)
+  let source = sourceMarkup
     .replace('<html lang="en">', '<html lang="es">')
     .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
     .replace(/<meta name="description" content="[^"]*">/, `<meta name="description" content="${description}">`)
@@ -514,7 +518,7 @@ async function writeGeneratorSpanishVariant() {
     .replace(/"audienceType": "Teachers, ESL educators"/, '"audienceType": "Docentes y estudiantes de inglés"')
     .replace(/"featureList": \["Two-voice English dialogue generation", "Downloadable MP3 audio", "Adjustable speech speed", "Browser-based text to speech"\]/,
       '"inLanguage": "es", "featureList": ["Generación de diálogos en inglés con dos voces", "Descarga de audio MP3", "Velocidad de habla ajustable", "Texto a voz en el navegador"]')
-    .replace('</head>', `<link rel="alternate" hreflang="en" href="${canonical}"><link rel="alternate" hreflang="es" href="${spanishCanonical}"><link rel="alternate" hreflang="x-default" href="${canonical}">\n</head>`)
+    .replace('</head>', `${hreflangLinks}\n</head>`)
     .replace("let currentLang = localStorage.getItem('lang') || 'en';", "let currentLang = localStorage.getItem('lang') || 'es';")
     .replace(/href="\/resources\//g, 'href="/es/resources/')
     .replace(/href="\/guides\//g, 'href="/es/guides/')

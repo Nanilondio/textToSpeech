@@ -79,7 +79,7 @@ class FakeStorage {
   removeItem(key) { this.values.delete(key); }
 }
 
-function makeContext(initialState = null, pathname = '/') {
+function makeContext(initialState = null, pathname = '/', defaultsSent = false) {
   const document = {
     readyState: 'complete',
     ids: new Map(),
@@ -117,6 +117,16 @@ function makeContext(initialState = null, pathname = '/') {
     dispatchEvent(event) { events.push(event.type); },
     CustomEvent: class { constructor(type) { this.type = type; } },
   };
+  if (defaultsSent) {
+    window.__lcConsentDefaultsSent = true;
+    window.dataLayer.push(['consent', 'default', {
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+      analytics_storage: 'denied',
+      wait_for_update: 500,
+    }]);
+  }
   const context = { window, document, localStorage, Date, Intl, URLSearchParams, CustomEvent: window.CustomEvent, console };
   vm.runInNewContext(source, context);
   return { ...context, events, supportLinks };
@@ -134,6 +144,14 @@ function saved(context) {
   return JSON.parse(context.localStorage.getItem('lc_cookie_consent')).value;
 }
 
+const consentEvents = context => context.window.dataLayer.filter(entry => entry?.[0] === 'consent');
+const expectedConsent = value => ({
+  ad_storage: value === 'accepted' ? 'granted' : 'denied',
+  ad_user_data: value === 'accepted' ? 'granted' : 'denied',
+  ad_personalization: value === 'accepted' ? 'granted' : 'denied',
+  analytics_storage: value === 'rejected' ? 'denied' : 'granted',
+});
+
 for (const [initial, choice, selector] of [
   [null, 'accepted', '.lc-consent-accept'],
   [null, 'limited', '.lc-consent-limited'],
@@ -150,12 +168,21 @@ for (const [initial, choice, selector] of [
   await choose(context, selector);
   assert.equal(saved(context), choice, `${initial || 'new'} -> ${choice} persists`);
   assert.ok(context.events.includes(`lc-consent:${choice}`), `${choice} event is emitted`);
+  const latestConsent = consentEvents(context).at(-1);
+  assert.equal(latestConsent?.[1], 'update', `${choice} updates consent`);
+  assert.deepEqual({ ...latestConsent?.[2] }, expectedConsent(choice), `${choice} maps to the expected Consent Mode v2 signals`);
 }
 
 const accepted = makeContext('accepted');
 await settle();
 assert.equal(accepted.document.head.children.filter(node => node.tagName === 'script').length, 2, 'accepted loads GTM and GA4 once');
 assert.equal(new Set(accepted.document.head.children.filter(node => node.tagName === 'script').map(node => node.src)).size, 2, 'accepted scripts have unique sources');
+
+const earlyDefaults = makeContext('accepted', '/', true);
+await settle();
+assert.equal(consentEvents(earlyDefaults).filter(entry => entry[1] === 'default').length, 1, 'an early page default is not initialized twice');
+assert.equal(consentEvents(earlyDefaults).at(-1)?.[1], 'update', 'a saved choice updates early page defaults');
+assert.deepEqual({ ...consentEvents(earlyDefaults).at(-1)[2] }, expectedConsent('accepted'), 'a saved acceptance grants the expected consent types');
 
 const supportEvents = context => context.window.dataLayer.filter(entry => entry?.[0] === 'event');
 const support = makeContext('accepted', '/support/');

@@ -328,38 +328,33 @@ Sitemap and robots are regenerated automatically on every build.
 
 ## Advertising (AdSense)
 
-The site is ready for Google AdSense, but **no ads are currently
-served**. Each exercise, guide and topic page already has placeholder
-`.ad-slot` containers in the right locations:
+The publisher ID in `ads.txt` and page metadata is
+`ca-pub-7086938365759492`. The build template inserts one AdSense script on
+generated exercise, guide, level, topic and exercise-index pages. It does not
+insert that script on the homepage, Generator, legal/contact or support pages.
+The script loads independently of the cookie banner, with Google Consent Mode
+v2 defaults set to denied before it loads. Publisher-side Auto ads settings
+cannot be inspected in this repository, so the presence of the script does not
+prove that ads are currently displayed.
 
-- After the dialogue.
-- After the comprehension questions.
-- Before the related exercises.
-- At the bottom of long pages.
-
-The slots are hidden by default. To enable them:
-
-1. Add the AdSense `<script>` tag to the `<head>` of `index.html`,
-   `generator/index.html`, and any other page.
-2. In `assets/js/site.js`, set the publisher ID configured for this site
-   (`ca-pub-7086938365759492`):
-   ```html
-   <script>window.LC_ADSENSE = { enabled: true, client: 'ca-pub-7086938365759492' };</script>
-   ```
-3. Mark the slots you want to show with `class="ad-slot enabled"`.
-
-The Generator itself has **no** ad slots — the tool stays clean.
+The `.ad-slot` placeholders are hidden unless `LC_ADSENSE.enabled` is set and a
+slot has the `enabled` class. There are no active `LC_ADSENSE` settings in this
+repository. Do not add a second AdSense tag when changing ad placements.
 
 ---
 
 ## Privacy and cookies
 
-- No student text ever leaves the browser. The audio model runs locally
-  via WebAssembly.
-- Analytics (GTM, GA4) and AdSense load only **after** the user accepts
-  non-essential cookies via the consent banner (`consent.js`).
-- `privacy.html` and `terms.html` document what the site does and does
-  not collect. Update them before going live with AdSense.
+- Text entered into the Generator is processed locally by the browser code.
+  Hosting and third-party Google requests can still process technical request
+  data such as IP address and browser information.
+- GTM and GA4 load after the user accepts cookies or allows analytics. The
+  banner sends Consent Mode v2 defaults and updates for ad and analytics
+  signals. AdSense can load before a choice on generated pages with denied
+  defaults; denying consent does not prevent the request.
+- `privacy.html` and `terms.html` describe the local code behavior. Google
+  publisher settings, live ad behavior, and whether a certified CMP is active
+  require separate verification.
 
 ---
 
@@ -371,7 +366,7 @@ The Generator itself has **no** ad slots — the tool stays clean.
 ├── generator/
 │   └── index.html                   ← the audio tool (moved from /)
 ├── about.html, contact.html,
-│   privacy.html, terms.html         ← unchanged
+│   privacy.html, terms.html         ← manually maintained EN sources; ES pages are built
 ├── ads.txt                          ← AdSense configuration
 ├── CNAME                            ← custom domain
 ├── consent.js                       ← cookie consent banner

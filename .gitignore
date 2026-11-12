@@ -17,3 +17,4 @@ scripts/browser-qa.mjs
 scripts/audio-benchmark.mjs
 !README.md
 !**/README.md
+!docs/ADSENSE_COMPLIANCE_ROADMAP.md
