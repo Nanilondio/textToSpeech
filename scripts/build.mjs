@@ -269,7 +269,7 @@ function renderHead({ titleEn, titleEs, descriptionEn, descriptionEs, canonical,
 <head>
 <meta charset="UTF-8">
 ${adsense ? '<meta name="google-adsense-account" content="ca-pub-7086938365759492">' : ''}
-${adsense ? '<script>window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};window.gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",wait_for_update:500});window.__lcConsentDefaultsSent=true;</script>' : ''}
+${adsense ? '<script>window.dataLayer=window.dataLayer||[];window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};window.gtag("consent","default",{ad_storage:"denied",ad_user_data:"denied",ad_personalization:"denied",analytics_storage:"denied",wait_for_update:500});window.googlefc=window.googlefc||{};window.googlefc.usstatesoptout=window.googlefc.usstatesoptout||{};window.googlefc.callbackQueue=window.googlefc.callbackQueue||[];window.adsbygoogle=window.adsbygoogle||[];window.adsbygoogle.pauseAdRequests=1;if(window.navigator&&window.navigator.globalPrivacyControl===true)window.adsbygoogle.requestNonPersonalizedAds=1;window.__lcConsentDefaultsSent=true;</script>' : ''}
 ${adsense ? '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7086938365759492" crossorigin="anonymous"></script>' : ''}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="${htmlEscape(robots)}">

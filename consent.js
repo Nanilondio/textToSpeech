@@ -3,25 +3,66 @@
   const GA4_ID = 'G-E1D8VDYM6D';
   const GTM_ID = 'GTM-KTXQJMMH';
   const CONSENT_MAX_AGE_MS = 365 * 24 * 60 * 60 * 1000;
+  const preferencesRoute = () => `${currentLang() === 'es' ? '/es' : ''}/guides/?lc-manage-consent=1`;
+  const GOOGLE_CMP_WAIT_MS = 2500;
+  const US_GPP_SECTIONS = [
+    { id: 7, prefix: 'usnat', fields: ['MspaOptOut'] },
+    { id: 8, prefix: 'usca', fields: ['SaleOptOut', 'SharingOptOut'] },
+    { id: 9, prefix: 'usva', fields: ['SaleOptOut', 'TargetedAdvertisingOptOut'] },
+    { id: 10, prefix: 'usco', fields: ['SaleOptOut', 'TargetedAdvertisingOptOut'] },
+    { id: 12, prefix: 'usct', fields: ['SaleOptOut', 'TargetedAdvertisingOptOut'] },
+    { id: 13, prefix: 'usfl', fields: ['SaleOptOut', 'TargetedAdvertisingOptOut'] },
+  ];
   const MARKETING_SCRIPT_STATE = {
     gtm: 'idle',
     ga4: 'idle',
   };
   const MARKETING_SCRIPT_PROMISES = new Map();
+  let googleTagsConfigured = false;
+  const hasAdSenseTag = Boolean(document.querySelector('script[src*="adsbygoogle.js"]'));
+  const gpcEnabled = window.navigator?.globalPrivacyControl === true;
+  const consentAuthorityKey = 'lc_consent_authority';
+  const wantsConsentManagement = new URLSearchParams(window.location.search).has('lc-manage-consent');
   let communicatedConsent = window.__lcConsentDefaultsSent ? 'rejected' : null;
+  let googleCmpRegion = null;
+  let googleCmpDecisionReady = false;
+  let googleCmpAnalyticsGranted = false;
+  let googleGdprResolved = false;
+  let googleGdprApplies = null;
+  let googleUsStateResolved = false;
+  let usStateApplies = false;
+  let googleUsInitialOptedOut = false;
+  let usOptedOut = false;
+  let gppState = 'unavailable';
+  let gppOptOut = null;
+  let gppGpcActive = false;
+  let gppHasBaseline = false;
+  let gppHasObservedReady = false;
+  let gppChangePending = false;
+  let gppOverridesGoogleInitial = false;
+  let gppListenerSetup = false;
+  let latestGppPingData = null;
+  let communicatedConsentSignals = null;
+  let googleConsentModeSignals = null;
+  let legacyInitialized = false;
+  let revocationRequested = false;
   let supportPageViewSent = false;
 
   const I18N = {
     en: {
       ariaLabel: 'Cookie consent',
       title: 'Cookies for ads and measurement',
-      copy: 'This banner sends Google Consent Mode choices for ads and analytics. The AdSense tag may load on some resource pages before you choose; consent signals start denied. See our Privacy Policy for details.',
+      copy: 'This banner sends Google Consent Mode choices for ads and analytics. On resource pages, the AdSense script may load before you choose; ad requests are paused until the relevant decision is available. See our Privacy Policy for details.',
       reject: 'Reject non-essential',
       limited: 'Allow analytics only',
       accept: 'Accept cookies',
       privacy: 'Privacy Policy',
       manage: 'Cookies',
-      manageTitle: 'Manage cookie preferences',
+      manageTitle: 'Privacy and cookie choices',
+      analyticsOnly: 'Allow analytics only',
+      unavailableCopy: 'Google Privacy & messaging did not return a valid regional decision. Ad requests stay paused; analytics loads only if you allow it.',
+      gpcCopy: 'Global Privacy Control is detected. Google advertising and analytics tags stay disabled on this visit.',
+      usOptOutCopy: 'Your Google privacy opt-out remains in effect. This choice allows analytics only; Google determines whether non-personalized ads can be served.',
       ccpa: 'Do Not Sell or Share My Personal Information',
       ccpaCopy: 'California residents: this banner sends denied Google ad-consent signals when you reject non-essential cookies, but the AdSense tag may still load.',
       confirmLimited: 'No ad consent was granted. Google may still make limited ad requests. Change your choice from the cookies button at any time.',
@@ -30,13 +71,17 @@
     es: {
       ariaLabel: 'Consentimiento de cookies',
       title: 'Cookies para anuncios y medición',
-      copy: 'Este banner envía a Google las opciones de Consent Mode para anuncios y analítica. La etiqueta de AdSense puede cargarse en algunas páginas de recursos antes de que elijas; las señales empiezan denegadas. Consulta nuestra Política de Privacidad.',
+      copy: 'Este banner envía a Google las opciones de Consent Mode para anuncios y analítica. En páginas de recursos, el script de AdSense puede cargarse antes de que elijas; las solicitudes publicitarias se pausan hasta que haya una decisión pertinente. Consulta nuestra Política de Privacidad.',
       reject: 'Rechazar no esenciales',
       limited: 'Permitir solo analítica',
       accept: 'Aceptar cookies',
       privacy: 'Política de Privacidad',
       manage: 'Cookies',
-      manageTitle: 'Gestionar preferencias de cookies',
+      manageTitle: 'Opciones de privacidad y cookies',
+      analyticsOnly: 'Permitir solo analítica',
+      unavailableCopy: 'Google Privacy & messaging no devolvió una decisión regional válida. Las solicitudes publicitarias permanecen pausadas; la analítica solo se carga si la permites.',
+      gpcCopy: 'Se detectó Global Privacy Control. Las etiquetas de publicidad y analítica de Google permanecen desactivadas durante esta visita.',
+      usOptOutCopy: 'Tu exclusión de privacidad de Google sigue vigente. Esta opción solo permite analítica; Google determina si puede servir anuncios no personalizados.',
       ccpa: 'No vender ni compartir mi información personal',
       ccpaCopy: 'Residentes de California: al rechazar las cookies no esenciales, este banner envía a Google señales que deniegan el consentimiento publicitario, pero la etiqueta de AdSense puede cargarse.',
       confirmLimited: 'No diste consentimiento publicitario. Google aún podría realizar solicitudes publicitarias limitadas. Cambia tu elección desde el botón de cookies cuando quieras.',
@@ -51,7 +96,7 @@
       let parsed;
       try { parsed = JSON.parse(raw); }
       catch { parsed = { value: raw, at: null }; }
-      if (!parsed.value) return null;
+      if (!['accepted', 'limited', 'rejected'].includes(parsed.value)) return null;
       if (parsed.at) {
         const age = Date.now() - new Date(parsed.at).getTime();
         if (!Number.isFinite(age) || age > CONSENT_MAX_AGE_MS) return null;
@@ -64,8 +109,14 @@
 
   const isSupportPage = () => /^\/(?:es\/)?support\/?$/.test(window.location.pathname || '');
 
+  const hasGpcSignal = () => gpcEnabled || gppGpcActive;
+
+  const analyticsAllowed = () => !hasGpcSignal() && (googleCmpRegion === 'europe'
+    ? googleCmpAnalyticsGranted
+    : ['accepted', 'limited'].includes(state()));
+
   const trackSupportPageView = () => {
-    if (supportPageViewSent || !isSupportPage() || !['accepted', 'limited'].includes(state())) return;
+    if (supportPageViewSent || !isSupportPage() || !analyticsAllowed()) return;
     window.gtag('event', 'support_page_view');
     supportPageViewSent = true;
   };
@@ -74,7 +125,7 @@
     if (!isSupportPage()) return;
     document.querySelectorAll('[data-support-option]').forEach((link) => {
       link.addEventListener('click', () => {
-        if (!['accepted', 'limited'].includes(state())) return;
+        if (!analyticsAllowed()) return;
         window.gtag('event', 'support_click', {
           support_option: link.dataset.supportOption,
         });
@@ -253,22 +304,49 @@
     };
   };
 
-  const consentFor = (value) => ({
-    ad_storage: value === 'accepted' ? 'granted' : 'denied',
-    ad_user_data: value === 'accepted' ? 'granted' : 'denied',
-    ad_personalization: value === 'accepted' ? 'granted' : 'denied',
-    // “limited” limits ads only; it still permits measurement after choice.
-    analytics_storage: value === 'rejected' ? 'denied' : 'granted',
-  });
+  const consentFor = (value) => {
+    const adsAllowed = value === 'accepted'
+      && !hasGpcSignal()
+      && !usOptedOut
+      && googleCmpRegion !== 'unavailable'
+      && (!usStateApplies || gppState === 'ready');
+    return {
+      ad_storage: adsAllowed ? 'granted' : 'denied',
+      ad_user_data: adsAllowed ? 'granted' : 'denied',
+      ad_personalization: adsAllowed ? 'granted' : 'denied',
+      // “limited” limits ads only; it still permits measurement after choice.
+      analytics_storage: value !== 'rejected' && !hasGpcSignal() ? 'granted' : 'denied',
+    };
+  };
 
-  const setConsent = (value) => {
+  const setConsent = (value, force = false) => {
+    if (googleCmpRegion === 'europe') return;
     ensureGoogleTagStub();
+    const signals = consentFor(value);
+    if (!force
+      && communicatedConsent === value
+      && communicatedConsentSignals
+      && Object.keys(signals).every(key => communicatedConsentSignals[key] === signals[key])) return;
     const command = communicatedConsent ? 'update' : 'default';
     window.gtag('consent', command, {
-      ...consentFor(value),
+      ...signals,
       ...(command === 'default' ? { wait_for_update: 500 } : {}),
     });
     communicatedConsent = value;
+    communicatedConsentSignals = signals;
+  };
+
+  const setAdRequestPaused = (paused) => {
+    if (!hasAdSenseTag) return;
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (hasGpcSignal() || usOptedOut) window.adsbygoogle.requestNonPersonalizedAds = 1;
+    else if ('requestNonPersonalizedAds' in window.adsbygoogle) window.adsbygoogle.requestNonPersonalizedAds = 0;
+    window.adsbygoogle.pauseAdRequests = (
+      paused
+      || hasGpcSignal()
+      || googleCmpRegion === 'unavailable'
+      || (usStateApplies && gppState !== 'ready')
+    ) ? 1 : 0;
   };
 
   const loadScriptOnce = (key, src, attrs = {}) => {
@@ -306,9 +384,12 @@
 
   const loadMarketingScripts = async (value) => {
     if (!['accepted', 'limited'].includes(value)) return;
+    if (hasGpcSignal() || (usStateApplies && gppState !== 'ready')) return;
     ensureGoogleTagStub();
-    if (communicatedConsent !== value) setConsent(value);
-    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    if (googleCmpRegion !== 'europe' && communicatedConsent !== value) setConsent(value);
+    if (MARKETING_SCRIPT_STATE.gtm === 'idle') {
+      window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+    }
 
     await loadScriptOnce(
       'gtm',
@@ -319,18 +400,296 @@
       'ga4',
       `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(GA4_ID)}`
     );
-    window.gtag('js', new Date());
-    window.gtag('config', GA4_ID);
+    if (!googleTagsConfigured) {
+      window.gtag('js', new Date());
+      window.gtag('config', GA4_ID);
+      googleTagsConfigured = true;
+    }
 
   };
 
+  const canLoadBasicModeTags = (values) => {
+    if (!values) return false;
+    if (hasGpcSignal()) return false;
+    return [
+      values.adStoragePurposeConsentStatus,
+      values.adUserDataPurposeConsentStatus,
+      values.adPersonalizationPurposeConsentStatus,
+      values.analyticsStoragePurposeConsentStatus,
+    ].every(status => status === 1);
+  };
+
+  const updateGoogleConsentMode = (values) => {
+    const signals = {
+      ad_storage: values?.adStoragePurposeConsentStatus === 1 ? 'granted' : 'denied',
+      ad_user_data: values?.adUserDataPurposeConsentStatus === 1 ? 'granted' : 'denied',
+      ad_personalization: values?.adPersonalizationPurposeConsentStatus === 1 ? 'granted' : 'denied',
+      analytics_storage: values?.analyticsStoragePurposeConsentStatus === 1 ? 'granted' : 'denied',
+    };
+    if (googleConsentModeSignals
+      && Object.keys(signals).every(key => googleConsentModeSignals[key] === signals[key])) return;
+    ensureGoogleTagStub();
+    window.gtag('consent', 'update', signals);
+    googleConsentModeSignals = signals;
+  };
+
+  const loadGoogleTagsAfterCmp = async () => {
+    if (googleCmpRegion !== 'europe') return;
+    setAdRequestPaused(true);
+    const values = window.googlefc?.getGoogleConsentModeValues?.();
+    updateGoogleConsentMode(hasGpcSignal() ? null : values);
+    googleCmpDecisionReady = canLoadBasicModeTags(values);
+    googleCmpAnalyticsGranted = !hasGpcSignal() && values?.analyticsStoragePurposeConsentStatus === 1;
+    if (!googleCmpDecisionReady) return;
+    setAdRequestPaused(false);
+    await loadMarketingScripts('limited');
+    trackSupportPageView();
+  };
+
+  const requestGoogleRevocation = () => {
+    if (!hasAdSenseTag || revocationRequested) {
+      if (!hasAdSenseTag) window.location.assign(preferencesRoute());
+      return;
+    }
+    revocationRequested = true;
+    window.googlefc.callbackQueue.push({
+      CONSENT_API_READY: () => window.googlefc.showRevocationMessage(),
+    });
+  };
+
+  const resolveNonEuropeanRegion = () => {
+    if (!googleGdprResolved || googleGdprApplies !== false || !googleUsStateResolved) return;
+    if (googleCmpRegion === 'europe') return;
+    if (usStateApplies) {
+      if (gppState !== 'ready') {
+        googleCmpRegion = 'unavailable';
+        try { localStorage.setItem(consentAuthorityKey, 'unavailable'); } catch {}
+        setConsent(state() || 'rejected');
+        setAdRequestPaused(true);
+        hideBanner();
+        showManage();
+        return;
+      }
+      googleCmpRegion = 'us';
+      try { localStorage.setItem(consentAuthorityKey, 'google-us'); } catch {}
+    } else {
+      googleCmpRegion = 'other';
+      try { localStorage.setItem(consentAuthorityKey, 'legacy'); } catch {}
+    }
+    initializeLegacyConsent();
+  };
+
+  const handleGoogleCmpDecision = (tcData, success) => {
+    if (!success || !tcData || typeof tcData.gdprApplies !== 'boolean') return;
+    googleGdprResolved = true;
+    googleGdprApplies = tcData.gdprApplies;
+    if (tcData.gdprApplies) {
+      googleCmpRegion = 'europe';
+      try { localStorage.setItem(consentAuthorityKey, 'google-europe'); } catch {}
+      hideBanner();
+      showManage();
+      if (wantsConsentManagement && ['tcloaded', 'useractioncomplete'].includes(tcData.eventStatus)) {
+        requestGoogleRevocation();
+      }
+      window.googlefc.callbackQueue.push({
+        CONSENT_MODE_DATA_READY: () => {
+          loadGoogleTagsAfterCmp().catch(() => {
+            window.dispatchEvent(new CustomEvent('lc-consent:error'));
+          });
+        },
+      });
+      return;
+    }
+    resolveNonEuropeanRegion();
+  };
+
+  const parseGppSignal = (pingData) => {
+    const parsedSections = pingData?.parsedSections;
+    let gpc = false;
+    Object.values(parsedSections || {}).forEach(sections => {
+      if (!Array.isArray(sections)) return;
+      if (sections.some(section => section?.Gpc === true)) gpc = true;
+    });
+
+    const applicableSections = Array.isArray(pingData?.applicableSections)
+      ? pingData.applicableSections.filter(Number.isInteger)
+      : [];
+    let optOut = null;
+    for (const definition of US_GPP_SECTIONS) {
+      if (!applicableSections.includes(definition.id)) continue;
+      const sections = parsedSections?.[definition.prefix];
+      if (!Array.isArray(sections)) continue;
+      for (const section of sections) {
+        if (!section || typeof section !== 'object') continue;
+        if (definition.fields.some(field => section[field] === 1)) optOut = true;
+        else if (optOut !== true && definition.fields.every(field => section[field] === 2)) optOut = false;
+      }
+    }
+    return {
+      gpc,
+      state: optOut === null ? 'incomplete' : 'ready',
+      optOut,
+    };
+  };
+
+  const synchronizeGppState = () => {
+    if (!googleUsStateResolved) {
+      setAdRequestPaused(true);
+      return;
+    }
+    if (googleGdprApplies) {
+      usStateApplies = false;
+      usOptedOut = false;
+      gppOptOut = null;
+      gppState = 'not-applicable';
+      if (hasGpcSignal()) setAdRequestPaused(true);
+      return;
+    }
+    if (!usStateApplies) {
+      usOptedOut = false;
+      gppOptOut = null;
+      gppState = 'not-applicable';
+      if (hasGpcSignal()) setAdRequestPaused(true);
+      return;
+    }
+
+    const parsed = latestGppPingData ? parseGppSignal(latestGppPingData) : null;
+    if (!parsed || parsed.state !== 'ready') {
+      gppState = parsed?.state || gppState;
+      usOptedOut = googleUsInitialOptedOut || gppOptOut === true || hasGpcSignal();
+      setConsent(state() || 'rejected');
+      setAdRequestPaused(true);
+      return;
+    }
+
+    if (parsed.optOut === true) {
+      gppOptOut = true;
+      gppState = 'ready';
+    } else if (googleUsInitialOptedOut && !gppHasBaseline && !gppChangePending) {
+      gppOptOut = null;
+      gppState = 'inconsistent';
+    } else if (gppOptOut === true && !gppChangePending) {
+      gppState = 'inconsistent';
+    } else {
+      gppOptOut = false;
+      if (googleUsInitialOptedOut && gppChangePending) gppOverridesGoogleInitial = true;
+      gppState = 'ready';
+    }
+    if (gppState === 'ready') {
+      gppHasBaseline = true;
+      gppChangePending = false;
+    }
+    usOptedOut = (googleUsInitialOptedOut && !gppOverridesGoogleInitial)
+      || gppOptOut === true
+      || hasGpcSignal();
+    const currentConsent = state();
+    setConsent(currentConsent || 'rejected');
+    setAdRequestPaused(currentConsent !== 'accepted');
+    updateBannerLanguage();
+    resolveNonEuropeanRegion();
+  };
+
+  const handleGoogleGppEvent = (event, success) => {
+    const pingData = event?.pingData;
+    if (!success || !pingData) {
+      latestGppPingData = null;
+      gppState = 'error';
+      synchronizeGppState();
+      return;
+    }
+    if (pingData.signalStatus === 'not ready' || event?.data === 'not ready') {
+      if (gppHasObservedReady) gppChangePending = true;
+      latestGppPingData = null;
+      gppState = 'not-ready';
+      synchronizeGppState();
+      return;
+    }
+    if (pingData.signalStatus !== 'ready') {
+      latestGppPingData = null;
+      gppState = 'incomplete';
+      synchronizeGppState();
+      return;
+    }
+    latestGppPingData = pingData;
+    gppHasObservedReady = true;
+    if (parseGppSignal(pingData).gpc) {
+      gppGpcActive = true;
+      updateGoogleConsentMode(null);
+    }
+    synchronizeGppState();
+  };
+
+  const registerGoogleGppListener = () => {
+    if (gppListenerSetup || typeof window.__gpp !== 'function') return;
+    gppListenerSetup = true;
+    try {
+      window.__gpp('addEventListener', handleGoogleGppEvent);
+    } catch (error) {
+      gppListenerSetup = false;
+      gppState = 'error';
+      synchronizeGppState();
+      window.dispatchEvent(new CustomEvent('lc-consent:error'));
+    }
+  };
+
+  const handleGoogleUsState = () => {
+    const status = window.googlefc?.usstatesoptout?.getInitialUsStatesOptOutStatus?.();
+    if (status !== 1 && status !== 2 && status !== 3) return;
+    googleUsStateResolved = true;
+    usStateApplies = status === 2 || status === 3;
+    googleUsInitialOptedOut = status === 3;
+    usOptedOut = googleUsInitialOptedOut || hasGpcSignal();
+    registerGoogleGppListener();
+    synchronizeGppState();
+    updateBannerLanguage();
+    resolveNonEuropeanRegion();
+  };
+
+  const registerGoogleCmpCallbacks = () => {
+    if (!hasAdSenseTag) return;
+    window.googlefc = window.googlefc || {};
+    window.googlefc.callbackQueue = window.googlefc.callbackQueue || [];
+    window.googlefc.callbackQueue.push({
+      CONSENT_API_READY: () => {
+        if (typeof window.__tcfapi !== 'function') return;
+        window.__tcfapi('addEventListener', 2.2, handleGoogleCmpDecision);
+        registerGoogleGppListener();
+      },
+    });
+    window.googlefc.callbackQueue.push({
+      CONSENT_DATA_READY: registerGoogleGppListener,
+    });
+    window.googlefc.callbackQueue.push({
+      CONSENT_MODE_DATA_READY: () => {
+        if (googleCmpRegion === 'europe') {
+          loadGoogleTagsAfterCmp().catch(() => {
+            window.dispatchEvent(new CustomEvent('lc-consent:error'));
+          });
+        }
+      },
+    });
+    window.googlefc.callbackQueue.push({
+      INITIAL_US_STATES_OPT_OUT_DATA_READY: handleGoogleUsState,
+    });
+    window.setTimeout(() => {
+      if (googleCmpRegion) return;
+      googleCmpRegion = 'unavailable';
+      try { localStorage.setItem(consentAuthorityKey, 'unavailable'); } catch {}
+      setAdRequestPaused(true);
+      hideBanner();
+      showManage();
+    }, GOOGLE_CMP_WAIT_MS);
+  };
+
   const applyConsent = async (value) => {
+    if (googleCmpRegion === 'europe') return;
     saveState(value);
-    setConsent(value);
+    setConsent(value, true);
     if (value === 'accepted' || value === 'limited') {
       await loadMarketingScripts(value);
       trackSupportPageView();
     }
+    setAdRequestPaused(value !== 'accepted');
     hideBanner();
     showManage();
     window.dispatchEvent(new CustomEvent(`lc-consent:${value}`));
@@ -421,6 +780,14 @@
     button.innerHTML = '<span data-manage-label></span>';
     document.body.appendChild(button);
     button.addEventListener('click', () => {
+      if (googleCmpRegion === 'europe') {
+        requestGoogleRevocation();
+        return;
+      }
+      if (!hasAdSenseTag || usStateApplies) {
+        window.location.assign(preferencesRoute());
+        return;
+      }
       showBanner();
       hideManage();
       hideCcpa();
@@ -452,9 +819,19 @@
     const t = I18N[currentLang()];
     banner.querySelector('.lc-consent-card').setAttribute('aria-label', t.ariaLabel);
     banner.querySelector('.lc-consent-copy strong').textContent = t.title;
-    banner.querySelector('.lc-consent-copy p:not(.lc-consent-ccpa)').textContent = t.copy;
+    const constrained = hasGpcSignal() || usOptedOut || googleCmpRegion === 'unavailable';
+    const copy = hasGpcSignal()
+      ? t.gpcCopy
+      : usOptedOut
+        ? t.usOptOutCopy
+        : googleCmpRegion === 'unavailable'
+          ? t.unavailableCopy
+          : t.copy;
+    banner.querySelector('.lc-consent-copy p:not(.lc-consent-ccpa)').textContent = copy;
     banner.querySelector('.lc-consent-reject').textContent = t.reject;
-    banner.querySelector('.lc-consent-accept').textContent = t.accept;
+    banner.querySelector('.lc-consent-accept').textContent = hasGpcSignal()
+      ? t.saved
+      : constrained ? t.analyticsOnly : t.accept;
     banner.querySelector('.lc-consent-link').textContent = t.privacy;
     const limited = banner.querySelector('.lc-consent-limited');
     if (limited) limited.textContent = t.limited;
@@ -462,7 +839,7 @@
     if (ccpaEl) {
       ccpaEl.hidden = true;
     }
-    if (limited) limited.hidden = false;
+    if (limited) limited.hidden = constrained;
 
     const ccpaBar = document.getElementById('lc-consent-ccpa');
     if (ccpaBar) {
@@ -487,39 +864,54 @@
     });
   };
 
+  const initializeLegacyConsent = async () => {
+    if (legacyInitialized || googleCmpRegion === 'europe') return;
+    legacyInitialized = true;
+    const consent = state();
+    setConsent(consent || 'rejected');
+    showManage();
+    bindSupportTracking();
+
+    if (hasGpcSignal()) {
+      setAdRequestPaused(true);
+      showBanner();
+      return;
+    }
+
+    if (consent === 'accepted' || consent === 'limited') {
+      await loadMarketingScripts(consent).catch(() => {
+        window.dispatchEvent(new CustomEvent('lc-consent:error'));
+      });
+      trackSupportPageView();
+      setAdRequestPaused(consent !== 'accepted');
+      if (wantsConsentManagement) showBanner();
+      else hideBanner();
+      return;
+    }
+
+    if (consent === 'rejected') {
+      setAdRequestPaused(true);
+      if (wantsConsentManagement) showBanner();
+      else hideBanner();
+      return;
+    }
+    showBanner();
+  };
+
   const init = async () => {
     injectStyle();
     buildBanner();
     buildManage();
     buildCcpaBar();
     bindLanguageUpdates();
-
-    const consent = state();
-    if (!communicatedConsent) setConsent('rejected');
-    if (consent && consent !== communicatedConsent) setConsent(consent);
     showManage();
-    bindSupportTracking();
 
-    if (consent === 'accepted') {
-      await loadMarketingScripts('accepted').catch(() => {});
-      hideBanner();
-      trackSupportPageView();
-      return;
-    }
-
-    if (consent === 'limited') {
-      await loadMarketingScripts('limited').catch(() => {});
-      hideBanner();
-      trackSupportPageView();
-      return;
-    }
-
-    if (consent === 'rejected') {
+    if (!hasAdSenseTag) {
       hideBanner();
       return;
     }
 
-    showBanner();
+    registerGoogleCmpCallbacks();
   };
 
   if (document.readyState === 'loading') {
